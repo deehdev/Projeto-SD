@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  server:
+    build: ./server
+    container_name: server
+    networks:
+      - appnet
+    ports:
+      - "5555:5555"
+    environment:
+      - ZMQ_REP_ADDR=tcp://0.0.0.0:5555
+    volumes:
+      - ./server/data:/app/data   # <-- persistência local OK
+
+  client:
+    build: ./client
+    container_name: client
+    networks:
+      - appnet
+    depends_on:
+      - server
+    stdin_open: true
+    tty: true
+
+networks:
+  appnet:
+    driver: bridge
