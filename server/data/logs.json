@@ -1,0 +1,786 @@
+[
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T20:12:29-03:00",
+    "type": "system",
+    "user": "alice"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T20:12:29-03:00",
+    "type": "system",
+    "user": "bob"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T20:12:29-03:00",
+    "type": "system",
+    "user": "deise"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T20:29:54-03:00",
+    "type": "system",
+    "user": "enzo"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T20:29:54-03:00",
+    "type": "system",
+    "user": "enzo"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T20:29:54-03:00",
+    "type": "system",
+    "user": "enzo"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T20:29:54-03:00",
+    "type": "system",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T20:29:54-03:00",
+    "type": "system",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T20:29:54-03:00",
+    "type": "system",
+    "user": "rodrigo"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T20:29:54-03:00",
+    "type": "system",
+    "user": "carlos"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T20:29:54-03:00",
+    "type": "system",
+    "user": "carlos"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T20:29:54-03:00",
+    "type": "system",
+    "user": "carlos"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Cansado de escolher filme e não assistir nada.",
+    "timestamp": "2025-11-16T20:29:59-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Filme bom é aquele que faz pensar depois.",
+    "timestamp": "2025-11-16T20:29:59-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "teste",
+    "message": "Queria saber qual filme está bombando agora.",
+    "timestamp": "2025-11-16T20:30:00-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Queria saber qual filme está bombando agora.",
+    "timestamp": "2025-11-16T20:30:05-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Tem ator que melhora qualquer produção.",
+    "timestamp": "2025-11-16T20:30:05-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "E tem filme que devia ter parado no primeiro.",
+    "timestamp": "2025-11-16T20:30:07-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Assisti um filme aleatório e adorei.",
+    "timestamp": "2025-11-16T20:30:10-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "channel": "teste",
+    "message": "Eu adoro quando um filme tem um final inesperado.",
+    "timestamp": "2025-11-16T20:30:10-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Faz tempo que não vejo um suspense decente.",
+    "timestamp": "2025-11-16T20:30:14-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "teste",
+    "message": "Qual o melhor filme que você já viu?",
+    "timestamp": "2025-11-16T20:30:16-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "channel": "teste",
+    "message": "Alguém viu algum filme bom ultimamente?",
+    "timestamp": "2025-11-16T20:30:18-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "channel": "teste",
+    "message": "Vi um filme estranho ontem, mas gostei.",
+    "timestamp": "2025-11-16T20:30:18-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "teste",
+    "message": "Hoje tô com vontade de ver terror.",
+    "timestamp": "2025-11-16T20:30:22-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "channel": "teste",
+    "message": "Tô com vontade de rever um clássico.",
+    "timestamp": "2025-11-16T20:30:25-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Sempre que termino um filme vou pesquisar sobre ele.",
+    "timestamp": "2025-11-16T20:30:26-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Eu sempre paro no meio do filme e volto depois.",
+    "timestamp": "2025-11-16T20:30:30-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Vocês gostam mais de filme dublado ou legendado?",
+    "timestamp": "2025-11-16T20:30:30-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Filme longo só funciona se for muito bom.",
+    "timestamp": "2025-11-16T20:30:31-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Qual foi o último filme que te surpreendeu?",
+    "timestamp": "2025-11-16T20:30:35-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Tô com vontade de rever um clássico.",
+    "timestamp": "2025-11-16T20:30:36-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "channel": "general",
+    "message": "Hoje tô com vontade de ver terror.",
+    "timestamp": "2025-11-16T20:30:38-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Filme longo só funciona se for muito bom.",
+    "timestamp": "2025-11-16T20:30:40-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Filme ruim deixa o dia inteiro pior kkkkk",
+    "timestamp": "2025-11-16T20:30:42-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Queria saber qual filme está bombando agora.",
+    "timestamp": "2025-11-16T20:30:42-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "general",
+    "message": "Filme bom é aquele que faz pensar depois.",
+    "timestamp": "2025-11-16T20:30:46-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Tô com vontade de rever um clássico.",
+    "timestamp": "2025-11-16T20:30:49-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Tô com vontade de rever um clássico.",
+    "timestamp": "2025-11-16T20:30:49-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Faz tempo que não vejo um suspense decente.",
+    "timestamp": "2025-11-16T20:30:50-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Faz tempo que não vejo um suspense decente.",
+    "timestamp": "2025-11-16T20:30:54-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "channel": "general",
+    "message": "Eu adoro filmes com trilha sonora boa.",
+    "timestamp": "2025-11-16T20:30:55-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Eu sempre paro no meio do filme e volto depois.",
+    "timestamp": "2025-11-16T20:30:57-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Esse mês saiu muito filme bom.",
+    "timestamp": "2025-11-16T20:30:58-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "channel": "teste",
+    "message": "Hoje acordei com vontade de ver comédia.",
+    "timestamp": "2025-11-16T20:31:00-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "E tem filme que devia ter parado no primeiro.",
+    "timestamp": "2025-11-16T20:31:02-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Tem diretor que eu vejo tudo que lança.",
+    "timestamp": "2025-11-16T20:31:05-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Tô com vontade de rever um clássico.",
+    "timestamp": "2025-11-16T20:31:06-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "E tem filme que devia ter parado no primeiro.",
+    "timestamp": "2025-11-16T20:31:10-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "channel": "general",
+    "message": "Assisti um filme aleatório e adorei.",
+    "timestamp": "2025-11-16T20:31:10-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "channel": "teste",
+    "message": "Eu sempre paro no meio do filme e volto depois.",
+    "timestamp": "2025-11-16T20:31:11-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Filme longo só funciona se for muito bom.",
+    "timestamp": "2025-11-16T20:31:15-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "A fotografia de alguns filmes é absurda.",
+    "timestamp": "2025-11-16T20:31:16-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Hoje acordei com vontade de ver comédia.",
+    "timestamp": "2025-11-16T20:31:17-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "channel": "teste",
+    "message": "Eu fico perdido em filme com muita explicação.",
+    "timestamp": "2025-11-16T20:31:21-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Hoje acordei com vontade de ver comédia.",
+    "timestamp": "2025-11-16T20:31:21-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "channel": "general",
+    "message": "Filme longo só funciona se for muito bom.",
+    "timestamp": "2025-11-16T20:31:24-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T20:31:26-03:00",
+    "type": "system",
+    "user": "marcela"
+  },
+  {
+    "channel": "teste",
+    "message": "Tô com vontade de rever um clássico.",
+    "timestamp": "2025-11-16T20:31:27-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "channel": "general",
+    "message": "Queria saber qual filme está bombando agora.",
+    "timestamp": "2025-11-16T20:31:28-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "destination": "marcela",
+    "direction": "sent",
+    "message": "Tô com vontade de rever um clássico.",
+    "timestamp": "2025-11-16T20:31:29-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "\u003cnil\u003e",
+    "event": "create_channel",
+    "timestamp": "2025-11-16T20:31:31-03:00",
+    "type": "system"
+  },
+  {
+    "channel": "teste",
+    "message": "Eu sempre paro no meio do filme e volto depois.",
+    "timestamp": "2025-11-16T20:31:32-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "channel": "teste",
+    "message": "Nada supera assistir filme comendo pipoca.",
+    "timestamp": "2025-11-16T20:31:34-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Eu sempre paro no meio do filme e volto depois.",
+    "timestamp": "2025-11-16T20:31:35-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "marcela",
+    "direction": "sent",
+    "message": "Sinto falta de filmes antigos passando na TV.",
+    "timestamp": "2025-11-16T20:31:38-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "channel": "general",
+    "message": "Eu gosto de filme curto, sem enrolação.",
+    "timestamp": "2025-11-16T20:31:39-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "channel": "teste",
+    "message": "Eu sempre paro no meio do filme e volto depois.",
+    "timestamp": "2025-11-16T20:31:43-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "general",
+    "message": "E tem filme que devia ter parado no primeiro.",
+    "timestamp": "2025-11-16T20:31:44-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "channel": "general",
+    "message": "Eu gosto de ver filmes antes de dormir.",
+    "timestamp": "2025-11-16T20:31:45-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "channel": "teste",
+    "message": "Cansado de escolher filme e não assistir nada.",
+    "timestamp": "2025-11-16T20:31:49-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Eu adoro quando um filme tem um final inesperado.",
+    "timestamp": "2025-11-16T20:31:51-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "teste",
+    "message": "Tô com vontade de rever um clássico.",
+    "timestamp": "2025-11-16T20:31:52-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Quem aí curte filmes baseados em fatos reais?",
+    "timestamp": "2025-11-16T20:31:55-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "channel": "general",
+    "message": "Hoje tô com vontade de ver terror.",
+    "timestamp": "2025-11-16T20:31:57-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Filme longo só funciona se for muito bom.",
+    "timestamp": "2025-11-16T20:31:58-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "channel": "general",
+    "message": "Sempre que termino um filme vou pesquisar sobre ele.",
+    "timestamp": "2025-11-16T20:32:01-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "channel": "teste",
+    "message": "Faz tempo que não vejo um suspense decente.",
+    "timestamp": "2025-11-16T20:32:03-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Esse mês saiu muito filme bom.",
+    "timestamp": "2025-11-16T20:32:03-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Eu gosto de ver filmes antes de dormir.",
+    "timestamp": "2025-11-16T20:32:07-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Esse mês saiu muito filme bom.",
+    "timestamp": "2025-11-16T20:32:08-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "channel": "teste",
+    "message": "Assisti um filme aleatório e adorei.",
+    "timestamp": "2025-11-16T20:32:08-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Tem filme que eu assisto mil vezes sem cansar.",
+    "timestamp": "2025-11-16T20:32:12-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Filme bom é aquele que faz pensar depois.",
+    "timestamp": "2025-11-16T20:32:13-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "channel": "teste",
+    "message": "Tô procurando algo leve pra assistir hoje.",
+    "timestamp": "2025-11-16T20:32:15-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "channel": "general",
+    "message": "Tem diretor que eu vejo tudo que lança.",
+    "timestamp": "2025-11-16T20:32:17-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "general",
+    "message": "Vi um filme estranho ontem, mas gostei.",
+    "timestamp": "2025-11-16T20:32:19-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "channel": "teste",
+    "message": "Eu gosto de filme curto, sem enrolação.",
+    "timestamp": "2025-11-16T20:32:19-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T20:32:20-03:00",
+    "type": "system",
+    "user": "marcela"
+  },
+  {
+    "channel": "general",
+    "message": "Eu adoro quando um filme tem um final inesperado.",
+    "timestamp": "2025-11-16T20:32:22-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "teste",
+    "message": "Esse mês saiu muito filme bom.",
+    "timestamp": "2025-11-16T20:32:24-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "destination": "marcela",
+    "direction": "sent",
+    "message": "Vocês gostam mais de filme dublado ou legendado?",
+    "timestamp": "2025-11-16T20:32:27-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "channel": "teste",
+    "message": "Preciso de uma recomendação urgente.",
+    "timestamp": "2025-11-16T20:32:27-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Assisti um filme aleatório e adorei.",
+    "timestamp": "2025-11-16T20:32:29-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Filme bom é aquele que faz pensar depois.",
+    "timestamp": "2025-11-16T20:32:33-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Esse mês saiu muito filme bom.",
+    "timestamp": "2025-11-16T20:32:33-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "teste",
+    "message": "Quem aí curte filmes baseados em fatos reais?",
+    "timestamp": "2025-11-16T20:32:36-03:00",
+    "type": "public",
+    "user": "carlos"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T20:32:39-03:00",
+    "type": "system",
+    "user": "marcela"
+  },
+  {
+    "channel": "general",
+    "message": "Filme longo só funciona se for muito bom.",
+    "timestamp": "2025-11-16T20:32:39-03:00",
+    "type": "public",
+    "user": "rodrigo"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Qual o melhor filme que você já viu?",
+    "timestamp": "2025-11-16T20:32:40-03:00",
+    "type": "private",
+    "user": "enzo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "oiiiiiiiiiiiiiiiiiii",
+    "timestamp": "2025-11-16T20:32:42-03:00",
+    "type": "private",
+    "user": "marcela"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Qual foi o último filme que te surpreendeu?",
+    "timestamp": "2025-11-16T20:32:42-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "destination": "enzo",
+    "direction": "sent",
+    "message": "Vocês gostam mais de filme dublado ou legendado?",
+    "timestamp": "2025-11-16T20:32:43-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  },
+  {
+    "channel": "general",
+    "message": "Sinto falta de filmes antigos passando na TV.",
+    "timestamp": "2025-11-16T20:32:48-03:00",
+    "type": "public",
+    "user": "enzo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "Qual o melhor filme que você já viu?",
+    "timestamp": "2025-11-16T20:32:49-03:00",
+    "type": "private",
+    "user": "carlos"
+  },
+  {
+    "destination": "carlos",
+    "direction": "sent",
+    "message": "Eu queria ver algo diferente hoje.",
+    "timestamp": "2025-11-16T20:32:49-03:00",
+    "type": "private",
+    "user": "rodrigo"
+  }
+]

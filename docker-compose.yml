@@ -1,28 +1,49 @@
-version: "3.8"
-
 services:
+
   server:
     build: ./server
     container_name: server
     networks:
-      - appnet
-    ports:
-      - "5555:5555"
+      - chatnet
     environment:
       - ZMQ_REP_ADDR=tcp://0.0.0.0:5555
     volumes:
-      - ./server/data:/app/data   # <-- persistência local OK
+      - ./server/data:/app/data
+
+  broker:
+    build: ./broker
+    container_name: broker
+    networks:
+      - chatnet
+
+  proxy:
+    build: ./proxy
+    container_name: proxy
+    ports:
+      - "5557:5557"
+      - "5558:5558"
+    networks:
+      - chatnet
 
   client:
     build: ./client
     container_name: client
-    networks:
-      - appnet
-    depends_on:
-      - server
     stdin_open: true
     tty: true
+    networks:
+      - chatnet
+    depends_on:
+      - broker
+      - proxy
+
+  bot:
+    build: ./bot
+    networks:
+      - chatnet
+    depends_on:
+      - broker
+      - proxy
 
 networks:
-  appnet:
+  chatnet:
     driver: bridge
