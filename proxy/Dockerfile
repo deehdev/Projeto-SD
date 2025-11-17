@@ -1,32 +1,18 @@
-FROM golang:1.25 AS builder
+FROM golang:latest
 
-# 📌 INSTALA DEPENDÊNCIAS NECESSÁRIAS PARA ZMQ4
-RUN apt-get update && apt-get install -y \
-    pkg-config \
-    libzmq3-dev \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libzmq3-dev
 
 WORKDIR /app
 
+# Copiar dependências
 COPY go.mod go.sum ./
+
+# Baixar módulos (agora incluindo msgpack)
 RUN go mod download
 
+# Copiar o código
 COPY . .
 
-# 📌 IMPORTANTE: CGO habilitado para libzmq
-RUN CGO_ENABLED=1 go build -o proxy .
-
-# -------------------------------
-# SEGUNDA IMAGEM FINAL (menor)
-# -------------------------------
-FROM debian:bookworm-slim
-
-RUN apt-get update && apt-get install -y \
-    libzmq5 \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /app
-COPY --from=builder /app/proxy .
+RUN go build -o proxy .
 
 CMD ["./proxy"]

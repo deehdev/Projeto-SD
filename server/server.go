@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/pebbe/zmq4"
+	"github.com/vmihailenco/msgpack/v5"
 )
 
 // --------------------
@@ -404,6 +405,7 @@ func handlePublish(data map[string]interface{}, pub *zmq4.Socket) map[string]int
 		return errorResp("publish", "você não está inscrito neste canal")
 	}
 
+	// formato de publicação: [timestamp][channel][user] message
 	payload := fmt.Sprintf("[%s][%s][%s] %s", nowISO(), ch, user, msg)
 	// topic = ch, message = payload
 	if _, err := pub.SendMessage(ch, payload); err != nil {
@@ -439,7 +441,8 @@ func handleMessage(data map[string]interface{}, pub *zmq4.Socket) map[string]int
 		return errorResp("message", "usuário destino não existe")
 	}
 
-	payload := fmt.Sprintf("[PM][%s][%s] %s", nowISO(), src, msg)
+	// formato de PM: [timestamp][PM][user] message
+	payload := fmt.Sprintf("[%s][PM][%s] %s", nowISO(), src, msg)
 	if _, err := pub.SendMessage(dst, payload); err != nil {
 		log.Println("Erro enviando PM:", err)
 	}
@@ -514,11 +517,8 @@ func handleMySubs(data map[string]interface{}) map[string]interface{} {
 }
 
 // ------------------------------------
-// CANAIS AURORIZADOS PARA PUBLICAÇÃO
+// CANAIS AUTORIZADOS PARA PUBLICAÇÃO
 // ------------------------------------
-// handlePublishable retorna os canais em que o usuário pode publicar
-// (basicamente as inscrições do usuário). Não retorna erro se a lista
-// ainda não existir — apenas retorna lista vazia.
 func handlePublishable(data map[string]interface{}) map[string]interface{} {
 	user := normalize(fmt.Sprintf("%v", data["user"]))
 
@@ -664,22 +664,24 @@ func main() {
 		log.Println("Aviso: não conseguiu conectar PUB para proxy:5557 (talvez o proxy ainda não esteja pronto):", err)
 	}
 
-	log.Println("Servidor iniciado!")
+	log.Println("Servidor iniciado (MessagePack REQ/REP)!")
 
-	// Main loop
+	// Main loop (MessagePack REQ/REP)
 	for {
-		raw, err := rep.Recv(0)
+		raw, err := rep.RecvBytes(0) // recebe bytes binários (MessagePack)
 		if err != nil {
 			log.Println("Erro recebendo requisição:", err)
 			continue
 		}
 
 		var req map[string]interface{}
-		if err := json.Unmarshal([]byte(raw), &req); err != nil {
-			log.Println("JSON inválido recebido:", err)
-			resp := errorResp("error", "JSON inválido")
-			out, _ := json.Marshal(resp)
-			rep.Send(string(out), 0)
+		if err := msgpack.Unmarshal(raw, &req); err != nil {
+			log.Println("MessagePack inválido recebido:", err)
+			resp := errorResp("error", "MessagePack inválido")
+			outBytes, _ := msgpack.Marshal(resp)
+			if _, err := rep.SendBytes(outBytes, 0); err != nil {
+				log.Println("Erro enviando resposta REP (invalid msgpack):", err)
+			}
 			continue
 		}
 
@@ -724,8 +726,8 @@ func main() {
 			resp = errorResp("error", "serviço desconhecido")
 		}
 
-		out, _ := json.Marshal(resp)
-		if _, err := rep.Send(string(out), 0); err != nil {
+		outBytes, _ := msgpack.Marshal(resp)
+		if _, err := rep.SendBytes(outBytes, 0); err != nil {
 			log.Println("Erro enviando resposta REP:", err)
 		}
 	}

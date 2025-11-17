@@ -1,21 +1,27 @@
-
 const zmq = require("zeromq");
 const readline = require("readline");
+const msgpack = require("@msgpack/msgpack");
 
 function nowISO() {
   return new Date().toISOString();
 }
 
 // -----------------------------------
-// REQ para o servidor Go
+// REQ usando MESSAGEPACK
 // -----------------------------------
 async function sendRequest(msg) {
   const req = new zmq.Request();
   await req.connect("tcp://server:5555");
-  await req.send(JSON.stringify(msg));
 
+  // Enviar MessagePack
+  const encoded = msgpack.encode(msg);
+  await req.send(encoded);
+
+  // Receber MessagePack
   const [reply] = await req.receive();
-  return JSON.parse(reply.toString());
+  const decoded = msgpack.decode(reply);
+
+  return decoded;
 }
 
 // -----------------------------------
@@ -67,7 +73,7 @@ async function main() {
 
       process.stdout.write("> " + currentInput);
     }
-  } //  ← FECHA startListener
+  }
 
   // -----------------------------------
   // CLI
@@ -90,13 +96,11 @@ async function main() {
       process.exit(0);
     }
 
-    // -----------------------------
-    // SUBSCRIBE
-    // -----------------------------
+    // ----------------------------- SUBSCRIBE -----------------------------
     if (cmd === "subscribe") {
       let topic = parts[1];
       if (!topic) {
-        console.log("usage: está inscrito no canal <channel>");
+        console.log("usage: subscribe <canal>");
         rl.prompt();
         continue;
       }
@@ -120,13 +124,11 @@ async function main() {
       continue;
     }
 
-    // -----------------------------
-    // UNSUBSCRIBE
-    // -----------------------------
+    // ----------------------------- UNSUBSCRIBE -----------------------------
     if (cmd === "unsubscribe") {
       let topic = parts[1];
       if (!topic) {
-        console.log("usage: saiu do canal <channel>");
+        console.log("usage: unsubscribe <canal>");
         rl.prompt();
         continue;
       }
@@ -150,9 +152,7 @@ async function main() {
       continue;
     }
 
-    // -----------------------------
-    // MYSUBS
-    // -----------------------------
+    // ----------------------------- MYSUBS -----------------------------
     if (cmd === "mysubs") {
       const reply = await sendRequest({
         service: "mysubs",
@@ -164,9 +164,7 @@ async function main() {
       continue;
     }
 
-    // -----------------------------
-    // PUBLISH COM BLOQUEIO
-    // -----------------------------
+    // ----------------------------- PUBLISH -----------------------------
     if (cmd === "publish") {
       if (!loggedUser) {
         console.log("[ERRO] você precisa fazer login primeiro");
@@ -200,9 +198,7 @@ async function main() {
       };
     }
 
-    // -----------------------------
-    // LOGIN + AUTO LISTENER
-    // -----------------------------
+    // ----------------------------- LOGIN -----------------------------
     if (cmd === "login") {
       const user = parts[1];
 
@@ -227,9 +223,7 @@ async function main() {
       continue;
     }
 
-    // -----------------------------
-    // OUTROS COMANDOS
-    // -----------------------------
+    // ----------------------------- REQUESTS SIMPLES -----------------------------
     if (cmd === "users") msg = { service: "users", data: {} };
     if (cmd === "channels") msg = { service: "channels", data: {} };
     if (cmd === "channel") msg = { service: "channel", data: { channel: parts[1] } };
@@ -246,21 +240,10 @@ async function main() {
       };
     }
 
-    // -----------------------------
-    // PUBLISHABLE (NOVO COMANDO)
-    // -----------------------------
     if (cmd === "publishable") {
-      if (!loggedUser) {
-        console.log("[ERRO] você precisa fazer login primeiro");
-        rl.prompt();
-        continue;
-      }
-
       msg = {
         service: "publishable",
-        data: {
-          user: loggedUser
-        }
+        data: { user: loggedUser }
       };
     }
 
@@ -270,14 +253,7 @@ async function main() {
       continue;
     }
 
-
-    if (!msg) {
-      console.log("Unknown command");
-      rl.prompt();
-      continue;
-    }
-    
-    // EXECUTE REQUEST
+    // ----------------------------- EXECUTE REQUEST -----------------------------
     try {
       const reply = await sendRequest(msg);
       console.log("Reply:", reply);

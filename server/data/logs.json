@@ -782,5 +782,1661 @@
     "timestamp": "2025-11-16T20:32:49-03:00",
     "type": "private",
     "user": "rodrigo"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:00:57-03:00",
+    "type": "system",
+    "user": "renata"
+  },
+  {
+    "channel": "\u003cnil\u003e",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:00:57-03:00",
+    "type": "system",
+    "user": "renata"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Qual o melhor filme de 2024 segundo vocês?",
+    "timestamp": "2025-11-16T21:01:02-03:00",
+    "type": "private",
+    "user": "renata"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Preciso de uma comédia leve pra hoje, ideias?",
+    "timestamp": "2025-11-16T21:01:07-03:00",
+    "type": "private",
+    "user": "renata"
+  },
+  {
+    "channel": "\u003cnil\u003e",
+    "message": "Qual o melhor filme da Marvel na opinião de vocês?",
+    "timestamp": "2025-11-16T21:01:13-03:00",
+    "type": "public",
+    "user": "renata"
+  },
+  {
+    "destination": "carlos",
+    "message": "Tô procurando algo leve pra assistir hoje.",
+    "timestamp": "2025-11-16T21:01:19-03:00",
+    "type": "private",
+    "user": "renata"
+  },
+  {
+    "channel": "\u003cnil\u003e",
+    "message": "Filmes dos anos 80 têm outro charme.",
+    "timestamp": "2025-11-16T21:01:26-03:00",
+    "type": "public",
+    "user": "renata"
+  },
+  {
+    "channel": "\u003cnil\u003e",
+    "message": "‘Cisne Negro’ foi muito intenso.",
+    "timestamp": "2025-11-16T21:01:32-03:00",
+    "type": "public",
+    "user": "renata"
+  },
+  {
+    "destination": "carlos",
+    "message": "Hora do clássico: vou rever ‘Forrest Gump’.",
+    "timestamp": "2025-11-16T21:01:36-03:00",
+    "type": "private",
+    "user": "renata"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Quais filmes vocês acham superestimados?",
+    "timestamp": "2025-11-16T21:01:41-03:00",
+    "type": "private",
+    "user": "renata"
+  },
+  {
+    "channel": "\u003cnil\u003e",
+    "message": "Drama romântico pra chorar muito?",
+    "timestamp": "2025-11-16T21:01:47-03:00",
+    "type": "public",
+    "user": "renata"
+  },
+  {
+    "channel": "\u003cnil\u003e",
+    "message": "Documentários de crime prendem muito.",
+    "timestamp": "2025-11-16T21:01:52-03:00",
+    "type": "public",
+    "user": "renata"
+  },
+  {
+    "channel": "\u003cnil\u003e",
+    "message": "Assisti ‘Whiplash’ e ainda estou tenso.",
+    "timestamp": "2025-11-16T21:02:00-03:00",
+    "type": "public",
+    "user": "renata"
+  },
+  {
+    "channel": "\u003cnil\u003e",
+    "message": "Maratona de animações hoje.",
+    "timestamp": "2025-11-16T21:02:06-03:00",
+    "type": "public",
+    "user": "renata"
+  },
+  {
+    "channel": "\u003cnil\u003e",
+    "message": "‘Parasita’ me destruiu emocionalmente.",
+    "timestamp": "2025-11-16T21:02:12-03:00",
+    "type": "public",
+    "user": "renata"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Assisti um filme aleatório e adorei.",
+    "timestamp": "2025-11-16T21:02:19-03:00",
+    "type": "private",
+    "user": "renata"
+  },
+  {
+    "destination": "enzo",
+    "message": "Nada supera assistir filme comendo pipoca.",
+    "timestamp": "2025-11-16T21:02:26-03:00",
+    "type": "private",
+    "user": "renata"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Gosto de filmes que me deixam confuso.",
+    "timestamp": "2025-11-16T21:02:31-03:00",
+    "type": "private",
+    "user": "renata"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:02:39-03:00",
+    "type": "system",
+    "user": "luciano"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:02:39-03:00",
+    "type": "system",
+    "user": "luciano"
+  },
+  {
+    "destination": "carlos",
+    "message": "Revi ‘Shrek’ e continua perfeito.",
+    "timestamp": "2025-11-16T21:02:44-03:00",
+    "type": "private",
+    "user": "luciano"
+  },
+  {
+    "channel": "teste",
+    "message": "Hoje vou rever ‘Gladiador’.",
+    "timestamp": "2025-11-16T21:02:49-03:00",
+    "type": "public",
+    "user": "luciano"
+  },
+  {
+    "channel": "teste",
+    "message": "Filmes sobre robôs sempre me prendem.",
+    "timestamp": "2025-11-16T21:02:56-03:00",
+    "type": "public",
+    "user": "luciano"
+  },
+  {
+    "destination": "renata",
+    "message": "Comédia romântica pra ver com meu parceiro?",
+    "timestamp": "2025-11-16T21:03:00-03:00",
+    "type": "private",
+    "user": "luciano"
+  },
+  {
+    "destination": "renata",
+    "message": "Revi ‘O Rei Leão’ e chorei de novo.",
+    "timestamp": "2025-11-16T21:03:07-03:00",
+    "type": "private",
+    "user": "luciano"
+  },
+  {
+    "channel": "teste",
+    "message": "Filmes sobre robôs sempre me prendem.",
+    "timestamp": "2025-11-16T21:03:12-03:00",
+    "type": "public",
+    "user": "luciano"
+  },
+  {
+    "channel": "teste",
+    "message": "Filmes de zumbi recomendados?",
+    "timestamp": "2025-11-16T21:03:18-03:00",
+    "type": "public",
+    "user": "luciano"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:03:36-03:00",
+    "type": "system",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:03:36-03:00",
+    "type": "system",
+    "user": "patricia"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "A trilha sonora de Hans Zimmer é sempre surreal.",
+    "timestamp": "2025-11-16T21:03:40-03:00",
+    "type": "private",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "Gosto de filmes longos, 3 horas mesmo.",
+    "timestamp": "2025-11-16T21:03:44-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "destination": "renata",
+    "message": "Qual filme todo mundo gosta mas você não?",
+    "timestamp": "2025-11-16T21:03:51-03:00",
+    "type": "private",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "Assisti ‘Interstellar’ de novo… nunca canso.",
+    "timestamp": "2025-11-16T21:03:55-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "Queria um filme de aventura estilo Indiana Jones.",
+    "timestamp": "2025-11-16T21:04:01-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "destination": "luciano",
+    "message": "Filmes de época me relaxam.",
+    "timestamp": "2025-11-16T21:04:07-03:00",
+    "type": "private",
+    "user": "patricia"
+  },
+  {
+    "destination": "enzo",
+    "message": "O final de ‘A Origem’ me deixa irritado até hoje.",
+    "timestamp": "2025-11-16T21:04:13-03:00",
+    "type": "private",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "Revi ‘O Rei Leão’ e chorei de novo.",
+    "timestamp": "2025-11-16T21:04:20-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "destination": "luciano",
+    "message": "Qual o melhor filme do Tarantino pra começar?",
+    "timestamp": "2025-11-16T21:04:25-03:00",
+    "type": "private",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "Drama romântico pra chorar muito?",
+    "timestamp": "2025-11-16T21:04:31-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "A trilha sonora de Hans Zimmer é sempre surreal.",
+    "timestamp": "2025-11-16T21:04:38-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Alguém viu o filme novo do Miyazaki?",
+    "timestamp": "2025-11-16T21:04:44-03:00",
+    "type": "private",
+    "user": "patricia"
+  },
+  {
+    "destination": "luciano",
+    "message": "Gosto de filmes longos, 3 horas mesmo.",
+    "timestamp": "2025-11-16T21:04:49-03:00",
+    "type": "private",
+    "user": "patricia"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Hoje tô na vibe de drama.",
+    "timestamp": "2025-11-16T21:04:56-03:00",
+    "type": "private",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "‘Matrix’ revolucionou tudo.",
+    "timestamp": "2025-11-16T21:05:03-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "A dublagem brasileira é muito boa, né?",
+    "timestamp": "2025-11-16T21:05:07-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "Mais alguém viciado em maratonar trilogias?",
+    "timestamp": "2025-11-16T21:05:12-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "destination": "enzo",
+    "message": "Tô com vontade de rever um clássico.",
+    "timestamp": "2025-11-16T21:05:18-03:00",
+    "type": "private",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "Queria um filme de ação bem frenético.",
+    "timestamp": "2025-11-16T21:05:24-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "destination": "luciano",
+    "message": "Maratona de animações hoje.",
+    "timestamp": "2025-11-16T21:05:29-03:00",
+    "type": "private",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "O final de ‘A Origem’ me deixa irritado até hoje.",
+    "timestamp": "2025-11-16T21:05:34-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "destination": "luciano",
+    "message": "O CGI de hoje estraga um pouco a magia às vezes.",
+    "timestamp": "2025-11-16T21:05:39-03:00",
+    "type": "private",
+    "user": "patricia"
+  },
+  {
+    "channel": "general",
+    "message": "Filme de terror que realmente assusta?",
+    "timestamp": "2025-11-16T21:05:47-03:00",
+    "type": "public",
+    "user": "patricia"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:07:44-03:00",
+    "type": "system",
+    "user": "paulo"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:07:44-03:00",
+    "type": "system",
+    "user": "paulo"
+  },
+  {
+    "channel": "teste",
+    "message": "Hoje vou ver um documentário, sugestões?",
+    "timestamp": "2025-11-16T21:07:49-03:00",
+    "type": "public",
+    "user": "paulo"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Hoje tô na vibe de drama.",
+    "timestamp": "2025-11-16T21:07:54-03:00",
+    "type": "private",
+    "user": "paulo"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:08:21-03:00",
+    "type": "system",
+    "user": "christian"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:08:21-03:00",
+    "type": "system",
+    "user": "christian"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:08:21-03:00",
+    "type": "system",
+    "user": "christian"
+  },
+  {
+    "channel": "teste",
+    "message": "Fechando a noite com um clássico do Spielberg.",
+    "timestamp": "2025-11-16T21:08:29-03:00",
+    "type": "public",
+    "user": "christian"
+  },
+  {
+    "destination": "patricia",
+    "message": "Qual o filme mais assustador que existe?",
+    "timestamp": "2025-11-16T21:08:34-03:00",
+    "type": "private",
+    "user": "christian"
+  },
+  {
+    "destination": "enzo",
+    "message": "Filmes sobre multiverso tão ficando populares.",
+    "timestamp": "2025-11-16T21:08:41-03:00",
+    "type": "private",
+    "user": "christian"
+  },
+  {
+    "destination": "paulo",
+    "message": "Preciso de um filme triste pra chorar, sugestões?",
+    "timestamp": "2025-11-16T21:08:46-03:00",
+    "type": "private",
+    "user": "christian"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Amo filmes com estética retrô.",
+    "timestamp": "2025-11-16T21:08:51-03:00",
+    "type": "private",
+    "user": "christian"
+  },
+  {
+    "channel": "general",
+    "message": "Amo filmes com estética retrô.",
+    "timestamp": "2025-11-16T21:08:58-03:00",
+    "type": "public",
+    "user": "christian"
+  },
+  {
+    "channel": "teste",
+    "message": "Assistiram Barbie? É engraçado demais.",
+    "timestamp": "2025-11-16T21:09:05-03:00",
+    "type": "public",
+    "user": "christian"
+  },
+  {
+    "channel": "teste",
+    "message": "Queria um filme de ação bem frenético.",
+    "timestamp": "2025-11-16T21:09:12-03:00",
+    "type": "public",
+    "user": "christian"
+  },
+  {
+    "destination": "carlos",
+    "message": "Os filmes do Wes Anderson são lindos visualmente.",
+    "timestamp": "2025-11-16T21:09:17-03:00",
+    "type": "private",
+    "user": "christian"
+  },
+  {
+    "channel": "general",
+    "message": "Filme ruim que vocês amam mesmo assim?",
+    "timestamp": "2025-11-16T21:09:24-03:00",
+    "type": "public",
+    "user": "christian"
+  },
+  {
+    "channel": "general",
+    "message": "Qual filme te fez rir até doer?",
+    "timestamp": "2025-11-16T21:09:31-03:00",
+    "type": "public",
+    "user": "christian"
+  },
+  {
+    "channel": "general",
+    "message": "Documentários de crime prendem muito.",
+    "timestamp": "2025-11-16T21:09:36-03:00",
+    "type": "public",
+    "user": "christian"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:10:35-03:00",
+    "type": "system",
+    "user": "bruno"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:10:35-03:00",
+    "type": "system",
+    "user": "bruno"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Top 3 filmes de ficção científica, vai!",
+    "timestamp": "2025-11-16T21:10:43-03:00",
+    "type": "private",
+    "user": "bruno"
+  },
+  {
+    "destination": "enzo",
+    "message": "Qual o melhor filme da Marvel na opinião de vocês?",
+    "timestamp": "2025-11-16T21:10:49-03:00",
+    "type": "private",
+    "user": "bruno"
+  },
+  {
+    "channel": "general",
+    "message": "A fotografia de ‘Blade Runner 2049’ é perfeita.",
+    "timestamp": "2025-11-16T21:10:56-03:00",
+    "type": "public",
+    "user": "bruno"
+  },
+  {
+    "channel": "general",
+    "message": "Qual o melhor filme do Tarantino pra começar?",
+    "timestamp": "2025-11-16T21:11:03-03:00",
+    "type": "public",
+    "user": "bruno"
+  },
+  {
+    "channel": "general",
+    "message": "Tô procurando algo leve pra assistir hoje.",
+    "timestamp": "2025-11-16T21:11:10-03:00",
+    "type": "public",
+    "user": "bruno"
+  },
+  {
+    "destination": "enzo",
+    "message": "Queria algo futurista hoje.",
+    "timestamp": "2025-11-16T21:11:14-03:00",
+    "type": "private",
+    "user": "bruno"
+  },
+  {
+    "destination": "enzo",
+    "message": "Qual o melhor filme de 2024 segundo vocês?",
+    "timestamp": "2025-11-16T21:11:21-03:00",
+    "type": "private",
+    "user": "bruno"
+  },
+  {
+    "channel": "general",
+    "message": "Quais filmes vocês acham que todo mundo deveria ver?",
+    "timestamp": "2025-11-16T21:11:28-03:00",
+    "type": "public",
+    "user": "bruno"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:17:26-03:00",
+    "type": "system",
+    "user": "elisa"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:17:26-03:00",
+    "type": "system",
+    "user": "elisa"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:17:26-03:00",
+    "type": "system",
+    "user": "elisa"
+  },
+  {
+    "destination": "renata",
+    "message": "Preciso de um filme triste pra chorar, sugestões?",
+    "timestamp": "2025-11-16T21:17:32-03:00",
+    "type": "private",
+    "user": "elisa"
+  },
+  {
+    "channel": "general",
+    "message": "‘Gravidade’ no cinema foi surreal.",
+    "timestamp": "2025-11-16T21:17:36-03:00",
+    "type": "public",
+    "user": "elisa"
+  },
+  {
+    "channel": "teste",
+    "message": "Mais alguém ama filmes policiais?",
+    "timestamp": "2025-11-16T21:17:42-03:00",
+    "type": "public",
+    "user": "elisa"
+  },
+  {
+    "destination": "luciano",
+    "message": "O final de ‘Noivo Neurótico, Noiva Nervosa’ é ótimo.",
+    "timestamp": "2025-11-16T21:17:50-03:00",
+    "type": "private",
+    "user": "elisa"
+  },
+  {
+    "channel": "general",
+    "message": "Alguém viu algum filme bom ultimamente?",
+    "timestamp": "2025-11-16T21:17:57-03:00",
+    "type": "public",
+    "user": "elisa"
+  },
+  {
+    "destination": "enzo",
+    "message": "Filme bom é aquele que faz pensar.",
+    "timestamp": "2025-11-16T21:18:03-03:00",
+    "type": "private",
+    "user": "elisa"
+  },
+  {
+    "destination": "christian",
+    "message": "Top 3 filmes de ficção científica, vai!",
+    "timestamp": "2025-11-16T21:18:09-03:00",
+    "type": "private",
+    "user": "elisa"
+  },
+  {
+    "channel": "general",
+    "message": "Revi ‘Harry Potter’ e bateu nostalgia.",
+    "timestamp": "2025-11-16T21:18:13-03:00",
+    "type": "public",
+    "user": "elisa"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Gosto muito de filmes de tribunal.",
+    "timestamp": "2025-11-16T21:18:19-03:00",
+    "type": "private",
+    "user": "elisa"
+  },
+  {
+    "destination": "christian",
+    "message": "Mais alguém ama filmes policiais?",
+    "timestamp": "2025-11-16T21:18:26-03:00",
+    "type": "private",
+    "user": "elisa"
+  },
+  {
+    "destination": "christian",
+    "message": "Hoje vou ver terror trash, por que não.",
+    "timestamp": "2025-11-16T21:18:34-03:00",
+    "type": "private",
+    "user": "elisa"
+  },
+  {
+    "channel": "general",
+    "message": "Preciso de um filme curto, menos de 90 min.",
+    "timestamp": "2025-11-16T21:18:38-03:00",
+    "type": "public",
+    "user": "elisa"
+  },
+  {
+    "destination": "christian",
+    "message": "Queria esquecer ‘O Senhor dos Anéis’ pra assistir de novo.",
+    "timestamp": "2025-11-16T21:18:46-03:00",
+    "type": "private",
+    "user": "elisa"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:18:50-03:00",
+    "type": "system",
+    "user": "otavio"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:18:50-03:00",
+    "type": "system",
+    "user": "otavio"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:18:50-03:00",
+    "type": "system",
+    "user": "otavio"
+  },
+  {
+    "destination": "paulo",
+    "message": "Filme com plot twist surpreendente?",
+    "timestamp": "2025-11-16T21:18:57-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "channel": "teste",
+    "message": "Filme com plot twist surpreendente?",
+    "timestamp": "2025-11-16T21:19:03-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "channel": "general",
+    "message": "Tô com vontade de rever um clássico.",
+    "timestamp": "2025-11-16T21:19:07-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Filmes dos anos 80 têm outro charme.",
+    "timestamp": "2025-11-16T21:19:14-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "channel": "general",
+    "message": "Assisti um filme aleatório e adorei.",
+    "timestamp": "2025-11-16T21:19:20-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "destination": "bruno",
+    "message": "Queria algo futurista hoje.",
+    "timestamp": "2025-11-16T21:19:27-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "destination": "paulo",
+    "message": "Queria esquecer ‘O Senhor dos Anéis’ pra assistir de novo.",
+    "timestamp": "2025-11-16T21:19:33-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "destination": "elisa",
+    "message": "Assistiram Barbie? É engraçado demais.",
+    "timestamp": "2025-11-16T21:19:37-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "channel": "general",
+    "message": "Quero um filme bem inteligente, tipo mind-bending.",
+    "timestamp": "2025-11-16T21:19:44-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "channel": "general",
+    "message": "Qual o filme mais assustador que existe?",
+    "timestamp": "2025-11-16T21:19:52-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "destination": "rodrigo",
+    "message": "Curto filmes independentes.",
+    "timestamp": "2025-11-16T21:19:58-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "channel": "teste",
+    "message": "‘Green Book’ é tão confortante.",
+    "timestamp": "2025-11-16T21:20:03-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "channel": "teste",
+    "message": "Qual o melhor filme do Tarantino pra começar?",
+    "timestamp": "2025-11-16T21:20:10-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "destination": "luciano",
+    "message": "Preciso de um filme triste pra chorar, sugestões?",
+    "timestamp": "2025-11-16T21:20:15-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "channel": "teste",
+    "message": "Algo no estilo ‘O Jogo da Imitação’?",
+    "timestamp": "2025-11-16T21:20:22-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "channel": "general",
+    "message": "Quero um filme sobre amizade.",
+    "timestamp": "2025-11-16T21:20:27-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "channel": "teste",
+    "message": "Qual o melhor filme da Marvel na opinião de vocês?",
+    "timestamp": "2025-11-16T21:20:33-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "destination": "christian",
+    "message": "Qual melhor filme pra ver com amigos?",
+    "timestamp": "2025-11-16T21:20:40-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "destination": "patricia",
+    "message": "Top 3 filmes de ficção científica, vai!",
+    "timestamp": "2025-11-16T21:20:47-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "channel": "general",
+    "message": "Queria esquecer ‘O Senhor dos Anéis’ pra assistir de novo.",
+    "timestamp": "2025-11-16T21:20:54-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "channel": "general",
+    "message": "Quais filmes vocês acham que todo mundo deveria ver?",
+    "timestamp": "2025-11-16T21:21:00-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "destination": "christian",
+    "message": "Alguém viu algum filme bom ultimamente?",
+    "timestamp": "2025-11-16T21:21:05-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "channel": "general",
+    "message": "A fotografia de ‘Blade Runner 2049’ é perfeita.",
+    "timestamp": "2025-11-16T21:21:12-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "channel": "teste",
+    "message": "Qual o melhor filme da Marvel na opinião de vocês?",
+    "timestamp": "2025-11-16T21:21:16-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "channel": "teste",
+    "message": "Qual filme te fez rir até doer?",
+    "timestamp": "2025-11-16T21:21:24-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "destination": "elisa",
+    "message": "Preciso de uma recomendação urgente.",
+    "timestamp": "2025-11-16T21:21:31-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "destination": "enzo",
+    "message": "Revi ‘Harry Potter’ e bateu nostalgia.",
+    "timestamp": "2025-11-16T21:21:36-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "destination": "patricia",
+    "message": "Filmes sobre robôs sempre me prendem.",
+    "timestamp": "2025-11-16T21:21:40-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "destination": "bruno",
+    "message": "Preciso de um filme curto, menos de 90 min.",
+    "timestamp": "2025-11-16T21:21:46-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "channel": "general",
+    "message": "Não acredito que nunca vi ‘Pulp Fiction’, vou corrigir isso.",
+    "timestamp": "2025-11-16T21:21:54-03:00",
+    "type": "public",
+    "user": "otavio"
+  },
+  {
+    "destination": "elisa",
+    "message": "Curto filmes independentes.",
+    "timestamp": "2025-11-16T21:22:02-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "destination": "bruno",
+    "message": "O final de ‘Noivo Neurótico, Noiva Nervosa’ é ótimo.",
+    "timestamp": "2025-11-16T21:22:07-03:00",
+    "type": "private",
+    "user": "otavio"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:23:50-03:00",
+    "type": "system",
+    "user": "italo"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:23:50-03:00",
+    "type": "system",
+    "user": "italo"
+  },
+  {
+    "channel": "teste",
+    "message": "Senti falta de mais ação no novo Batman.",
+    "timestamp": "2025-11-16T21:23:56-03:00",
+    "type": "public",
+    "user": "italo"
+  },
+  {
+    "channel": "teste",
+    "message": "Preciso de um filme triste pra chorar, sugestões?",
+    "timestamp": "2025-11-16T21:24:01-03:00",
+    "type": "public",
+    "user": "italo"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:26:42-03:00",
+    "type": "system",
+    "user": "jonathan"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:26:42-03:00",
+    "type": "system",
+    "user": "jonathan"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:26:42-03:00",
+    "type": "system",
+    "user": "jonathan"
+  },
+  {
+    "destination": "renata",
+    "message": "Queria um filme de aventura estilo Indiana Jones.",
+    "timestamp": "2025-11-16T21:26:47-03:00",
+    "type": "private",
+    "user": "jonathan"
+  },
+  {
+    "destination": "otavio",
+    "message": "Recomendam algum terror psicológico?",
+    "timestamp": "2025-11-16T21:26:54-03:00",
+    "type": "private",
+    "user": "jonathan"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:34:17-03:00",
+    "type": "system",
+    "user": "eduardo"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:34:17-03:00",
+    "type": "system",
+    "user": "eduardo"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:34:17-03:00",
+    "type": "system",
+    "user": "eduardo"
+  },
+  {
+    "channel": "general",
+    "message": "Preciso de um romance leve, indicações?",
+    "timestamp": "2025-11-16T21:34:23-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "teste",
+    "message": "Assistir filme de madrugada tem outro clima.",
+    "timestamp": "2025-11-16T21:34:30-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "teste",
+    "message": "‘Clube da Luta’ é realmente tudo isso?",
+    "timestamp": "2025-11-16T21:34:35-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "teste",
+    "message": "Alguém viu o filme novo do Miyazaki?",
+    "timestamp": "2025-11-16T21:34:43-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "teste",
+    "message": "A trilogia do Nolan do Batman ainda é insuperável.",
+    "timestamp": "2025-11-16T21:34:50-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "destination": "jonathan",
+    "direction": "sent",
+    "message": "Filmes sobre multiverso tão ficando populares.",
+    "timestamp": "2025-11-16T21:34:58-03:00",
+    "type": "private",
+    "user": "eduardo"
+  },
+  {
+    "destination": "rodrigo",
+    "direction": "sent",
+    "message": "‘Gravidade’ no cinema foi surreal.",
+    "timestamp": "2025-11-16T21:35:05-03:00",
+    "type": "private",
+    "user": "eduardo"
+  },
+  {
+    "destination": "paulo",
+    "direction": "sent",
+    "message": "Hoje vou rever ‘Gladiador’.",
+    "timestamp": "2025-11-16T21:35:12-03:00",
+    "type": "private",
+    "user": "eduardo"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "enzo"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "rodrigo"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "carlos"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "renata"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "luciano"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "patricia"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "paulo"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "christian"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "bruno"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "elisa"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "otavio"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "italo"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:35:17-03:00",
+    "type": "system",
+    "user": "jonathan"
+  },
+  {
+    "channel": "teste",
+    "message": "Quero ver algo com reviravoltas intensas.",
+    "timestamp": "2025-11-16T21:35:28-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "general",
+    "message": "Revi ‘Harry Potter’ e bateu nostalgia.",
+    "timestamp": "2025-11-16T21:35:55-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "teste",
+    "message": "‘O Grande Gatsby’ é muito estiloso.",
+    "timestamp": "2025-11-16T21:36:11-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "general",
+    "message": "Tô procurando algo leve pra assistir hoje.",
+    "timestamp": "2025-11-16T21:36:17-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "general",
+    "message": "Filmes sobre robôs sempre me prendem.",
+    "timestamp": "2025-11-16T21:36:23-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "teste",
+    "message": "Queria um filme de aventura estilo Indiana Jones.",
+    "timestamp": "2025-11-16T21:36:35-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "teste",
+    "message": "Gosto muito de filmes baseados em fatos reais.",
+    "timestamp": "2025-11-16T21:36:46-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "general",
+    "message": "Mais alguém viciado em maratonar trilogias?",
+    "timestamp": "2025-11-16T21:36:52-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "general",
+    "message": "Esse mês saiu muito filme bom.",
+    "timestamp": "2025-11-16T21:37:00-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "teste",
+    "message": "Hoje vou ver um documentário, sugestões?",
+    "timestamp": "2025-11-16T21:37:37-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "general",
+    "message": "As animações japonesas são outro nível.",
+    "timestamp": "2025-11-16T21:37:43-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "teste",
+    "message": "A trilha sonora de Hans Zimmer é sempre surreal.",
+    "timestamp": "2025-11-16T21:37:58-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "general",
+    "message": "Maratona de animações hoje.",
+    "timestamp": "2025-11-16T21:38:23-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "channel": "general",
+    "message": "Filme ruim que vocês amam mesmo assim?",
+    "timestamp": "2025-11-16T21:38:28-03:00",
+    "type": "public",
+    "user": "eduardo"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:40:44-03:00",
+    "type": "system",
+    "user": "gustavo"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:40:44-03:00",
+    "type": "system",
+    "user": "gustavo"
+  },
+  {
+    "destination": "eduardo",
+    "direction": "sent",
+    "message": "Vocês gostam mais de filme dublado ou legendado?",
+    "timestamp": "2025-11-16T21:40:51-03:00",
+    "type": "private",
+    "user": "gustavo"
+  },
+  {
+    "destination": "eduardo",
+    "direction": "sent",
+    "message": "Qual o melhor filme do Tarantino pra começar?",
+    "timestamp": "2025-11-16T21:40:56-03:00",
+    "type": "private",
+    "user": "gustavo"
+  },
+  {
+    "destination": "eduardo",
+    "direction": "sent",
+    "message": "O final de ‘A Origem’ me deixa irritado até hoje.",
+    "timestamp": "2025-11-16T21:41:03-03:00",
+    "type": "private",
+    "user": "gustavo"
+  },
+  {
+    "destination": "eduardo",
+    "direction": "sent",
+    "message": "A trilogia do Nolan do Batman ainda é insuperável.",
+    "timestamp": "2025-11-16T21:41:09-03:00",
+    "type": "private",
+    "user": "gustavo"
+  },
+  {
+    "destination": "eduardo",
+    "direction": "sent",
+    "message": "Filmes dos anos 80 têm outro charme.",
+    "timestamp": "2025-11-16T21:41:14-03:00",
+    "type": "private",
+    "user": "gustavo"
+  },
+  {
+    "destination": "eduardo",
+    "direction": "sent",
+    "message": "Revi ‘O Rei Leão’ e chorei de novo.",
+    "timestamp": "2025-11-16T21:41:21-03:00",
+    "type": "private",
+    "user": "gustavo"
+  },
+  {
+    "channel": "general",
+    "message": "Qual o filme mais assustador que existe?",
+    "timestamp": "2025-11-16T21:41:26-03:00",
+    "type": "public",
+    "user": "gustavo"
+  },
+  {
+    "channel": "general",
+    "message": "Gosto de filmes que me deixam confuso.",
+    "timestamp": "2025-11-16T21:41:32-03:00",
+    "type": "public",
+    "user": "gustavo"
+  },
+  {
+    "channel": "general",
+    "message": "Assisti ‘Interstellar’ de novo… nunca canso.",
+    "timestamp": "2025-11-16T21:41:40-03:00",
+    "type": "public",
+    "user": "gustavo"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:41:43-03:00",
+    "type": "system",
+    "user": "eduardo"
+  },
+  {
+    "channel": "general",
+    "message": "Filme com plot twist surpreendente?",
+    "timestamp": "2025-11-16T21:41:55-03:00",
+    "type": "public",
+    "user": "gustavo"
+  },
+  {
+    "channel": "general",
+    "message": "Qual filme todo mundo gosta mas você não?",
+    "timestamp": "2025-11-16T21:42:06-03:00",
+    "type": "public",
+    "user": "gustavo"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:44:07-03:00",
+    "type": "system",
+    "user": "simone"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:44:07-03:00",
+    "type": "system",
+    "user": "simone"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:44:07-03:00",
+    "type": "system",
+    "user": "simone"
+  },
+  {
+    "destination": "gustavo",
+    "direction": "sent",
+    "message": "Mais alguém viciado em maratonar trilogias?",
+    "timestamp": "2025-11-16T21:44:15-03:00",
+    "type": "private",
+    "user": "simone"
+  },
+  {
+    "channel": "general",
+    "message": "Queria algo futurista hoje.",
+    "timestamp": "2025-11-16T21:44:20-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "channel": "general",
+    "message": "‘Matrix’ revolucionou tudo.",
+    "timestamp": "2025-11-16T21:44:27-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "destination": "gustavo",
+    "direction": "sent",
+    "message": "As animações japonesas são outro nível.",
+    "timestamp": "2025-11-16T21:44:31-03:00",
+    "type": "private",
+    "user": "simone"
+  },
+  {
+    "channel": "teste",
+    "message": "Qual o filme mais estranho que vocês amam?",
+    "timestamp": "2025-11-16T21:44:38-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "destination": "gustavo",
+    "direction": "sent",
+    "message": "DiCaprio sempre entrega.",
+    "timestamp": "2025-11-16T21:44:46-03:00",
+    "type": "private",
+    "user": "simone"
+  },
+  {
+    "channel": "general",
+    "message": "Esse mês saiu muito filme bom.",
+    "timestamp": "2025-11-16T21:44:52-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "destination": "gustavo",
+    "direction": "sent",
+    "message": "Filme ruim que vocês amam mesmo assim?",
+    "timestamp": "2025-11-16T21:44:58-03:00",
+    "type": "private",
+    "user": "simone"
+  },
+  {
+    "destination": "gustavo",
+    "direction": "sent",
+    "message": "Qual filme te fez rir até doer?",
+    "timestamp": "2025-11-16T21:45:04-03:00",
+    "type": "private",
+    "user": "simone"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:45:07-03:00",
+    "type": "system",
+    "user": "gustavo"
+  },
+  {
+    "channel": "teste",
+    "message": "Assistir filme de madrugada tem outro clima.",
+    "timestamp": "2025-11-16T21:45:09-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "channel": "teste",
+    "message": "Vi ‘Oldboy’ e minha mente explodiu.",
+    "timestamp": "2025-11-16T21:45:27-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "channel": "teste",
+    "message": "Quero ver algo com reviravoltas intensas.",
+    "timestamp": "2025-11-16T21:45:37-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "channel": "general",
+    "message": "Adoro filmes com viagem no tempo.",
+    "timestamp": "2025-11-16T21:45:51-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "channel": "teste",
+    "message": "Preciso de um romance leve, indicações?",
+    "timestamp": "2025-11-16T21:45:57-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "channel": "teste",
+    "message": "Filme ruim que vocês amam mesmo assim?",
+    "timestamp": "2025-11-16T21:46:04-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "channel": "general",
+    "message": "‘O Grande Gatsby’ é muito estiloso.",
+    "timestamp": "2025-11-16T21:46:34-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "channel": "teste",
+    "message": "Hora do clássico: vou rever ‘Forrest Gump’.",
+    "timestamp": "2025-11-16T21:46:39-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "channel": "teste",
+    "message": "‘Parasita’ me destruiu emocionalmente.",
+    "timestamp": "2025-11-16T21:46:47-03:00",
+    "type": "public",
+    "user": "simone"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:47:27-03:00",
+    "type": "system",
+    "user": "silvia"
+  },
+  {
+    "channel": "teste",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:47:27-03:00",
+    "type": "system",
+    "user": "silvia"
+  },
+  {
+    "channel": "general",
+    "event": "subscribe",
+    "timestamp": "2025-11-16T21:47:27-03:00",
+    "type": "system",
+    "user": "silvia"
+  },
+  {
+    "destination": "simone",
+    "direction": "sent",
+    "message": "Quais filmes vocês acham que todo mundo deveria ver?",
+    "timestamp": "2025-11-16T21:47:34-03:00",
+    "type": "private",
+    "user": "silvia"
+  },
+  {
+    "destination": "simone",
+    "direction": "sent",
+    "message": "Algo no estilo ‘O Jogo da Imitação’?",
+    "timestamp": "2025-11-16T21:47:38-03:00",
+    "type": "private",
+    "user": "silvia"
+  },
+  {
+    "channel": "teste",
+    "message": "As animações japonesas são outro nível.",
+    "timestamp": "2025-11-16T21:47:44-03:00",
+    "type": "public",
+    "user": "silvia"
+  },
+  {
+    "channel": "general",
+    "message": "Quais filmes vocês acham superestimados?",
+    "timestamp": "2025-11-16T21:47:52-03:00",
+    "type": "public",
+    "user": "silvia"
+  },
+  {
+    "event": "login",
+    "timestamp": "2025-11-16T21:47:58-03:00",
+    "type": "system",
+    "user": "deise"
+  },
+  {
+    "destination": "deise",
+    "direction": "sent",
+    "message": "A trilha sonora de Hans Zimmer é sempre surreal.",
+    "timestamp": "2025-11-16T21:47:59-03:00",
+    "type": "private",
+    "user": "silvia"
+  },
+  {
+    "channel": "teste",
+    "message": "Assistir musical sozinho é estranho?",
+    "timestamp": "2025-11-16T21:48:05-03:00",
+    "type": "public",
+    "user": "silvia"
+  },
+  {
+    "destination": "simone",
+    "direction": "sent",
+    "message": "Qual filme te fez rir até doer?",
+    "timestamp": "2025-11-16T21:48:09-03:00",
+    "type": "private",
+    "user": "silvia"
+  },
+  {
+    "channel": "general",
+    "message": "DiCaprio sempre entrega.",
+    "timestamp": "2025-11-16T21:48:15-03:00",
+    "type": "public",
+    "user": "silvia"
+  },
+  {
+    "channel": "general",
+    "message": "Quero ver um clássico que nunca assisti.",
+    "timestamp": "2025-11-16T21:48:21-03:00",
+    "type": "public",
+    "user": "silvia"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:48:26-03:00",
+    "type": "system",
+    "user": "simone"
+  },
+  {
+    "destination": "deise",
+    "direction": "sent",
+    "message": "Quais filmes vocês acham que todo mundo deveria ver?",
+    "timestamp": "2025-11-16T21:48:29-03:00",
+    "type": "private",
+    "user": "silvia"
+  },
+  {
+    "destination": "silvia",
+    "direction": "sent",
+    "message": "oiiiiiiiiiiiiiiiiiiiiiiiiieeeeeeeeeee",
+    "timestamp": "2025-11-16T21:48:29-03:00",
+    "type": "private",
+    "user": "deise"
+  },
+  {
+    "channel": "general",
+    "message": "Maratona de animações hoje.",
+    "timestamp": "2025-11-16T21:48:33-03:00",
+    "type": "public",
+    "user": "silvia"
+  },
+  {
+    "channel": "general",
+    "message": "Top 3 filmes de ficção científica, vai!",
+    "timestamp": "2025-11-16T21:48:41-03:00",
+    "type": "public",
+    "user": "silvia"
+  },
+  {
+    "destination": "deise",
+    "direction": "sent",
+    "message": "‘Oppenheimer’ me deixou pensativo demais.",
+    "timestamp": "2025-11-16T21:48:47-03:00",
+    "type": "private",
+    "user": "silvia"
+  },
+  {
+    "channel": "teste",
+    "message": "Preciso de um suspense estilo ‘Seven’.",
+    "timestamp": "2025-11-16T21:48:55-03:00",
+    "type": "public",
+    "user": "silvia"
+  },
+  {
+    "destination": "deise",
+    "direction": "sent",
+    "message": "Preciso de um filme triste pra chorar, sugestões?",
+    "timestamp": "2025-11-16T21:49:01-03:00",
+    "type": "private",
+    "user": "silvia"
+  },
+  {
+    "channel": "general",
+    "message": "Preciso de um filme curto, menos de 90 min.",
+    "timestamp": "2025-11-16T21:49:08-03:00",
+    "type": "public",
+    "user": "silvia"
+  },
+  {
+    "event": "auto_logout",
+    "timestamp": "2025-11-16T21:49:11-03:00",
+    "type": "system",
+    "user": "deise"
   }
 ]

@@ -1,13 +1,8 @@
 {
-  "name": "sd-client",
+  "name": "chat-client",
   "version": "1.0.0",
-  "description": "Cliente do projeto de Sistemas Distribuídos - Parte 1 (Request-Reply)",
-  "main": "client.js",
-  "type": "commonjs",
-  "scripts": {
-    "start": "node client.js"
-  },
   "dependencies": {
-    "zeromq": "^6.0.0"
+    "zeromq": "^6.0.0",
+    "@msgpack/msgpack": "^3.0.0"
   }
 }

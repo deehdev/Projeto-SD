@@ -1,48 +1,48 @@
+version: "3.9"
+
 services:
-
-  server:
-    build: ./server
-    container_name: server
-    networks:
-      - chatnet
-    environment:
-      - ZMQ_REP_ADDR=tcp://0.0.0.0:5555
-    volumes:
-      - ./server/data:/app/data
-
-  broker:
-    build: ./broker
-    container_name: broker
-    networks:
-      - chatnet
 
   proxy:
     build: ./proxy
-    container_name: proxy
-    ports:
-      - "5557:5557"
-      - "5558:5558"
+    image: chat-proxy
     networks:
       - chatnet
+    restart: unless-stopped
+
+  server:
+    build: ./server
+    image: chat-server
+    ports:
+      - "5555:5555"
+    networks:
+      - chatnet
+    depends_on:
+      - proxy
+    volumes:
+      - ./server/data:/app/data        # <-- garante salvamento de users/channels/logs
+    restart: unless-stopped
+
+  bot_auto:
+    build: ./bot
+    image: chat-bot
+    networks:
+      - chatnet
+    depends_on:
+      - server
+      - proxy
+    restart: unless-stopped
 
   client:
     build: ./client
-    container_name: client
+    image: chat-client
+    networks:
+      - chatnet
+    depends_on:
+      - server
+      - proxy
     stdin_open: true
     tty: true
-    networks:
-      - chatnet
-    depends_on:
-      - broker
-      - proxy
-
-  bot:
-    build: ./bot
-    networks:
-      - chatnet
-    depends_on:
-      - broker
-      - proxy
+    restart: unless-stopped
 
 networks:
   chatnet:
