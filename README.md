@@ -98,3 +98,290 @@ env = {
     "data": {"user": "nome"},
     "clock": logical_clock
 }
+
+## 📌 Tecnologias Utilizadas
+
+ZeroMQ (REQ/REP, XSUB/XPUB)
+
+MessagePack
+
+Go (servidores, broker, proxy, ref)
+
+Node.js (cliente interativo)
+
+Python (bot automático)
+
+Docker & Docker Compose
+
+Persistência em disco (JSON / arquivos)
+
+Clock de Lamport
+
+Sincronização Berkeley
+
+Replicação completa entre servidores
+
+## 🧩 Arquitetura Geral
+
+┌──────────┐      REQ/REP       ┌──────────┐
+│ Clientes │ <-----------------> │ Broker   │
+│ + Bots   │                     └────┬─────┘
+└─────┬────┘                          │
+      │                          XSUB │ XPUB
+      │                               ▼
+      │                         ┌──────────┐
+      │                         │  Proxy   │
+      │                         └──────────┘
+      │                               ▲
+      ▼                               │
+┌────────────┐   Sync + Replicação    │
+│ Servidor A │ <-----------------------┐
+├────────────┤ <---------------------->│
+│ Servidor B │ <-----------------------┘
+├────────────┤
+│ Servidor C │
+└────────────┘
+       ▲
+       │ Rank + Heartbeat
+       ▼
+   ┌────────┐
+   │  REF   │
+   └────────┘
+
+
+## 🧱 Componentes do Sistema ##
+Broker
+
+Balanceador REQ/REP que recebe requisições dos clientes e distribui entre os servidores via round-robin.
+
+Proxy
+
+Encaminha todas as mensagens PUB/SUB entre servidores e clientes.
+
+REF
+
+Gerencia:
+
+lista de servidores vivos
+
+heartbeat
+
+rank
+
+eleição
+
+Servidores (server_sync)
+
+Responsáveis por:
+
+registrar usuários
+
+criar canais
+
+enviar mensagens públicas
+
+enviar mensagens privadas
+
+sincronização via Lamport
+
+sincronização via Berkeley
+
+replicação completa do estado
+
+persistência em disco
+
+Cliente Interativo
+
+Permite:
+
+login
+
+listar usuários
+
+listar canais
+
+criar canais
+
+assinar canais
+
+publicar mensagens
+
+enviar mensagens privadas
+
+verificar clock lógico
+
+consultar histórico local
+
+Bots Automáticos
+
+Simulam usuários enviando mensagens continuamente.
+
+## 📦 Persistência ##
+Servidor
+server_sync/data/
+  ├── users.json
+  ├── channels.json
+  ├── subscriptions.json
+  └── logs.json
+
+Cliente
+client/data/<username>.log
+
+## 🔁 Replicação entre Servidores ##
+
+O sistema utiliza Full Replication, enviando para todos os servidores um update envelope sempre que ocorre:
+
+login
+
+criação de canal
+
+inscrição
+
+mensagem pública
+
+mensagem privada
+
+Cada servidor recebe, aplica e persiste a atualização.
+
+## 👑 Eleição e Sincronização  ##
+Eleição
+
+Baseada em:
+
+rank inicial do REF
+
+clock lógico (Lamport)
+
+Funções do Coordenador
+
+inicia sincronização Berkeley
+
+ajusta offsets de tempo
+
+coordena servidores
+
+Clock de Lamport
+
+Usado para ordering lógico dos eventos.
+
+## 📡 Comunicação ##
+Entre Cliente ↔ Broker
+
+REQ/REP MessagePack
+
+Entre Servidor ↔ Proxy
+
+PUB/SUB texto
+
+Entre Servidor ↔ Servidor
+
+REQ/REP MessagePack
+Para replicação e sincronização.
+
+## 🐳 Como Executar ##
+Build + subir todo o sistema
+docker compose up --build
+
+Derrubar um servidor para testar eleição
+docker stop server_a
+
+Ver coordenador sendo eleito automaticamente
+
+Logs dos servidores irão mostrar:
+
+[ELECTION] New coordinator: server_b
+
+## 🎮 Comandos do Cliente Interativo ##
+Comando	Função
+login <nome>	cria/entra com usuário
+users	lista usuários online
+channels	lista canais
+channel <nome>	cria canal
+subscribe <canal>	inscreve no canal
+publish <canal> <msg>	mensagem pública
+message <user> <msg>	mensagem privada
+clock	mostra clock lógico
+history	mostra log local
+exit	fecha cliente
+
+## 🤖 Bots Automáticos ##
+
+Bots Python:
+
+escolhem nome automaticamente
+
+fazem login
+
+se inscrevem em canais aleatórios
+
+enviam mensagens contínuas
+
+enviam mensagens privadas aleatórias
+
+mantêm heartbeat
+
+Perfeitos para testar carga e replicação.
+
+## 📁 Estrutura do Repositório ##
+/
+├── broker/
+│   ├── broker.go
+│   └── Dockerfile
+│
+├── proxy/
+│   ├── proxy.go
+│   └── Dockerfile
+│
+├── ref/
+│   ├── ref.go
+│   └── Dockerfile
+│
+├── server_sync/
+│   ├── server_sync.go
+│   ├── data/
+│   └── Dockerfile
+│
+├── client/
+│   ├── client.js
+│   ├── data/
+│   └── Dockerfile
+│
+├── bot/
+│   ├── bot.py
+│   └── Dockerfile
+│
+└── docker-compose.yml
+
+## 🧪 Testes Recomendados ##
+
+criar vários usuários simultaneamente
+
+criar vários canais
+
+enviar mensagens públicas e privadas
+
+derrubar servidores e observar a réplica
+
+levantar servidor morto e verificar sincronização
+
+medir ordering lógico via Lamport
+
+testar bots em paralelo
+
+## 🏁 Conclusão ##
+
+Este projeto demonstra:
+
+comunicação distribuída real
+
+tolerância a falhas
+
+ordering lógico
+
+replicação consistente
+
+sincronização de tempo
+
+arquitetura escalável com ZeroMQ
+
+Ele integra todos os conceitos fundamentais da disciplina de Sistemas Distribuídos e serve como um framework pronto para extensões futuras.
