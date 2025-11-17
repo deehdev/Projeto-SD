@@ -1,55 +1,39 @@
 // client/client.js
-// Cliente com Logical Clock + MessagePack + PUB/SUB + Envelopes
-// Assinatura seletiva de tópicos (sem poluição)
-
 const zmq = require("zeromq");
 const msgpack = require("@msgpack/msgpack");
 const readline = require("readline");
 
-// ----------------------------------------------------
-// RELÓGIO LÓGICO (Lamport)
-// ----------------------------------------------------
 let logicalClock = 0;
+let currentUser = null;
 
 function incClock() {
-  logicalClock++;
-  return logicalClock;
+  return ++logicalClock;
 }
 
 function updateClock(recv) {
   logicalClock = Math.max(logicalClock, recv) + 1;
 }
 
-// ----------------------------------------------------
 // CONFIG
-// ----------------------------------------------------
 const BROKER_REQ = "tcp://broker:5555";
-const PROXY_SUB = "tcp://proxy:5560";
+const PROXY_SUB = "tcp://proxy:5558";
 
-// ----------------------------------------------------
-// SOCKETS
-// ----------------------------------------------------
 const req = new zmq.Request();
 const sub = new zmq.Subscriber();
-// ❗ NUNCA ASSINAR TUDO AQUI
-// sub.subscribe();
 
-// ----------------------------------------------------
-// LOCK PARA EVITAR EBUSY
-// ----------------------------------------------------
 let busy = false;
 
-// ----------------------------------------------------
+// ======================
 // START
-// ----------------------------------------------------
+// ======================
 async function start() {
-  console.log("Connected to server");
+  console.log("Connected to server.");
 
   await req.connect(BROKER_REQ);
   console.log("[CLIENT] REQ conectado ao broker");
 
   await sub.connect(PROXY_SUB);
-  console.log("[CLIENT] SUB conectado ao proxy");
+  console.log("[CLIENT] SUB conectado ao proxy (XPUB 5558)");
 
   startSubLoop();
   startInputLoop();
@@ -57,42 +41,45 @@ async function start() {
 
 start();
 
-// ----------------------------------------------------
-// LOOP DO SUB
-// ----------------------------------------------------
+// ======================
+// SUB LOOP
+// ======================
 async function startSubLoop() {
-  for await (const [msg] of sub) {
+  for await (const [topic, payload] of sub) {
     try {
-      const env = msgpack.decode(msg);
-
+      const env = msgpack.decode(payload);
       updateClock(env.clock);
 
       console.log(
-        `\n[SUB:${env.service}] recv_clock=${env.clock} local=${logicalClock}`,
+        `\n[SUB:${topic}] clock=${env.clock} → local=${logicalClock}`,
         env.data
       );
 
       process.stdout.write("> ");
     } catch (err) {
-      console.log("[CLIENT][SUB] Erro msgpack:", err);
+      console.log("[SUB ERRO]", err);
     }
   }
 }
 
-// ----------------------------------------------------
-// ENVIO COM LOCK (CORREÇÃO DO EBUSY)
-// ----------------------------------------------------
+// ======================
+// SEND (REQ/REP)
+// ======================
 async function send(service, data = {}) {
   if (busy) {
-    console.log("⏳ Aguarde: a requisição anterior ainda está pendente");
+    console.log("⏳ Aguarde a requisição anterior terminar.");
     return;
   }
   busy = true;
 
   try {
+    // CORRECT STRUCTURE
     const envelope = {
       service,
-      data,
+      data: {
+        ...data,
+        timestamp: new Date().toISOString()
+      },
       timestamp: new Date().toISOString(),
       clock: incClock()
     };
@@ -110,25 +97,26 @@ async function send(service, data = {}) {
       reply.data
     );
 
-    // -------------------------------------------
-    // 🔥 ASSINA O PRÓPRIO USUÁRIO APÓS LOGIN
-    // -------------------------------------------
+    // Save logged in user
     if (service === "login" && reply.data?.user) {
-      sub.subscribe(reply.data.user);
-      console.log(`📌 Assinado automaticamente o tópico privado: ${reply.data.user}`);
+      currentUser = reply.data.user;
+
+      sub.subscribe(currentUser);
+      console.log(`📌 Inscrito no tópico privado: ${currentUser}`);
     }
 
     return reply;
+
   } catch (err) {
-    console.log("[CLIENT][REQ ERRO]:", err);
+    console.log("[REQ ERRO]", err);
   } finally {
     busy = false;
   }
 }
 
-// ----------------------------------------------------
-// CLI
-// ----------------------------------------------------
+// ======================
+// CLI INPUT
+// ======================
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -144,105 +132,53 @@ function startInputLoop() {
 
     try {
       switch (cmd) {
-        // ---------------------
-        // LOGIN
-        // ---------------------
         case "login":
           await send("login", { user: parts[1] });
           break;
 
-        // ---------------------
-        // USERS
-        // ---------------------
         case "users":
           await send("users");
           break;
 
-        // ---------------------
-        // CHANNELS
-        // ---------------------
         case "channels":
           await send("channels");
           break;
 
-        // ---------------------
-        // CREATE CHANNEL
-        // ---------------------
         case "channel":
-          await send("channel", { name: parts[1] });
+          await send("channel", { channel: parts[1] });
           break;
 
-        // ---------------------
-        // PUBLISH
-        // ---------------------
         case "publish":
           await send("publish", {
+            user: currentUser,
             channel: parts[1],
-            msg: parts.slice(2).join(" ")
+            message: parts.slice(2).join(" ")
           });
           break;
 
-        // ---------------------
-        // PRIVATE MESSAGE
-        // ---------------------
         case "message":
           await send("message", {
-            user: parts[1],
-            msg: parts.slice(2).join(" ")
+            src: currentUser,
+            dst: parts[1],
+            message: parts.slice(2).join(" ")
           });
           break;
 
-        // ---------------------
-        // SUBSCRIBE
-        // ---------------------
         case "subscribe":
-          await send("subscribe", { topic: parts[1] });
           sub.subscribe(parts[1]);
-          console.log("📌 Agora ouvindo o tópico:", parts[1]);
+          await send("subscribe", { user: currentUser, topic: parts[1] });
           break;
 
-        // ---------------------
-        // UNSUBSCRIBE
-        // ---------------------
         case "unsubscribe":
-          await send("unsubscribe", { topic: parts[1] });
           sub.unsubscribe(parts[1]);
-          console.log("❌ Cancelado tópico:", parts[1]);
+          await send("unsubscribe", { user: currentUser, topic: parts[1] });
           break;
 
-        // ---------------------
-        // MY SUBSCRIPTIONS
-        // ---------------------
-        case "mysubs":
-          await send("mysubs");
-          break;
-
-        // ---------------------
-        // LISTA DE TÓPICOS PUBLICÁVEIS
-        // ---------------------
-        case "publishable":
-          await send("publishable");
-          break;
-
-        // ---------------------
-        // CLOCK
-        // ---------------------
-        case "clock":
-          console.log("Logical clock =", logicalClock);
-          break;
-
-        // ---------------------
-        // EXIT
-        // ---------------------
-        case "exit":
-          process.exit(0);
-
-        // ---------------------
         default:
-          console.log("Unknown command");
+          console.log("Comando desconhecido.");
       }
     } catch (err) {
-      console.log("[CLIENT] ERRO:", err);
+      console.log("[CLIENT ERRO]", err);
     }
 
     rl.prompt();

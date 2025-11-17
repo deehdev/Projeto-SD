@@ -2,9 +2,33 @@ version: "3.8"
 
 services:
 
-  # ======================================================
-  #  BROKER (REQ/REP router)
-  # ======================================================
+  # PROXY (XSUB <-> XPUB)
+  proxy:
+    build: ./proxy
+    image: proxy
+    container_name: proxy
+    networks:
+      - chatnet
+    ports:
+      - "5558:5558"
+      - "5557:5557"
+    environment:
+      - XSUB_PORT=5557
+      - XPUB_PORT=5558
+
+  # REF
+  ref:
+    build: ./ref
+    image: ref
+    container_name: ref
+    networks:
+      - chatnet
+    ports:
+      - "6000:6000"
+    volumes:
+      - ref_data:/app/data
+
+  # BROKER
   broker:
     build: ./broker
     image: broker
@@ -14,39 +38,12 @@ services:
     networks:
       - chatnet
     ports:
-      - "5555:5555"   # entrada dos clients e bots
+      - "5555:5555"
     depends_on:
       - proxy
       - ref
 
-  # ======================================================
-  #  PROXY PUB/SUB (XSUB <-> XPUB)
-  # ======================================================
-  proxy:
-    build: ./proxy
-    image: proxy
-    container_name: proxy
-    networks:
-      - chatnet
-    ports:
-      - "5560:5560"   # XPUB exposto para clients/bots
-
-  # ======================================================
-  #  SERVIDOR DE REFERÊNCIA (REF)
-  # ======================================================
-  ref:
-    build: ./ref
-    image: ref
-    container_name: ref
-    networks:
-      - chatnet
-    ports:
-      - "6000:6000"
-
-  # ======================================================
-  #  SERVIDORES UNIFICADOS (REP + PUB + SYNC)
-  # ======================================================
-
+  # SERVERS
   server_a:
     build: ./server_unified
     image: server_unified
@@ -55,10 +52,11 @@ services:
       - chatnet
     environment:
       - SERVER_NAME=a
-      - SERVER_HOST=server_a       # usado para Berkeley e REF
       - SERVER_REP_PORT=7000
       - REF_ADDR=tcp://ref:6000
-      - PROXY_PUB_ADDR=tcp://proxy:5560
+      - PROXY_PUB_ADDR=tcp://proxy:5557
+    volumes:
+      - server_a_data:/app/data
     depends_on:
       - ref
       - broker
@@ -72,10 +70,11 @@ services:
       - chatnet
     environment:
       - SERVER_NAME=b
-      - SERVER_HOST=server_b
       - SERVER_REP_PORT=7001
       - REF_ADDR=tcp://ref:6000
-      - PROXY_PUB_ADDR=tcp://proxy:5560
+      - PROXY_PUB_ADDR=tcp://proxy:5557
+    volumes:
+      - server_b_data:/app/data
     depends_on:
       - ref
       - broker
@@ -89,38 +88,38 @@ services:
       - chatnet
     environment:
       - SERVER_NAME=c
-      - SERVER_HOST=server_c
       - SERVER_REP_PORT=7002
       - REF_ADDR=tcp://ref:6000
-      - PROXY_PUB_ADDR=tcp://proxy:5560
+      - PROXY_PUB_ADDR=tcp://proxy:5557
+    volumes:
+      - server_c_data:/app/data
     depends_on:
       - ref
       - broker
       - proxy
 
-  # ======================================================
-  #  CLIENTE INTERATIVO (Node.js)
-  # ======================================================
+  # CLIENT (Node)
   client:
     build: ./client
     image: client
     container_name: client
     networks:
       - chatnet
+    environment:
+      - BROKER_REQ=tcp://broker:5555
+      - PROXY_SUB=tcp://proxy:5558
     depends_on:
       - broker
       - proxy
 
-  # ======================================================
-  #  BOTS AUTOMÁTICOS (Python)
-  # ======================================================
+  # BOTS (Python)
   bot_1:
     build: ./bot
     container_name: bot_1
     environment:
       - BOT_NAME=bot_1
       - REQ_ADDR=tcp://broker:5555
-      - SUB_ADDR=tcp://proxy:5560
+      - SUB_ADDR=tcp://proxy:5558
     networks:
       - chatnet
     depends_on:
@@ -133,13 +132,37 @@ services:
     environment:
       - BOT_NAME=bot_2
       - REQ_ADDR=tcp://broker:5555
-      - SUB_ADDR=tcp://proxy:5560
+      - SUB_ADDR=tcp://proxy:5558
     networks:
       - chatnet
     depends_on:
       - broker
       - proxy
 
+  # ===============================
+  #  TUI CLIENT (Node + Blessed)
+  # ===============================
+ # tui:
+  #  image: node:18
+   # container_name: tui
+    #working_dir: /app
+    #volumes:
+     # - ./tui_client:/app
+    #command: ["node", "tui_client.js"]
+    #networks:
+     # - chatnet
+    #depends_on:
+     # - broker
+      #- proxy
+
+# NETWORKS
 networks:
   chatnet:
     driver: bridge
+
+# VOLUMES
+volumes:
+  server_a_data:
+  server_b_data:
+  server_c_data:
+  ref_data:

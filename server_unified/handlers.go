@@ -146,11 +146,13 @@ func handlePublish(env Envelope) Envelope {
         Clock:     incClockBeforeSend(),
     }
 
+    // valida canal
     channelsMu.Lock()
     okChan := false
     for _, c := range channels {
         if c == channel {
             okChan = true
+            break
         }
     }
     channelsMu.Unlock()
@@ -161,6 +163,7 @@ func handlePublish(env Envelope) Envelope {
         return resp
     }
 
+    // LOG
     le := LogEntry{
         ID:        uuid.NewString(),
         Type:      "publish",
@@ -176,12 +179,31 @@ func handlePublish(env Envelope) Envelope {
     go persistLogs()
     publishReplicationEvent(le)
 
+    // PUBLICAÇÃO REAL (tópico = canal)
+    payload := msgpackMarshal(Envelope{
+        Service:   "publish",
+        Timestamp: nowISO(),
+        Clock:     incClockBeforeSend(),
+        Data: map[string]interface{}{
+            "channel": channel,
+            "user":    user,
+            "message": msg,
+        },
+    })
+
+    pubSocketMu.Lock()
+    if pubSocket != nil {
+        pubSocket.SendMessage(channel, payload)
+    }
+    pubSocketMu.Unlock()
+
+    // resposta ao cliente
     resp.Data["status"] = "sucesso"
     return resp
 }
 
 // ---------------------------------------------
-// PRIVATE MESSAGE
+// PRIVATE MESSAGE (DIRECT MESSAGE)
 // ---------------------------------------------
 func handleMessage(env Envelope) Envelope {
     dst := ""
@@ -206,6 +228,7 @@ func handleMessage(env Envelope) Envelope {
         Clock:     incClockBeforeSend(),
     }
 
+    // valida destino
     usersMu.Lock()
     exists := false
     for _, u := range users {
@@ -221,6 +244,7 @@ func handleMessage(env Envelope) Envelope {
         return resp
     }
 
+    // LOG
     le := LogEntry{
         ID:        uuid.NewString(),
         Type:      "private",
@@ -235,6 +259,24 @@ func handleMessage(env Envelope) Envelope {
 
     go persistLogs()
     publishReplicationEvent(le)
+
+    // PUBLICAÇÃO PARA O DESTINO (tópico = usuário)
+    payload := msgpackMarshal(Envelope{
+        Service:   "message",
+        Timestamp: nowISO(),
+        Clock:     incClockBeforeSend(),
+        Data: map[string]interface{}{
+            "src":     src,
+            "dst":     dst,
+            "message": msg,
+        },
+    })
+
+    pubSocketMu.Lock()
+    if pubSocket != nil {
+        pubSocket.SendMessage(dst, payload)
+    }
+    pubSocketMu.Unlock()
 
     resp.Data["status"] = "sucesso"
     return resp

@@ -11,7 +11,9 @@ import (
 
 func main() {
 
-    // ==== Variáveis de ambiente ====
+    // =====================================================
+    // Variáveis de ambiente
+    // =====================================================
     serverName = os.Getenv("SERVER_NAME")
     if serverName == "" {
         serverName = "server"
@@ -40,26 +42,39 @@ func main() {
         log.Printf("[MAIN][AVISO] PROXY_PUB_ADDR não definido. Usando padrão: %s", proxyPubAddr)
     }
 
-    // ==== Carregar persistência ====
+    // =====================================================
+    // Carregar persistência
+    // =====================================================
     _ = loadJSON(usersFile, &users)
     _ = loadJSON(channelsFile, &channels)
     _ = loadJSON(subsFile, &subscriptions)
     _ = loadJSON(logsFile, &logs)
 
-    if users == nil { users = []string{} }
-    if channels == nil { channels = []string{} }
-    if subscriptions == nil { subscriptions = map[string][]string{} }
-    if logs == nil { logs = []LogEntry{} }
+    if users == nil {
+        users = []string{}
+    }
+    if channels == nil {
+        channels = []string{}
+    }
+    if subscriptions == nil {
+        subscriptions = map[string][]string{}
+    }
+    if logs == nil {
+        logs = []LogEntry{}
+    }
 
-    // ==== ZMQ Context ====
+    // =====================================================
+    // Criar contexto ZMQ
+    // =====================================================
     ctx, err := zmq.NewContext()
     if err != nil {
         log.Fatalf("[MAIN][ERRO] Falha ao criar contexto ZMQ: %v", err)
     }
     defer ctx.Term()
 
-
-    // ==== Socket PUB → Proxy ====
+    // =====================================================
+    // Socket PUB (replicação / publish)
+    // =====================================================
     pub, err := ctx.NewSocket(zmq.PUB)
     if err != nil {
         log.Fatalf("[MAIN][ERRO] Falha ao criar socket PUB: %v", err)
@@ -73,8 +88,14 @@ func main() {
         log.Printf("[MAIN][INFO] PUB conectado ao proxy: %s", proxyPubAddr)
     }
 
+    // Salvar socket global para uso no handlePublish()
+    pubSocketMu.Lock()
+    pubSocket = pub
+    pubSocketMu.Unlock()
 
-    // ==== Socket REP → Clientes ====
+    // =====================================================
+    // Socket REP (clientes → servidor)
+    // =====================================================
     rep, err := ctx.NewSocket(zmq.REP)
     if err != nil {
         log.Fatalf("[MAIN][ERRO] Falha ao criar socket REP: %v", err)
@@ -88,8 +109,9 @@ func main() {
     }
     log.Printf("[MAIN][INFO] REP aguardando em %s", bind)
 
-
-    // ==== Socket SUB → Proxy (replicação e eleição) ====
+    // =====================================================
+    // Socket SUB (replicação + eleição)
+    // =====================================================
     sub, err := ctx.NewSocket(zmq.SUB)
     if err != nil {
         log.Fatalf("[MAIN][ERRO] Falha ao criar socket SUB: %v", err)
@@ -105,14 +127,16 @@ func main() {
         log.Printf("[MAIN][INFO] SUB conectado ao proxy: tcp://proxy:5558")
     }
 
-
-    // ==== Iniciar goroutines ====
+    // =====================================================
+    // Iniciar loops REP e SUB
+    // =====================================================
     log.Printf("[MAIN][INFO] Iniciando loops REP e SUB...")
     go repLoop(rep, pub)
     go subLoop(sub)
 
-
-    // ==== Heartbeat periódico ====
+    // =====================================================
+    // Heartbeat periódico
+    // =====================================================
     go func() {
         for {
             time.Sleep(5 * time.Second)
@@ -129,8 +153,9 @@ func main() {
         }
     }()
 
-
-    // ==== Registro inicial no REF ====
+    // =====================================================
+    // Registro inicial no REF
+    // =====================================================
     rank := requestRank()
     log.Printf("[REF][INFO] Rank recebido: %d", rank)
 
@@ -138,23 +163,25 @@ func main() {
         log.Printf("[REF][INFO] Lista de servidores: %v", lst)
     }
 
-
-    // ==== Determinar coordenador ====
+    // =====================================================
+    // Determinar coordenador
+    // =====================================================
     if coord, err := determineCoordinator(); err == nil {
         currentCoordinatorMu.Lock()
         currentCoordinator = coord
         currentCoordinatorMu.Unlock()
-
         log.Printf("[MAIN][INFO] Coordenador atual: %s", coord)
     }
 
-
-    // ==== Sincronização inicial ====
+    // =====================================================
+    // Sincronização inicial
+    // =====================================================
     log.Printf("[MAIN][INFO] Solicitando sincronização inicial...")
     requestInitialSync()
 
-
-    // ==== MANTÉM O SERVIDOR VIVO ====
+    // =====================================================
+    // Loop infinito
+    // =====================================================
     log.Printf("[MAIN][INFO] Servidor inicializado com sucesso! Aguardando eventos...")
     select {}
 }

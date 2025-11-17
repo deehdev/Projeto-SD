@@ -1,20 +1,23 @@
 # ----------------------------
 # STAGE 1 — Build
 # ----------------------------
-FROM golang:1.22-alpine AS builder
+FROM golang:1.23-alpine AS builder
 
 WORKDIR /app
 
-# Instalar dependências necessárias
+# Instalar dependências necessárias para compilação com CGO e ZeroMQ
 RUN apk add --no-cache gcc g++ make pkgconfig zeromq zeromq-dev
 
-# Copiar código
+# Copiar arquivos de dependências do Go
 COPY go.mod go.sum ./
+
+# Baixar dependências do Go
 RUN go mod download
 
+# Copiar todo o código
 COPY . .
 
-# Compilar binário estático (importante para Alpine)
+# Compilar binário (CGO_ENABLED=1 para ZeroMQ)
 RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o ref .
 
 # ----------------------------
@@ -24,11 +27,14 @@ FROM alpine:3.19
 
 WORKDIR /app
 
-# Instalar libs runtime do ZeroMQ
+# Instalar biblioteca runtime do ZeroMQ
 RUN apk add --no-cache zeromq
 
+# Copiar binário compilado
 COPY --from=builder /app/ref /usr/local/bin/ref
 
+# Expor porta do serviço
 EXPOSE 6000
 
+# Entrypoint
 ENTRYPOINT ["ref"]

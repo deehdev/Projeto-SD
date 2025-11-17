@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import zmq
 import msgpack
 import random
@@ -9,10 +10,10 @@ from datetime import datetime, timezone
 # CONFIG
 # ---------------------------------------------------
 REQ_ADDR = "tcp://broker:5555"
-SUB_ADDR = "tcp://proxy:5560"
+SUB_ADDR = "tcp://proxy:5558"
 
 # ---------------------------------------------------
-# RELOGIO LOGICO
+# RELÓGIO LÓGICO
 # ---------------------------------------------------
 logical_clock = 0
 clock_lock = threading.Lock()
@@ -39,7 +40,7 @@ def now_iso():
 # ---------------------------------------------------
 # REQUEST (REQ → REP)
 # ---------------------------------------------------
-def send_req(sock, service, data=None):
+def send_req(sock, service, data=None, timeout=5.0):
     if data is None:
         data = {}
 
@@ -53,53 +54,65 @@ def send_req(sock, service, data=None):
     encoded = msgpack.packb(env, use_bin_type=True)
     sock.send(encoded)
 
-    raw = sock.recv()
-    reply = msgpack.unpackb(raw, raw=False)
-
-    # clock da resposta
-    update_clock(reply.get("clock", 0))
-
-    return reply
+    # esperar reply
+    try:
+        poller = zmq.Poller()
+        poller.register(sock, zmq.POLLIN)
+        socks = dict(poller.poll(int(timeout*1000)))
+        if socks.get(sock) == zmq.POLLIN:
+            raw = sock.recv()
+            reply = msgpack.unpackb(raw, raw=False)
+            update_clock(reply.get("clock", 0))
+            return reply
+        else:
+            return {"service":"error","data":{"status":"timeout"}}
+    except Exception as e:
+        return {"service":"error","data":{"status":str(e)}}
 
 # ---------------------------------------------------
-# SUB LISTENER (somente mensagens úteis)
+# SUB LISTENER (trata multipart [topic, payload])
 # ---------------------------------------------------
-def sub_listener(sub, username):
+def sub_listener(sub):
     while True:
         try:
-            raw = sub.recv()
-            env = msgpack.unpackb(raw, raw=False)
-
-            service = env.get("service", "")
-            data = env.get("data", {})
-
+            parts = sub.recv_multipart()
+            if len(parts) < 2:
+                continue
+            topic = parts[0].decode('utf-8', errors='ignore')
+            payload = parts[1]
+            env = msgpack.unpackb(payload, raw=False)
             update_clock(env.get("clock", 0))
 
-            # PUBLICAÇÃO EM CANAL
-            if service == "publish":
-                canal = data.get("channel")
-                user = data.get("user")
-                msg = data.get("msg")
-                print(f"[{canal}] {user}: {msg}")
+            svc = env.get("service", "")
+            data = env.get("data", {})
 
-            # MENSAGEM PRIVADA
-            elif service == "message":
-                src = data.get("src")
-                msg = data.get("msg")
-                print(f"💌 PRIVADA de {src}: {msg}")
+            # mensagens de publicação em canal
+            if svc == "publish":
+                user = data.get("user") or data.get("src") or "?"
+                message = data.get("message") or data.get("msg") or ""
+                print(f"[{topic}] {user}: {message}")
+
+            # mensagens privadas (tópico = username)
+            elif svc == "message":
+                src = data.get("src") or data.get("user") or "?"
+                message = data.get("message") or data.get("msg") or ""
+                print(f"💌 PRIVADA de {src}: {message}")
+
+            # replicação / servidores
+            else:
+                print(f"[{topic}][{svc}] {data}")
 
         except Exception as e:
-            print("Erro SUB:", e)
-            time.sleep(1)
+            print("Erro no SUB:", e)
+            time.sleep(0.5)
 
 # ---------------------------------------------------
-# HEARTBEAT
+# HEARTBEAT (opcional)
 # ---------------------------------------------------
 def heartbeat(username):
     ctx = zmq.Context()
     hb = ctx.socket(zmq.REQ)
     hb.connect(REQ_ADDR)
-
     while True:
         try:
             send_req(hb, "heartbeat", {"user": username})
@@ -108,7 +121,7 @@ def heartbeat(username):
         time.sleep(5)
 
 # ---------------------------------------------------
-# FRASES ALEATÓRIAS
+# Frases e nomes
 # ---------------------------------------------------
 def frase():
     frases = [
@@ -116,87 +129,66 @@ def frase():
         "Preciso de uma recomendação urgente.",
         "Esse mês saiu muito filme bom!",
         "Vocês preferem dublado ou legendado?",
-        "Estou revendo um clássico hoje.",
-        "Recomendações de terror psicológico?",
         "Interstellar é perfeito.",
         "Quero algo leve!",
         "Alguém entendeu Tenet?",
-        "La La Land tem a melhor trilha sonora!"
+        "Recomendações de terror psicológico?"
     ]
     return random.choice(frases)
 
-# ---------------------------------------------------
-# BOT PRINCIPAL
-# ---------------------------------------------------
-NOMES = [
-    "Ana","Pedro","Rafael","Deise","Camila","Victor","Paula","Juliana",
-    "Lucas","Marcos","Mateus","João","Carla","Bruno","Renata","Sofia"
-]
+NOMES = ["Ana","Pedro","Rafael","Deise","Camila","Victor","Paula","Juliana","Lucas","Marcos","Mateus","João","Carla","Bruno","Renata","Sofia"]
 
+# ---------------------------------------------------
+# BOT
+# ---------------------------------------------------
 def main():
     username = random.choice(NOMES)
-
-    print("\n======================================")
-    print(f"🤖 BOT iniciado como {username}")
-    print("======================================\n")
+    print(f"\nBOT iniciado como {username}\n")
 
     ctx = zmq.Context()
-
     req = ctx.socket(zmq.REQ)
     req.connect(REQ_ADDR)
 
     sub = ctx.socket(zmq.SUB)
     sub.connect(SUB_ADDR)
-    # ❗ SOMENTE tópicos necessários (nada de subscribir tudo)
-    
-    # LOGIN
+
+    # login
     r = send_req(req, "login", {"user": username})
-    ok = r.get("data", {}).get("status", "erro")
+    status = r.get("data", {}).get("status", "erro")
+    print("LOGIN:", status)
 
-    print("LOGIN:", ok)
-
-    # ASSINA O PRÓPRIO USUÁRIO (mensagens privadas)
+    # subscreve tópicos privados e canais
     sub.setsockopt_string(zmq.SUBSCRIBE, username)
 
-    # HEARTBEAT
+    # heartbeat (opcional)
     threading.Thread(target=heartbeat, args=(username,), daemon=True).start()
 
-    # LISTAR CANAIS
+    # lista canais
     r = send_req(req, "channels")
     channels = r.get("data", {}).get("channels", [])
-
-    # cria canal default caso não exista
     if not channels:
-        send_req(req, "channel", {"name": "Geral"})
-        channels = ["Geral"]
+        # observe: servidor espera key "channel"
+        send_req(req, "channel", {"channel": "geral"})
+        channels = ["geral"]
 
-    # escolhe alguns canais
-    salas = random.sample(channels, random.randint(1, len(channels)))
+    # escolhe subscrições e solicita ao servidor subscribe
+    salas = random.sample(channels, k=max(1, min(len(channels), 1)))
+    for c in salas:
+        sub.setsockopt_string(zmq.SUBSCRIBE, c)
+        send_req(req, "subscribe", {"user": username, "topic": c})
 
     print("Canais inscritos:", salas)
 
-    # SUBSCRIBE nos canais
-    for c in salas:
-        sub.setsockopt_string(zmq.SUBSCRIBE, c)
-        send_req(req, "subscribe", {"topic": c})
+    # start sub listener
+    threading.Thread(target=sub_listener, args=(sub,), daemon=True).start()
 
-    # inicia thread SUB
-    threading.Thread(target=sub_listener, args=(sub, username), daemon=True).start()
-
-    # LOOP PRINCIPAL DO BOT
+    # loop publica
     while True:
         canal = random.choice(salas)
         text = frase()
-
-        send_req(req, "publish", {
-            "user": username,
-            "channel": canal,
-            "msg": text
-        })
-
+        send_req(req, "publish", {"user": username, "channel": canal, "message": text})
         print(f"[{canal}] {username}: {text}")
-
-        time.sleep(random.uniform(3, 7))
+        time.sleep(random.uniform(3, 6))
 
 if __name__ == "__main__":
     main()
