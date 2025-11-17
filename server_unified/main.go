@@ -1,104 +1,160 @@
-// =====================
-// === FILE: main.go ===
-// =====================
 package main
 
-
 import (
-"log"
-"os"
-"strconv"
-zmq "github.com/pebbe/zmq4"
-"github.com/vmihailenco/msgpack/v5"
+    "log"
+    "os"
+    "strconv"
+    "time"
+
+    zmq "github.com/pebbe/zmq4"
 )
 
-
 func main() {
-// envs
-serverName = os.Getenv("SERVER_NAME")
-if serverName == "" { serverName = "server" }
-pstr := os.Getenv("SERVER_REP_PORT")
-if pstr == "" { repPort = 7000 } else { v, _ := strconv.Atoi(pstr); repPort = v }
-refAddr = os.Getenv("REF_ADDR")
-if refAddr == "" { refAddr = "tcp://ref:6000" }
-proxyPubAddr = os.Getenv("PROXY_PUB_ADDR")
-if proxyPubAddr == "" { proxyPubAddr = "tcp://proxy:5560" }
+
+    // ==== Variáveis de ambiente ====
+    serverName = os.Getenv("SERVER_NAME")
+    if serverName == "" {
+        serverName = "server"
+        log.Printf("[MAIN][AVISO] SERVER_NAME não definido. Usando padrão: %s", serverName)
+    }
+
+    pstr := os.Getenv("SERVER_REP_PORT")
+    if pstr == "" {
+        repPort = 7000
+        log.Printf("[MAIN][AVISO] SERVER_REP_PORT não definido. Usando padrão: %d", repPort)
+    } else {
+        v, _ := strconv.Atoi(pstr)
+        repPort = v
+        log.Printf("[MAIN][INFO] Porta REP configurada via env: %d", repPort)
+    }
+
+    refAddr = os.Getenv("REF_ADDR")
+    if refAddr == "" {
+        refAddr = "tcp://ref:6000"
+        log.Printf("[MAIN][AVISO] REF_ADDR não definido. Usando padrão: %s", refAddr)
+    }
+
+    proxyPubAddr = os.Getenv("PROXY_PUB_ADDR")
+    if proxyPubAddr == "" {
+        proxyPubAddr = "tcp://proxy:5557"
+        log.Printf("[MAIN][AVISO] PROXY_PUB_ADDR não definido. Usando padrão: %s", proxyPubAddr)
+    }
+
+    // ==== Carregar persistência ====
+    _ = loadJSON(usersFile, &users)
+    _ = loadJSON(channelsFile, &channels)
+    _ = loadJSON(subsFile, &subscriptions)
+    _ = loadJSON(logsFile, &logs)
+
+    if users == nil { users = []string{} }
+    if channels == nil { channels = []string{} }
+    if subscriptions == nil { subscriptions = map[string][]string{} }
+    if logs == nil { logs = []LogEntry{} }
+
+    // ==== ZMQ Context ====
+    ctx, err := zmq.NewContext()
+    if err != nil {
+        log.Fatalf("[MAIN][ERRO] Falha ao criar contexto ZMQ: %v", err)
+    }
+    defer ctx.Term()
 
 
-// load persisted
-_ = loadJSON(usersFile, &users)
-_ = loadJSON(channelsFile, &channels)
-_ = loadJSON(subsFile, &subscriptions)
-_ = loadJSON(logsFile, &logs)
-if users == nil { users = []string{} }
-if channels == nil { channels = []string{} }
-if subscriptions == nil { subscriptions = map[string][]string{} }
-if logs == nil { logs = []LogEntry{} }
+    // ==== Socket PUB → Proxy ====
+    pub, err := ctx.NewSocket(zmq.PUB)
+    if err != nil {
+        log.Fatalf("[MAIN][ERRO] Falha ao criar socket PUB: %v", err)
+    }
+    defer pub.Close()
+    pub.SetLinger(0)
+
+    if err := pub.Connect(proxyPubAddr); err != nil {
+        log.Printf("[MAIN][AVISO] Falha ao conectar PUB ao proxy: %v", err)
+    } else {
+        log.Printf("[MAIN][INFO] PUB conectado ao proxy: %s", proxyPubAddr)
+    }
 
 
-ctx, err := zmq.NewContext()
-if err != nil { log.Fatal(err) }
-defer ctx.Term()
+    // ==== Socket REP → Clientes ====
+    rep, err := ctx.NewSocket(zmq.REP)
+    if err != nil {
+        log.Fatalf("[MAIN][ERRO] Falha ao criar socket REP: %v", err)
+    }
+    defer rep.Close()
+    rep.SetLinger(0)
+
+    bind := "tcp://*:" + strconv.Itoa(repPort)
+    if err := rep.Bind(bind); err != nil {
+        log.Fatalf("[MAIN][ERRO] Falha ao bind REP em %s: %v", bind, err)
+    }
+    log.Printf("[MAIN][INFO] REP aguardando em %s", bind)
 
 
-// PUB socket to proxy
-pub, err := ctx.NewSocket(zmq.PUB)
-if err != nil { log.Fatal(err) }
-defer pub.Close()
-pub.SetLinger(0)
-if err := pub.Connect(proxyPubAddr); err != nil { log.Println("warning: connect PUB failed:", err) } else { log.Println("PUB connected to", proxyPubAddr) }
+    // ==== Socket SUB → Proxy (replicação e eleição) ====
+    sub, err := ctx.NewSocket(zmq.SUB)
+    if err != nil {
+        log.Fatalf("[MAIN][ERRO] Falha ao criar socket SUB: %v", err)
+    }
+    defer sub.Close()
+    sub.SetLinger(0)
+
+    if err := sub.Connect("tcp://proxy:5558"); err != nil {
+        log.Printf("[MAIN][AVISO] Falha ao conectar SUB ao proxy: %v", err)
+    } else {
+        sub.SetSubscribe("replicate")
+        sub.SetSubscribe("servers")
+        log.Printf("[MAIN][INFO] SUB conectado ao proxy: tcp://proxy:5558")
+    }
 
 
-// REP socket to broker
-rep, err := ctx.NewSocket(zmq.REP)
-if err != nil { log.Fatal(err) }
-defer rep.Close()
-rep.SetLinger(0)
-bind := "tcp://*:" + strconv.Itoa(repPort)
-if err := rep.Bind(bind); err != nil { log.Fatal(err) }
-log.Println("REP bound on", bind)
+    // ==== Iniciar goroutines ====
+    log.Printf("[MAIN][INFO] Iniciando loops REP e SUB...")
+    go repLoop(rep, pub)
+    go subLoop(sub)
 
 
-// SUB to proxy for replicate and servers
-sub, err := ctx.NewSocket(zmq.SUB)
-if err != nil { log.Fatal(err) }
-defer sub.Close()
-sub.SetLinger(0)
-if err := sub.Connect(proxyPubAddr); err != nil { log.Println("warning: connect SUB failed:", err) } else {
-sub.SetSubscribe("replicate")
-sub.SetSubscribe("servers")
-log.Println("SUB connected to", proxyPubAddr)
-}
+    // ==== Heartbeat periódico ====
+    go func() {
+        for {
+            time.Sleep(5 * time.Second)
+            req := Envelope{
+                Service:   "heartbeat",
+                Data:      map[string]interface{}{"user": serverName, "port": repPort},
+                Timestamp: nowISO(),
+                Clock:     incClockBeforeSend(),
+            }
+            _, err := directReqZMQJSON(refAddr, req, 2*time.Second)
+            if err != nil {
+                log.Printf("[HEARTBEAT][ERRO] Falha ao enviar heartbeat ao REF: %v", err)
+            }
+        }
+    }()
 
 
-// start goroutines
-go repLoop(rep, pub)
-go subLoop(sub)
-// heartbeat to REF
-go func() {
-for {
-time.Sleep(5 * time.Second)
-req := Envelope{Service: "heartbeat", Data: map[string]interface{}{"user": serverName, "port": repPort}, Timestamp: nowISO(), Clock: incClockBeforeSend()}
-_, err := directReqZMQJSON(refAddr, req, 2*time.Second)
-if err != nil { log.Println("[REF heartbeat] erro:", err) }
-}
-}()
+    // ==== Registro inicial no REF ====
+    rank := requestRank()
+    log.Printf("[REF][INFO] Rank recebido: %d", rank)
+
+    if lst, err := requestList(); err == nil {
+        log.Printf("[REF][INFO] Lista de servidores: %v", lst)
+    }
 
 
-// initial registration + sync
-rank := requestRank()
-log.Println("[REF] rank =", rank)
-if lst, err := requestList(); err == nil { log.Println("[REF] list:", lst) }
-// determine coordinator
-if coord, err := determineCoordinator(); err == nil {
-currentCoordinatorMu.Lock()
-currentCoordinator = coord
-currentCoordinatorMu.Unlock()
-log.Println("[MAIN] coordinator:", coord)
-}
-// request initial sync (from coordinator)
-requestInitialSync()
+    // ==== Determinar coordenador ====
+    if coord, err := determineCoordinator(); err == nil {
+        currentCoordinatorMu.Lock()
+        currentCoordinator = coord
+        currentCoordinatorMu.Unlock()
+
+        log.Printf("[MAIN][INFO] Coordenador atual: %s", coord)
+    }
 
 
-select {}
+    // ==== Sincronização inicial ====
+    log.Printf("[MAIN][INFO] Solicitando sincronização inicial...")
+    requestInitialSync()
+
+
+    // ==== MANTÉM O SERVIDOR VIVO ====
+    log.Printf("[MAIN][INFO] Servidor inicializado com sucesso! Aguardando eventos...")
+    select {}
 }

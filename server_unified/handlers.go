@@ -1,77 +1,314 @@
-// =====================
-// === FILE: handlers.go ===
-// =====================
 package main
 
-
 import (
-"fmt"
-"log"
-"github.com/google/uuid"
-zmq "github.com/pebbe/zmq4"
+    "github.com/google/uuid"
 )
 
+// ---------------------------------------------
+// CREATE CHANNEL
+// ---------------------------------------------
+func handleCreateChannel(env Envelope) Envelope {
+    raw := ""
+    if v, ok := env.Data["channel"].(string); ok {
+        raw = v
+    }
+    ch := normalize(raw)
 
-// Note: functions assume pub socket exists and is provided
+    resp := Envelope{
+        Service:   "channel",
+        Data:      map[string]interface{}{},
+        Timestamp: nowISO(),
+        Clock:     incClockBeforeSend(),
+    }
 
+    if ch == "" {
+        resp.Data["status"] = "erro"
+        resp.Data["message"] = "nome inválido"
+        return resp
+    }
 
-func handleCreateChannel(env Envelope, pub *zmq.Socket) Envelope {
-raw := fmt.Sprintf("%v", env.Data["channel"])
-ch := normalize(raw)
-resp := Envelope{Service: "channel", Data: map[string]interface{}{}, Timestamp: nowISO(), Clock: incClockBeforeSend()}
-if ch == "" { resp.Data["status"] = "erro"; resp.Data["message"] = "nome inválido"; return resp }
-channelsMu.Lock()
-for _, c := range channels { if c == ch { channelsMu.Unlock(); resp.Data["status"] = "erro"; resp.Data["message"] = "canal já existe"; return resp } }
-channels = append(channels, ch)
-channelsMu.Unlock()
-go persistChannels()
-le := LogEntry{ID: uuid.NewString(), Type: "create_channel", Data: map[string]interface{}{"channel": ch}, Timestamp: nowISO(), Clock: env.Clock}
-logsMu.Lock(); logs = append(logs, le); logsMu.Unlock(); go persistLogs()
-publishReplicationEvent(pub, le)
-resp.Data["status"] = "sucesso"; resp.Data["channel"] = ch
-return resp
+    channelsMu.Lock()
+    for _, c := range channels {
+        if c == ch {
+            channelsMu.Unlock()
+            resp.Data["status"] = "erro"
+            resp.Data["message"] = "canal já existe"
+            return resp
+        }
+    }
+    channels = append(channels, ch)
+    channelsMu.Unlock()
+
+    go persistChannels()
+
+    le := LogEntry{
+        ID:        uuid.NewString(),
+        Type:      "create_channel",
+        Data:      map[string]interface{}{"channel": ch},
+        Timestamp: nowISO(),
+        Clock:     env.Clock,
+    }
+
+    logsMu.Lock()
+    logs = append(logs, le)
+    logsMu.Unlock()
+
+    go persistLogs()
+    publishReplicationEvent(le)
+
+    resp.Data["status"] = "sucesso"
+    resp.Data["channel"] = ch
+    return resp
 }
 
+// ---------------------------------------------
+// LIST CHANNELS
+// ---------------------------------------------
+func handleListChannels(env Envelope) Envelope {
+    channelsMu.Lock()
+    cpy := make([]string, len(channels))
+    copy(cpy, channels)
+    channelsMu.Unlock()
 
-func handlePublish(env Envelope, pub *zmq.Socket) Envelope {
-channel := normalize(fmt.Sprintf("%v", env.Data["channel"]))
-msg := fmt.Sprintf("%v", env.Data["message"])
-user := normalize(fmt.Sprintf("%v", env.Data["user"]))
-resp := Envelope{Service: "publish", Data: map[string]interface{}{}, Timestamp: nowISO(), Clock: incClockBeforeSend()}
-channelsMu.Lock(); ok := false; for _, c := range channels { if c == channel { ok = true; break } }; channelsMu.Unlock()
-if !ok { resp.Data["status"] = "erro"; resp.Data["message"] = "canal inexistente"; return resp }
-subMu.Lock(); subs := append([]string{}, subscriptions[user]...); subMu.Unlock()
-allowed := false
-for _, s := range subs { if s == channel { allowed = true; break } }
-if !allowed { resp.Data["status"] = "erro"; resp.Data["message"] = "você não está inscrito neste canal"; return resp }
-pubEnv := Envelope{Service: "publish", Data: map[string]interface{}{"channel": channel, "user": user, "msg": msg}, Timestamp: nowISO(), Clock: incClockBeforeSend()}
-out, _ := msgpack.Marshal(pubEnv)
-if _, err := pub.SendMessage(channel, out); err != nil { log.Println("[PUB] erro:", err) }
-le := LogEntry{ID: uuid.NewString(), Type: "publish", Data: map[string]interface{}{"channel": channel, "user": user, "message": msg}, Timestamp: nowISO(), Clock: env.Clock}
-logsMu.Lock(); logs = append(logs, le); logsMu.Unlock(); go persistLogs()
-publishReplicationEvent(pub, le)
-msgCount++
-if msgCount%10 == 0 { go maybeTriggerBerkeley(pub) }
-resp.Data["status"] = "sucesso"
-return resp
+    return Envelope{
+        Service:   "channels",
+        Data:      map[string]interface{}{"channels": cpy},
+        Timestamp: nowISO(),
+        Clock:     incClockBeforeSend(),
+    }
 }
 
+// ---------------------------------------------
+// LOGIN
+// ---------------------------------------------
+func handleLogin(env Envelope) Envelope {
+    user := ""
+    if v, ok := env.Data["user"].(string); ok {
+        user = normalize(v)
+    }
 
-func handleMessage(env Envelope, pub *zmq.Socket) Envelope {
-dst := normalize(fmt.Sprintf("%v", env.Data["dst"]))
-src := normalize(fmt.Sprintf("%v", env.Data["src"]))
-msg := fmt.Sprintf("%v", env.Data["message"])
-resp := Envelope{Service: "message", Data: map[string]interface{}{}, Timestamp: nowISO(), Clock: incClockBeforeSend()}
-usersMu.Lock(); exists := false; for _, u := range users { if u == dst { exists = true; break } }; usersMu.Unlock()
-if !exists { resp.Data["status"] = "erro"; resp.Data["message"] = "usuário destino não existe"; return resp }
-pubEnv := Envelope{Service: "message", Data: map[string]interface{}{"src": src, "msg": msg}, Timestamp: nowISO(), Clock: incClockBeforeSend()}
-out, _ := msgpack.Marshal(pubEnv)
-if _, err := pub.SendMessage(dst, out); err != nil { log.Println("[PUB PM] erro:", err) }
-le := LogEntry{ID: uuid.NewString(), Type: "private", Data: map[string]interface{}{"src": src, "dst": dst, "message": msg}, Timestamp: nowISO(), Clock: env.Clock}
-logsMu.Lock(); logs = append(logs, le); logsMu.Unlock(); go persistLogs()
-publishReplicationEvent(pub, le)
-msgCount++
-if msgCount%10 == 0 { go maybeTriggerBerkeley(pub) }
-resp.Data["status"] = "sucesso"
-return resp
+    resp := Envelope{
+        Service:   "login",
+        Data:      map[string]interface{}{},
+        Timestamp: nowISO(),
+        Clock:     incClockBeforeSend(),
+    }
+
+    if user == "" {
+        resp.Data["status"] = "erro"
+        resp.Data["description"] = "usuário inválido"
+        return resp
+    }
+
+    usersMu.Lock()
+    found := false
+    for _, u := range users {
+        if u == user {
+            found = true
+            break
+        }
+    }
+    if !found {
+        users = append(users, user)
+    }
+    usersMu.Unlock()
+
+    go persistUsers()
+
+    resp.Data["status"] = "sucesso"
+    resp.Data["user"] = user
+    return resp
+}
+
+// ---------------------------------------------
+// PUBLISH (canal público)
+// ---------------------------------------------
+func handlePublish(env Envelope) Envelope {
+    channel := ""
+    if v, ok := env.Data["channel"].(string); ok {
+        channel = normalize(v)
+    }
+
+    user := ""
+    if v, ok := env.Data["user"].(string); ok {
+        user = normalize(v)
+    }
+
+    msg := ""
+    if v, ok := env.Data["message"].(string); ok {
+        msg = v
+    }
+
+    resp := Envelope{
+        Service:   "publish",
+        Data:      map[string]interface{}{},
+        Timestamp: nowISO(),
+        Clock:     incClockBeforeSend(),
+    }
+
+    channelsMu.Lock()
+    okChan := false
+    for _, c := range channels {
+        if c == channel {
+            okChan = true
+        }
+    }
+    channelsMu.Unlock()
+
+    if !okChan {
+        resp.Data["status"] = "erro"
+        resp.Data["message"] = "canal inexistente"
+        return resp
+    }
+
+    le := LogEntry{
+        ID:        uuid.NewString(),
+        Type:      "publish",
+        Data:      map[string]interface{}{"channel": channel, "user": user, "message": msg},
+        Timestamp: nowISO(),
+        Clock:     env.Clock,
+    }
+
+    logsMu.Lock()
+    logs = append(logs, le)
+    logsMu.Unlock()
+
+    go persistLogs()
+    publishReplicationEvent(le)
+
+    resp.Data["status"] = "sucesso"
+    return resp
+}
+
+// ---------------------------------------------
+// PRIVATE MESSAGE
+// ---------------------------------------------
+func handleMessage(env Envelope) Envelope {
+    dst := ""
+    if v, ok := env.Data["dst"].(string); ok {
+        dst = normalize(v)
+    }
+
+    src := ""
+    if v, ok := env.Data["src"].(string); ok {
+        src = normalize(v)
+    }
+
+    msg := ""
+    if v, ok := env.Data["message"].(string); ok {
+        msg = v
+    }
+
+    resp := Envelope{
+        Service:   "message",
+        Data:      map[string]interface{}{},
+        Timestamp: nowISO(),
+        Clock:     incClockBeforeSend(),
+    }
+
+    usersMu.Lock()
+    exists := false
+    for _, u := range users {
+        if u == dst {
+            exists = true
+        }
+    }
+    usersMu.Unlock()
+
+    if !exists {
+        resp.Data["status"] = "erro"
+        resp.Data["message"] = "usuário destino não existe"
+        return resp
+    }
+
+    le := LogEntry{
+        ID:        uuid.NewString(),
+        Type:      "private",
+        Data:      map[string]interface{}{"src": src, "dst": dst, "message": msg},
+        Timestamp: nowISO(),
+        Clock:     env.Clock,
+    }
+
+    logsMu.Lock()
+    logs = append(logs, le)
+    logsMu.Unlock()
+
+    go persistLogs()
+    publishReplicationEvent(le)
+
+    resp.Data["status"] = "sucesso"
+    return resp
+}
+
+// ---------------------------------------------
+// SUBSCRIBE / UNSUBSCRIBE
+// ---------------------------------------------
+func handleSubscribe(env Envelope) Envelope {
+    user := ""
+    if v, ok := env.Data["user"].(string); ok {
+        user = normalize(v)
+    }
+
+    topic := ""
+    if v, ok := env.Data["topic"].(string); ok {
+        topic = normalize(v)
+    }
+
+    resp := Envelope{
+        Service:   "subscribe",
+        Data:      map[string]interface{}{},
+        Timestamp: nowISO(),
+        Clock:     incClockBeforeSend(),
+    }
+
+    subMu.Lock()
+    arr := subscriptions[user]
+    found := false
+    for _, s := range arr {
+        if s == topic {
+            found = true
+        }
+    }
+    if !found {
+        subscriptions[user] = append(arr, topic)
+        go persistSubs()
+    }
+    subMu.Unlock()
+
+    resp.Data["status"] = "sucesso"
+    return resp
+}
+
+func handleUnsubscribe(env Envelope) Envelope {
+    user := ""
+    if v, ok := env.Data["user"].(string); ok {
+        user = normalize(v)
+    }
+
+    topic := ""
+    if v, ok := env.Data["topic"].(string); ok {
+        topic = normalize(v)
+    }
+
+    resp := Envelope{
+        Service:   "unsubscribe",
+        Data:      map[string]interface{}{},
+        Timestamp: nowISO(),
+        Clock:     incClockBeforeSend(),
+    }
+
+    subMu.Lock()
+    arr := subscriptions[user]
+    newArr := []string{}
+    for _, s := range arr {
+        if s != topic {
+            newArr = append(newArr, s)
+        }
+    }
+    subscriptions[user] = newArr
+    go persistSubs()
+    subMu.Unlock()
+
+    resp.Data["status"] = "sucesso"
+    return resp
 }
