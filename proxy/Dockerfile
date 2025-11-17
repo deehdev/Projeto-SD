@@ -1,18 +1,15 @@
-FROM golang:latest
-
-RUN apt-get update && apt-get install -y libzmq3-dev
+FROM golang:1.23-bullseye AS builder
+ENV GOTOOLCHAIN=auto
 
 WORKDIR /app
 
-# Copiar dependências
-COPY go.mod go.sum ./
+# ZeroMQ + libs obrigatórias
+RUN apt-get update && apt-get install -y \
+    libzmq3-dev pkg-config build-essential && \
+    rm -rf /var/lib/apt/lists/*
 
-# Baixar módulos (agora incluindo msgpack)
+COPY go.mod go.sum ./
 RUN go mod download
 
-# Copiar o código
 COPY . .
-
-RUN go build -o proxy .
-
-CMD ["./proxy"]
+RUN CGO_ENABLED=1 GOOS=linux go build -o proxy .

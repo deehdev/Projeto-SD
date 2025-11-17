@@ -1,48 +1,111 @@
-version: "3.9"
+version: "3.8"
 
 services:
+  broker:
+    build: ./broker
+    image: broker
+    container_name: broker
+    networks:
+      - chatnet
+    ports:
+      - "5557:5557"
+      - "5558:5558"
 
   proxy:
     build: ./proxy
-    image: chat-proxy
+    image: proxy
+    container_name: proxy
     networks:
       - chatnet
-    restart: unless-stopped
-
-  server:
-    build: ./server
-    image: chat-server
     ports:
-      - "5555:5555"
-    networks:
-      - chatnet
-    depends_on:
-      - proxy
-    volumes:
-      - ./server/data:/app/data        # <-- garante salvamento de users/channels/logs
-    restart: unless-stopped
+      - "5560:5560"
 
-  bot_auto:
-    build: ./bot
-    image: chat-bot
+  ref:
+    build: ./ref
+    image: ref
+    container_name: ref
     networks:
       - chatnet
+    ports:
+      - "6000:6000"
+
+  server_a:
+    build: ./server_sync
+    image: server_sync
+    container_name: server_a
+    networks:
+      - chatnet
+    environment:
+      - SERVER_NAME=a
+      - SERVER_REP_PORT=7000
+      - REF_ADDR=ref:6000
+      - PROXY_PUB_ADDR=tcp://proxy:5560
     depends_on:
-      - server
+      - ref
+      - broker
       - proxy
-    restart: unless-stopped
+
+  server_b:
+    build: ./server_sync
+    image: server_sync
+    container_name: server_b
+    networks:
+      - chatnet
+    environment:
+      - SERVER_NAME=b
+      - SERVER_REP_PORT=7001
+      - REF_ADDR=ref:6000
+      - PROXY_PUB_ADDR=tcp://proxy:5560
+    depends_on:
+      - ref
+      - broker
+      - proxy
+
+  server_c:
+    build: ./server_sync
+    image: server_sync
+    container_name: server_c
+    networks:
+      - chatnet
+    environment:
+      - SERVER_NAME=c
+      - SERVER_REP_PORT=7002
+      - REF_ADDR=ref:6000
+      - PROXY_PUB_ADDR=tcp://proxy:5560
+    depends_on:
+      - ref
+      - broker
+      - proxy
 
   client:
     build: ./client
-    image: chat-client
+    image: client
+    container_name: client
     networks:
       - chatnet
     depends_on:
-      - server
+      - broker
       - proxy
-    stdin_open: true
-    tty: true
-    restart: unless-stopped
+
+  bot_1:
+    build: ./bot
+    image: bot_1
+    container_name: bot_1
+    networks:
+      - chatnet
+    depends_on:
+      - broker
+      - proxy
+
+  bot_2:
+    build: ./bot
+    image: bot_2
+    container_name: bot_2
+    networks:
+      - chatnet
+    depends_on:
+      - broker
+      - proxy
 
 networks:
   chatnet:

@@ -1,59 +1,45 @@
 package main
 
 import (
-	"log"
-	"time"
-
-	zmq "github.com/pebbe/zmq4"
+    "log"
+    "github.com/pebbe/zmq4"
 )
 
-func StartBroker() error {
-	// Cria contexto ZeroMQ
-	ctx, err := zmq.NewContext()
-	if err != nil {
-		return err
-	}
-	defer ctx.Term()
-
-	// XSUB: recebe mensagens de publishers
-	xsub, err := ctx.NewSocket(zmq.XSUB)
-	if err != nil {
-		return err
-	}
-	defer xsub.Close()
-	if err := xsub.Bind("tcp://*:5557"); err != nil {
-		return err
-	}
-
-	// XPUB: envia para subscribers
-	xpub, err := ctx.NewSocket(zmq.XPUB)
-	if err != nil {
-		return err
-	}
-	defer xpub.Close()
-	if err := xpub.Bind("tcp://*:5558"); err != nil {
-		return err
-	}
-
-	log.Println("Broker XSUB/XPUB rodando em: tcp://*:5557 <-> tcp://*:5558")
-
-	// Loop principal do proxy
-	if err := zmq.Proxy(xsub, xpub, nil); err != nil {
-		log.Printf("Proxy encerrado com erro: %v", err)
-		return err
-	}
-
-	return nil
-}
-
 func main() {
-	log.Println("Iniciando o broker de chat...")
+    ctx, err := zmq4.NewContext()
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer ctx.Term()
 
-	for {
-		err := StartBroker()
-		if err != nil {
-			log.Printf("Erro crítico no broker ZeroMQ. Reiniciando em 5s: %v", err)
-			time.Sleep(5 * time.Second)
-		}
-	}
+    frontend, err := ctx.NewSocket(zmq4.XSUB)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer frontend.Close()
+
+    backend, err := ctx.NewSocket(zmq4.XPUB)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer backend.Close()
+
+    // Bind nos ports
+    err = frontend.Bind("tcp://*:5557")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    err = backend.Bind("tcp://*:5558")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    log.Println("Broker iniciado: XPUB ↔ XSUB  (5557 <-> 5558)")
+
+    // Loop de proxy
+    err = zmq4.Proxy(frontend, backend, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
 }

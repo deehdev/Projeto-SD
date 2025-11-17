@@ -1,10 +1,9 @@
-FROM node:20
+FROM node:18-slim
 
 WORKDIR /app
 
-COPY package.json package-lock.json* ./
-
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm install --production
 
 COPY . .
 
