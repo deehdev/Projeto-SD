@@ -82,6 +82,35 @@ func requestList() ([]map[string]interface{}, error) {
 }
 
 // ----------------------------------------------
+// applyCoordinatorUpdate
+// ----------------------------------------------
+func applyCoordinatorUpdate(env Envelope) {
+    coord, ok := env.Data["coordinator"].(string)
+    if !ok {
+        log.Println("[COORD] Erro: campo 'coordinator' inválido")
+        return
+    }
+
+    currentCoordinatorMu.Lock()
+    currentCoordinator = coord
+    currentCoordinatorMu.Unlock()
+
+    log.Println("[COORD] Novo coordenador eleito:", coord)
+
+    // ----------------------------------------------------------
+    // 🔥 CHAVE DO PROJETO:
+    // Assim que trocar de coordenador, todos servidores
+    // devem sincronizar os logs automaticamente.
+    // ----------------------------------------------------------
+    go func() {
+        // pequena espera para evitar corrida logo após eleição
+        time.Sleep(800 * time.Millisecond)
+        log.Println("[SYNC] Coordenador mudou — iniciando sincronização automática...")
+        requestInitialSync()
+    }()
+}
+
+// ----------------------------------------------
 // determineCoordinator
 // ----------------------------------------------
 func determineCoordinator() (string, error) {
@@ -105,6 +134,7 @@ func determineCoordinator() (string, error) {
         if v, ok := s["name"].(string); ok {
             name = v
         }
+
         rank := math.MaxInt32
         switch r := s["rank"].(type) {
         case float64:
@@ -112,6 +142,7 @@ func determineCoordinator() (string, error) {
         case int:
             rank = r
         }
+
         nodes = append(nodes, node{Name: name, Rank: rank})
     }
 
@@ -144,6 +175,7 @@ func requestInitialSync() {
         if v, ok := s["name"].(string); ok {
             name = v
         }
+
         if "server_"+name == coord {
             switch p := s["port"].(type) {
             case float64:
