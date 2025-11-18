@@ -7,7 +7,6 @@ services:
   # ==============================
   proxy:
     build: ./proxy
-    image: proxy
     container_name: proxy
     networks:
       - chatnet
@@ -23,12 +22,11 @@ services:
   # ==============================
   ref:
     build: ./ref
-    image: ref
     container_name: ref
     networks:
       - chatnet
     ports:
-      - "7003:6000"
+      - "7003:6000"  # porta interna 6000 bindada, exposta como 7003
     volumes:
       - ref_data:/app/data
 
@@ -37,14 +35,12 @@ services:
   # ==============================
   broker:
     build: ./broker
-    image: broker
     container_name: broker
-    environment:
-      - SERVERS=server_a:7000,server_b:7001,server_c:7002
     networks:
       - chatnet
     ports:
-      - "5555:5555"
+      - "5555:5555"   # ROUTER (clientes)
+      - "5556:5556"   # DEALER (servidores)
     depends_on:
       - proxy
       - ref
@@ -54,7 +50,6 @@ services:
   # ==============================
   server_a:
     build: ./server_unified
-    image: server_unified
     container_name: server_a
     networks:
       - chatnet
@@ -73,7 +68,6 @@ services:
 
   server_b:
     build: ./server_unified
-    image: server_unified
     container_name: server_b
     networks:
       - chatnet
@@ -92,7 +86,6 @@ services:
 
   server_c:
     build: ./server_unified
-    image: server_unified
     container_name: server_c
     networks:
       - chatnet
@@ -114,15 +107,14 @@ services:
   # ==============================
   client:
     build: ./client
-    image: client
     container_name: client
     networks:
       - chatnet
     environment:
       - BROKER_REQ=tcp://broker:5555
       - PROXY_SUB=tcp://proxy:5558
-    stdin_open: true       # NECESSÁRIO para funcionar o readline
-    tty: true              # NECESSÁRIO para teclado entrar no Node
+    stdin_open: true
+    tty: true
     command: ["node", "/app/client.js"]
     depends_on:
       - broker
