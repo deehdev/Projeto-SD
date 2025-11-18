@@ -1,4 +1,3 @@
-
 services:
 
   # ----------------------
@@ -31,8 +30,6 @@ services:
 
   # ----------------------
   # Proxy PUB/SUB
-  # XSUB = recebe publicações dos servers
-  # XPUB = envia para clients/bots/servers
   # ----------------------
   proxy:
     build: ./proxy
@@ -53,10 +50,20 @@ services:
     build: ./server
     container_name: server_a
     environment:
+      - SERVER_NAME=ServidorA
+      - SERVER_ADDR=tcp://server_a:7000
       - BROKER_DEALER_ADDR=tcp://broker:6000
       - REF_ADDR=tcp://ref:5550
       - PROXY_PUB_ADDR=tcp://proxy:5557
       - PROXY_SUB_ADDR=tcp://proxy:5558
+    volumes:
+      - ./data/server_a:/app/data
+    ports:
+      - "7000:7000"
+    depends_on:
+      - broker
+      - proxy
+      - ref
     networks:
       - chatnet
 
@@ -64,10 +71,20 @@ services:
     build: ./server
     container_name: server_b
     environment:
+      - SERVER_NAME=ServidorB
+      - SERVER_ADDR=tcp://server_b:7001
       - BROKER_DEALER_ADDR=tcp://broker:6000
       - REF_ADDR=tcp://ref:5550
       - PROXY_PUB_ADDR=tcp://proxy:5557
       - PROXY_SUB_ADDR=tcp://proxy:5558
+    volumes:
+      - ./data/server_b:/app/data
+    ports:
+      - "7001:7001"
+    depends_on:
+      - broker
+      - proxy
+      - ref
     networks:
       - chatnet
 
@@ -75,10 +92,20 @@ services:
     build: ./server
     container_name: server_c
     environment:
+      - SERVER_NAME=ServidorC
+      - SERVER_ADDR=tcp://server_c:7002
       - BROKER_DEALER_ADDR=tcp://broker:6000
       - REF_ADDR=tcp://ref:5550
       - PROXY_PUB_ADDR=tcp://proxy:5557
       - PROXY_SUB_ADDR=tcp://proxy:5558
+    volumes:
+      - ./data/server_c:/app/data
+    ports:
+      - "7002:7002"
+    depends_on:
+      - broker
+      - proxy
+      - ref
     networks:
       - chatnet
 
@@ -104,7 +131,7 @@ services:
       - chatnet
 
   # ----------------------
-  # Cliente (interativo)
+  # Cliente
   # ----------------------
   client:
     build: ./client

@@ -3,7 +3,9 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	"os"
 	"sync"
@@ -13,504 +15,540 @@ import (
 	"github.com/vmihailenco/msgpack/v5"
 )
 
-// ================================
-//   Variáveis Globais
-// ================================
-
-var (
-	serverName  string
-	serverRank  int
-	clock       int
-	coordinator string
-
-	serversMutex sync.Mutex
-	serversList  = make(map[string]int)
-
-	usersMutex sync.Mutex
-	users      = make(map[string]string)
-
-	channelsMutex sync.Mutex
-	channels      = make(map[string]bool)
-
-	messagesMutex sync.Mutex
-	messages      = []Envelope{}
-
-	refAddr       string
-	brokerAddr    string
-	proxyPubAddr  string
-	proxySubAddr  string
-	isCoordinator bool
-
-	pubSocket *zmq.Socket
-	subSocket *zmq.Socket
-)
-
-// ================================
-//   Estruturas
-// ================================
-
 type Envelope struct {
 	Service string                 `msgpack:"service"`
 	Data    map[string]interface{} `msgpack:"data"`
+	Clock   int                    `msgpack:"clock"`
 }
 
-type ReplicateMsg struct {
-	Origin    string                 `json:"origin"`
-	Action    string                 `json:"action"`
-	Payload   map[string]interface{} `json:"payload"`
-	Timestamp string                 `json:"timestamp"`
-	Clock     int                    `json:"clock"`
+type RefReply struct {
+	Service string                 `msgpack:"service"`
+	Data    map[string]interface{} `msgpack:"data"`
+	Clock   int                    `msgpack:"clock"`
 }
 
-// ================================
-//   Relógio lógico
-// ================================
+// ----------------------- FIX para conversões numéricas -----------------------
+func getInt(v interface{}) int {
+	switch x := v.(type) {
+	case int:
+		return x
+	case int8:
+		return int(x)
+	case int16:
+		return int(x)
+	case int32:
+		return int(x)
+	case int64:
+		return int(x)
+	case uint:
+		return int(x)
+	case uint8:
+		return int(x)
+	case uint16:
+		return int(x)
+	case uint32:
+		return int(x)
+	case uint64:
+		return int(x)
+	case float32:
+		return int(x)
+	case float64:
+		return int(x)
+	default:
+		return 0
+	}
+}
+
+var (
+	serverName   string
+	serverRank   int
+	serverAddr   string
+	clock        int
+	clockMutex   sync.Mutex
+	coordMutex   sync.Mutex
+	coordinator  string
+	serversList  = map[string]map[string]interface{}{}
+	serversMutex sync.Mutex
+
+	pubSocket *zmq.Socket
+	repClient *zmq.Socket
+
+	repSrv *zmq.Socket
+	reqMap = map[string]*zmq.Socket{}
+
+	// persistence
+	messages            = []Envelope{}
+	msgCountSinceSync   = 0
+	msgCountSinceSyncMu sync.Mutex
+)
+
+// ----------------------- helpers -----------------------
+func logInfo(format string, a ...interface{}) { log.Printf("[INFO] "+format, a...) }
+func logWarn(format string, a ...interface{}) { log.Printf("[WARN] "+format, a...) }
+func logErr(format string, a ...interface{})  { log.Printf("[ERROR] "+format, a...) }
 
 func incClock() int {
+	clockMutex.Lock()
 	clock++
-	return clock
+	v := clock
+	clockMutex.Unlock()
+	return v
 }
 
-func updateClock(received int) {
-	if received > clock {
-		clock = received
+func updateClock(recv interface{}) {
+	n := getInt(recv)
+	clockMutex.Lock()
+	if n > clock {
+		clock = n
 	}
+	clock++
+	clockMutex.Unlock()
 }
 
-// ================================
-//   Auxiliares
-// ================================
+func nowISO() string { return time.Now().UTC().Format(time.RFC3339) }
 
-func randomString(n int) string {
-	letters := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-	s := make([]rune, n)
-	for i := range s {
-		s[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(s)
-}
-
-func getString(v interface{}) string {
-	if v == nil {
-		return ""
-	}
-	switch x := v.(type) {
-	case string:
-		return x
-	case []byte:
-		return string(x)
-	default:
-		b, _ := json.Marshal(x)
-		return string(b)
-	}
-}
-
-func ensureDataDir() {
-	if _, err := os.Stat("data"); os.IsNotExist(err) {
-		_ = os.Mkdir("data", 0755)
-	}
-}
-
-// ================================
-//   Persistência
-// ================================
-
+// ----------------------- persistence -----------------------
 func saveJSON(path string, v interface{}) {
 	b, _ := json.MarshalIndent(v, "", "  ")
 	_ = ioutil.WriteFile(path, b, 0644)
 }
 
-func loadJSON(path string, v interface{}) error {
-	b, err := ioutil.ReadFile(path)
+func persistMessages() { saveJSON("data/messages.json", messages) }
+func loadMessages() {
+	b, err := ioutil.ReadFile("data/messages.json")
+	if err == nil {
+		_ = json.Unmarshal(b, &messages)
+	}
+}
+
+// ----------------------- REF interaction -----------------------
+func refRequest(req map[string]interface{}) (map[string]interface{}, error) {
+	ctx, _ := zmq.NewContext()
+	defer ctx.Term()
+	sock, _ := ctx.NewSocket(zmq.REQ)
+	defer sock.Close()
+
+	refAddr := os.Getenv("REF_ADDR")
+	if refAddr == "" {
+		return nil, fmt.Errorf("REF_ADDR missing")
+	}
+
+	sock.Connect(refAddr)
+	req["clock"] = incClock()
+
+	out, _ := msgpack.Marshal(map[string]interface{}{
+		"service": req["service"],
+		"data":    req,
+		"clock":   req["clock"],
+	})
+
+	if _, err := sock.SendBytes(out, 0); err != nil {
+		return nil, err
+	}
+
+	replyBytes, err := sock.RecvBytes(0)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return json.Unmarshal(b, v)
-}
 
-func persistUsers() {
-	usersMutex.Lock()
-	out := []map[string]string{}
-	for u, ts := range users {
-		out = append(out, map[string]string{"user": u, "timestamp": ts})
+	var rep RefReply
+	if err := msgpack.Unmarshal(replyBytes, &rep); err != nil {
+		return nil, err
 	}
-	usersMutex.Unlock()
-	saveJSON("data/users.json", out)
+
+	updateClock(rep.Clock)
+
+	return rep.Data, nil
 }
 
-func persistChannels() {
-	channelsMutex.Lock()
-	out := []string{}
-	for c := range channels {
-		out = append(out, c)
+// ----------------------- server-to-server -----------------------
+func ensureReqTo(addr string) (*zmq.Socket, error) {
+	if s, ok := reqMap[addr]; ok {
+		return s, nil
 	}
-	channelsMutex.Unlock()
-	saveJSON("data/channels.json", out)
+
+	ctx, _ := zmq.NewContext()
+	req, _ := ctx.NewSocket(zmq.REQ)
+	req.SetLinger(0)
+
+	if err := req.Connect(addr); err != nil {
+		return nil, err
+	}
+
+	reqMap[addr] = req
+	return req, nil
 }
 
-func persistMessages() {
-	messagesMutex.Lock()
-	saveJSON("data/messages.json", messages)
-	messagesMutex.Unlock()
+func sendSrvReq(addr string, service string, data map[string]interface{}, timeoutMs int) (map[string]interface{}, error) {
+	sock, err := ensureReqTo(addr)
+	if err != nil {
+		return nil, err
+	}
+
+	env := map[string]interface{}{"service": service, "data": data, "clock": incClock()}
+	out, _ := msgpack.Marshal(env)
+
+	if _, err := sock.SendBytes(out, 0); err != nil {
+		return nil, err
+	}
+
+	poller := zmq.NewPoller()
+	poller.Add(sock, zmq.POLLIN)
+
+	socks, _ := poller.Poll(time.Duration(timeoutMs) * time.Millisecond)
+	if len(socks) == 0 {
+		return nil, fmt.Errorf("timeout")
+	}
+
+	msg, _ := sock.RecvBytes(0)
+	var rep map[string]interface{}
+	_ = msgpack.Unmarshal(msg, &rep)
+
+	// update clock
+	if c, ok := rep["clock"]; ok {
+		updateClock(c)
+	}
+
+	return rep, nil
 }
 
-func loadPersistentState() {
-	ensureDataDir()
+// ----------------------- Election (Bully) -----------------------
+func startElection() {
+	logInfo("Iniciando eleição (Bully) — procurando servidores com rank maior...")
 
-	var ul []map[string]string
-	if loadJSON("data/users.json", &ul) == nil {
-		for _, u := range ul {
-			users[u["user"]] = u["timestamp"]
+	serversMutex.Lock()
+	targets := []struct {
+		name string
+		addr string
+		rank int
+	}{}
+
+	for name, info := range serversList {
+		r := getInt(info["rank"])
+		addr := info["addr"].(string)
+		if r > serverRank {
+			targets = append(targets, struct {
+				name string
+				addr string
+				rank int
+			}{name, addr, r})
 		}
 	}
+	serversMutex.Unlock()
 
-	var cl []string
-	if loadJSON("data/channels.json", &cl) == nil {
-		for _, c := range cl {
-			channels[c] = true
-		}
-	}
-
-	var ml []Envelope
-	if loadJSON("data/messages.json", &ml) == nil {
-		messages = ml
-	}
-}
-
-// ================================
-//   Replicação
-// ================================
-
-func publishReplicate(action string, payload map[string]interface{}) {
-	rm := ReplicateMsg{
-		Origin:    serverName,
-		Action:    action,
-		Payload:   payload,
-		Timestamp: time.Now().Format(time.RFC3339),
-		Clock:     incClock(),
-	}
-	b, _ := json.Marshal(rm)
-	pubSocket.SendMessage("replicate", b)
-}
-
-func applyReplication(data []byte) {
-	var rm ReplicateMsg
-	if json.Unmarshal(data, &rm) != nil {
+	if len(targets) == 0 {
+		declareCoordinator(serverName)
 		return
 	}
-	if rm.Origin == serverName {
-		return
+
+	gotOK := false
+	for _, t := range targets {
+		logInfo("Enviando 'election' para %s (%s) rank=%d", t.name, t.addr, t.rank)
+
+		_, err := sendSrvReq(t.addr, "election", map[string]interface{}{"from": serverName}, 1500)
+		if err == nil {
+			gotOK = true
+			logInfo("Recebi OK de %s — desistindo de ser coordenador", t.name)
+			break
+		}
 	}
 
-	updateClock(rm.Clock)
-
-	switch rm.Action {
-
-	case "add_user":
-		usersMutex.Lock()
-		if _, exists := users[rm.Payload["user"].(string)]; !exists {
-			users[rm.Payload["user"].(string)] = rm.Payload["timestamp"].(string)
-			usersMutex.Unlock()
-			persistUsers()
-		} else {
-			usersMutex.Unlock()
-		}
-
-	case "add_channel":
-		ch := rm.Payload["channel"].(string)
-		channelsMutex.Lock()
-		if !channels[ch] {
-			channels[ch] = true
-			channelsMutex.Unlock()
-			persistChannels()
-		} else {
-			channelsMutex.Unlock()
-		}
-
-	case "add_message":
-		messagesMutex.Lock()
-		messages = append(messages, Envelope{
-			Service: rm.Payload["service"].(string),
-			Data:    rm.Payload["data"].(map[string]interface{}),
-		})
-		messagesMutex.Unlock()
-		persistMessages()
+	if !gotOK {
+		declareCoordinator(serverName)
+	} else {
+		logInfo("Aguardando anúncio do novo coordenador...")
 	}
 }
 
-// ================================
-//   SUB Listener
-// ================================
+func declareCoordinator(name string) {
+	coordMutex.Lock()
+	coordinator = name
+	coordMutex.Unlock()
 
-func subListener() {
-	for {
-		msg, err := subSocket.RecvMessageBytes(0)
-		if err != nil || len(msg) < 2 {
-			continue
-		}
-		topic := string(msg[0])
-		body := msg[1]
-
-		if topic == "replicate" {
-			applyReplication(body)
-			continue
-		}
-
-		var env Envelope
-		if msgpack.Unmarshal(body, &env) != nil {
-			continue
-		}
-
-		if origin, ok := env.Data["origin"].(string); ok && origin == serverName {
-			continue
-		}
-
-		messagesMutex.Lock()
-		messages = append(messages, env)
-		messagesMutex.Unlock()
-		persistMessages()
-	}
-}
-
-// ================================
-//   Processar REQ → REP
-// ================================
-
-func handleRequest(b []byte) ([]byte, error) {
-	var req Envelope
-	if msgpack.Unmarshal(b, &req) != nil {
-		return msgpack.Marshal(Envelope{
-			Service: "error",
-			Data:    map[string]interface{}{"status": "erro", "message": "msgpack inválido"},
-		})
-	}
-
-	recvClock := int(getClock(req.Data["clock"]))
-	updateClock(recvClock)
-
-	resp := Envelope{
-		Service: req.Service,
-		Data: map[string]interface{}{
-			"timestamp": time.Now().Format(time.RFC3339),
-			"clock":     incClock(),
+	ann := map[string]interface{}{
+		"service": "election",
+		"data": map[string]interface{}{
+			"coordinator": name,
+			"timestamp":   nowISO(),
+			"clock":       incClock(),
 		},
 	}
 
-	switch req.Service {
+	out, _ := msgpack.Marshal(ann)
+	if pubSocket != nil {
+		pubSocket.SendMessage("servers", out)
+	}
 
-	// ------------------------------------
-	// LOGIN
-	// ------------------------------------
-	case "login":
-		user := getString(req.Data["user"])
-		if user == "" {
-			resp.Data["status"] = "erro"
-			resp.Data["description"] = "usuário inválido"
-			break
+	logInfo("🟡 Novo coordenador: %s", name)
+}
+
+// ----------------------- SUB listener -----------------------
+func startSubListener(sub *zmq.Socket) {
+	for {
+		parts, err := sub.RecvMessageBytes(0)
+		if err != nil || len(parts) < 2 {
+			continue
 		}
 
-		usersMutex.Lock()
-		_, exists := users[user]
-		if exists {
-			usersMutex.Unlock()
-			resp.Data["status"] = "erro"
-			resp.Data["description"] = "usuário já existe"
-			break
+		topic := string(parts[0])
+		body := parts[1]
+
+		if topic == "servers" {
+			var ann map[string]interface{}
+			msgpack.Unmarshal(body, &ann)
+
+			if data, ok := ann["data"].(map[string]interface{}); ok {
+				if coord, ok := data["coordinator"].(string); ok {
+					coordMutex.Lock()
+					coordinator = coord
+					coordMutex.Unlock()
+					logInfo("📢 Novo coordenador recebido: %s", coord)
+				}
+			}
 		}
+	}
+}
 
-		users[user] = resp.Data["timestamp"].(string)
-		usersMutex.Unlock()
-		persistUsers()
+// ----------------------- Server-side REQ handler -----------------------
+func handleSrvReq(env Envelope) map[string]interface{} {
+	switch env.Service {
 
-		publishReplicate("add_user", map[string]interface{}{
-			"user":      user,
-			"timestamp": resp.Data["timestamp"].(string),
-		})
+	case "election":
+		logInfo("Recebi pedido de eleição de %v", env.Data["from"])
+		return map[string]interface{}{"election": "OK", "clock": incClock()}
 
-		resp.Data["status"] = "sucesso"
-
-	// ------------------------------------
-	// USERS
-	// ------------------------------------
-	case "users":
-		usersMutex.Lock()
-		list := []string{}
-		for u := range users {
-			list = append(list, u)
-		}
-		usersMutex.Unlock()
-		resp.Data["users"] = list
-
-	// ------------------------------------
-	// CREATE CHANNEL
-	// ------------------------------------
-	case "channel":
-		ch := getString(req.Data["channel"])
-		if ch == "" {
-			resp.Data["status"] = "erro"
-			resp.Data["description"] = "canal inválido"
-			break
-		}
-
-		channelsMutex.Lock()
-		if channels[ch] {
-			channelsMutex.Unlock()
-			resp.Data["status"] = "erro"
-			resp.Data["description"] = "canal já existe"
-			break
-		}
-
-		channels[ch] = true
-		channelsMutex.Unlock()
-		persistChannels()
-
-		publishReplicate("add_channel", map[string]interface{}{
-			"channel":   ch,
-			"timestamp": resp.Data["timestamp"].(string),
-		})
-
-		resp.Data["status"] = "sucesso"
-
-	// ------------------------------------
-	// LIST CHANNELS
-	// ------------------------------------
-	case "channels":
-		channelsMutex.Lock()
-		list := []string{}
-		for c := range channels {
-			list = append(list, c)
-		}
-		channelsMutex.Unlock()
-		resp.Data["channels"] = list
-
-	// ------------------------------------
-	// PUBLISH MESSAGE
-	// ------------------------------------
-	case "publish":
-		user := getString(req.Data["user"])
-		channel := getString(req.Data["channel"])
-		message := getString(req.Data["message"])
-
-		channelsMutex.Lock()
-		exists := channels[channel]
-		channelsMutex.Unlock()
-
-		if !exists {
-			resp.Data["status"] = "erro"
-			resp.Data["message"] = "canal não existe"
-			break
-		}
-
-		env := Envelope{
-			Service: "publish",
-			Data: map[string]interface{}{
-				"user":      user,
-				"channel":   channel,
-				"message":   message,
-				"timestamp": resp.Data["timestamp"].(string),
-				"clock":     incClock(),
-				"origin":    serverName,
-			},
-		}
-
-		packed, _ := msgpack.Marshal(env)
-		pubSocket.SendMessage(channel, packed)
-
-		messagesMutex.Lock()
-		messages = append(messages, env)
-		messagesMutex.Unlock()
-		persistMessages()
-
-		resp.Data["status"] = "OK"
-
-	// ------------------------------------
-	// PRIVATE MESSAGE
-	// ------------------------------------
-	case "message":
-		dst := getString(req.Data["dst"])
-
-		usersMutex.Lock()
-		_, existsUser := users[dst]
-		usersMutex.Unlock()
-
-		if !existsUser {
-			resp.Data["status"] = "erro"
-			resp.Data["message"] = "usuário não existe"
-			break
-		}
-
-		env := Envelope{
-			Service: "message",
-			Data: map[string]interface{}{
-				"src":       getString(req.Data["src"]),
-				"dst":       dst,
-				"message":   getString(req.Data["message"]),
-				"timestamp": resp.Data["timestamp"].(string),
-				"clock":     incClock(),
-				"origin":    serverName,
-			},
-		}
-
-		packed, _ := msgpack.Marshal(env)
-		pubSocket.SendMessage(dst, packed)
-
-		messagesMutex.Lock()
-		messages = append(messages, env)
-		messagesMutex.Unlock()
-		persistMessages()
-
-		resp.Data["status"] = "OK"
+	case "clock":
+		return map[string]interface{}{"time": nowISO(), "clock": incClock()}
 
 	default:
-		resp.Data["status"] = "erro"
-		resp.Data["message"] = "serviço desconhecido"
+		return map[string]interface{}{"error": "unknown service", "clock": incClock()}
 	}
-
-	return msgpack.Marshal(resp)
 }
 
-func getClock(v interface{}) int64 {
-	switch x := v.(type) {
-	case int64:
-		return x
-	case int:
-		return int64(x)
+// ----------------------- Server REP loop -----------------------
+func startRepSrvLoop() {
+	for {
+		msg, err := repSrv.RecvBytes(0)
+		if err != nil {
+			continue
+		}
+		var env Envelope
+		msgpack.Unmarshal(msg, &env)
+
+		updateClock(env.Clock)
+
+		resp := handleSrvReq(env)
+		out, _ := msgpack.Marshal(resp)
+		repSrv.SendBytes(out, 0)
 	}
-	return 0
 }
 
-// ================================
-//   MAIN
-// ================================
-
+// ----------------------- MAIN -----------------------
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	serverName = "server-" + randomString(4)
 
-	refAddr = os.Getenv("REF_ADDR")
-	brokerAddr = os.Getenv("BROKER_DEALER_ADDR")
-	proxyPubAddr = os.Getenv("PROXY_PUB_ADDR")
-	proxySubAddr = os.Getenv("PROXY_SUB_ADDR")
+	serverName = os.Getenv("SERVER_NAME")
+	if serverName == "" {
+		serverName = "server-" + fmt.Sprintf("%04d", rand.Intn(10000))
+	}
 
-	loadPersistentState()
+	serverAddr = os.Getenv("SERVER_ADDR")
+	if serverAddr == "" {
+		logErr("SERVER_ADDR ausente!")
+		os.Exit(1)
+	}
 
-	// REP socket
-	rep, _ := zmq.NewSocket(zmq.REP)
-	rep.Connect(brokerAddr)
+	os.MkdirAll("data", 0755)
+	loadMessages()
 
-	// PUB → proxy
-	pubSocket, _ = zmq.NewSocket(zmq.PUB)
-	pubSocket.Connect(proxyPubAddr)
+	// ---------- ZMQ ----------
+	ctx, _ := zmq.NewContext()
 
-	// SUB ← proxy
-	subSocket, _ = zmq.NewSocket(zmq.SUB)
-	subSocket.SetSubscribe("")
-	subSocket.Connect(proxySubAddr)
-	go subListener()
+	repClient, _ = ctx.NewSocket(zmq.REP)
+	repClient.Connect(os.Getenv("BROKER_DEALER_ADDR"))
 
+	pubSocket, _ = ctx.NewSocket(zmq.PUB)
+	pubSocket.Connect(os.Getenv("PROXY_PUB_ADDR"))
+
+	sub, _ := ctx.NewSocket(zmq.SUB)
+	sub.SetSubscribe("servers")
+	sub.Connect(os.Getenv("PROXY_SUB_ADDR"))
+	go startSubListener(sub)
+
+	repSrv, _ = ctx.NewSocket(zmq.REP)
+	repSrv.Bind(serverAddr)
+	go startRepSrvLoop()
+
+	// ---------- Register on REF ----------
+	refResp, err := refRequest(map[string]interface{}{"service": "rank", "user": serverName, "addr": serverAddr})
+	if err != nil {
+		logErr("Erro no REF: %v", err)
+		os.Exit(1)
+	}
+
+	serverRank = getInt(refResp["rank"])
+
+	logInfo("Servidor iniciado → Nome=%s Rank=%d Addr=%s", serverName, serverRank, serverAddr)
+
+	// ---------- Get full server list ----------
+	listResp, _ := refRequest(map[string]interface{}{"service": "list"})
+
+	if l, ok := listResp["list"].([]interface{}); ok {
+		serversMutex.Lock()
+		for _, it := range l {
+			m := it.(map[string]interface{})
+			name := m["name"].(string)
+
+			serversList[name] = map[string]interface{}{
+				"rank": getInt(m["rank"]),
+				"addr": m["addr"].(string),
+			}
+		}
+		serversMutex.Unlock()
+	}
+
+	// ---------- Choose highest rank as coordinator ----------
+	{
+		highestName := serverName
+		highestRank := serverRank
+
+		serversMutex.Lock()
+		for name, info := range serversList {
+			r := getInt(info["rank"])
+			if r > highestRank {
+				highestRank = r
+				highestName = name
+			}
+		}
+		coordinator = highestName
+		serversMutex.Unlock()
+
+		logInfo("Coordenador inicial definido: %s", coordinator)
+	}
+
+	// ---------- Heartbeat ----------
+	go func() {
+		for {
+			refRequest(map[string]interface{}{"service": "heartbeat", "user": serverName, "addr": serverAddr})
+			time.Sleep(5 * time.Second)
+		}
+	}()
+
+	// ---------- Coordinator liveness check ----------
+	go func() {
+		for {
+			time.Sleep(4 * time.Second)
+
+			coordMutex.Lock()
+			current := coordinator
+			coordMutex.Unlock()
+
+			if current == serverName {
+				continue
+			}
+
+			serversMutex.Lock()
+			info, ok := serversList[current]
+			serversMutex.Unlock()
+
+			if !ok {
+				startElection()
+				continue
+			}
+
+			addr := info["addr"].(string)
+
+			_, err := sendSrvReq(addr, "ping", map[string]interface{}{"from": serverName}, 1200)
+			if err != nil {
+				logWarn("Coordenador %s parece inativo. Iniciando eleição...", current)
+				startElection()
+			}
+		}
+	}()
+
+	// ---------- MAIN CLIENT LOOP ----------
 	for {
-		req, _ := rep.RecvMessageBytes(0)
-		resp, _ := handleRequest(req[0])
-		rep.SendBytes(resp, 0)
+		reqMsg, err := repClient.RecvMessageBytes(0)
+		if err != nil {
+			continue
+		}
+
+		var req Envelope
+		msgpack.Unmarshal(reqMsg[0], &req)
+
+		updateClock(req.Clock)
+
+		resp := map[string]interface{}{
+			"timestamp": nowISO(),
+			"clock":     incClock(),
+		}
+
+		switch req.Service {
+
+		case "login":
+			user := ""
+			if v := req.Data["user"]; v != nil {
+				user = v.(string)
+			}
+			if user == "" {
+				resp["status"] = "erro"
+				resp["description"] = "usuário inválido"
+			} else {
+				resp["status"] = "sucesso"
+			}
+
+		case "channels":
+			resp["channels"] = []string{"geral"}
+
+		case "publish":
+			ch := req.Data["channel"].(string)
+			env := Envelope{
+				Service: "publish",
+				Data: map[string]interface{}{
+					"user":      req.Data["user"],
+					"channel":   ch,
+					"message":   req.Data["message"],
+					"timestamp": resp["timestamp"],
+				},
+				Clock: incClock(),
+			}
+
+			packed, _ := msgpack.Marshal(env)
+			pubSocket.SendMessage(ch, packed)
+
+			messages = append(messages, env)
+			persistMessages()
+
+			resp["status"] = "OK"
+
+		case "message":
+			dst := req.Data["dst"].(string)
+
+			env := Envelope{
+				Service: "message",
+				Data: map[string]interface{}{
+					"src":       req.Data["src"],
+					"dst":       dst,
+					"message":   req.Data["message"],
+					"timestamp": resp["timestamp"],
+				},
+				Clock: incClock(),
+			}
+
+			packed, _ := msgpack.Marshal(env)
+			pubSocket.SendMessage(dst, packed)
+
+			messages = append(messages, env)
+			persistMessages()
+
+			resp["status"] = "OK"
+
+		default:
+			resp["status"] = "erro"
+			resp["message"] = "serviço desconhecido"
+		}
+
+		out, _ := msgpack.Marshal(map[string]interface{}{"service": req.Service, "data": resp, "clock": incClock()})
+		repClient.SendBytes(out, 0)
 	}
 }

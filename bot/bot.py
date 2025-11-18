@@ -87,22 +87,26 @@ def sub_listener(sub):
 
             topic = parts[0].decode('utf-8', errors='ignore')
             env = msgpack.unpackb(parts[1], raw=False)
-            update_clock(env.get("clock", 0))
+
+            # Clock enviado pelo servidor
+            clk = env.get("clock", "?")
+
+            # Atualiza relógio lógico do BOT
+            update_clock(clk)
 
             svc = env.get("service", "")
             data = env.get("data", {})
             ts = data.get("timestamp", "sem-timestamp")
-            clk = data.get("clock", "?")
 
             if svc == "publish":
-                user = data.get("user") or "?"
-                msg = data.get("message") or ""
-                print(f"[{topic}] {user}: {msg} (ts={ts}, clk={clk})")
+                user = data.get("user", "?")
+                msg = data.get("message", "")
+                print(f"[{topic}] {user}: {msg} (ts={ts}, clock={clk})")
 
             elif svc == "message":
-                src = data.get("src") or "?"
-                msg = data.get("message") or ""
-                print(f"📩 PRIVADA de {src}: {msg} (ts={ts}, clk={clk})")
+                src = data.get("src", "?")
+                msg = data.get("message", "")
+                print(f"💌 PRIVADA de {src}: {msg} (ts={ts}, clock={clk})")
 
         except Exception as e:
             print("Erro no SUB:", e)
