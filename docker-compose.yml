@@ -2,7 +2,9 @@ version: "3.8"
 
 services:
 
+  # ==============================
   # PROXY (XSUB <-> XPUB)
+  # ==============================
   proxy:
     build: ./proxy
     image: proxy
@@ -16,7 +18,9 @@ services:
       - XSUB_PORT=5557
       - XPUB_PORT=5558
 
+  # ==============================
   # REF
+  # ==============================
   ref:
     build: ./ref
     image: ref
@@ -24,11 +28,13 @@ services:
     networks:
       - chatnet
     ports:
-      - "6000:6000"
+      - "7003:6000"
     volumes:
       - ref_data:/app/data
 
+  # ==============================
   # BROKER
+  # ==============================
   broker:
     build: ./broker
     image: broker
@@ -40,11 +46,12 @@ services:
     ports:
       - "5555:5555"
     depends_on:
-     - proxy
-     - ref
+      - proxy
+      - ref
 
-
+  # ==============================
   # SERVERS
+  # ==============================
   server_a:
     build: ./server_unified
     image: server_unified
@@ -56,6 +63,7 @@ services:
       - SERVER_REP_PORT=7000
       - REF_ADDR=tcp://ref:6000
       - PROXY_PUB_ADDR=tcp://proxy:5557
+      - BROKER_DEALER_ADDR=tcp://broker:5556
     volumes:
       - server_a_data:/app/data
     depends_on:
@@ -74,6 +82,7 @@ services:
       - SERVER_REP_PORT=7001
       - REF_ADDR=tcp://ref:6000
       - PROXY_PUB_ADDR=tcp://proxy:5557
+      - BROKER_DEALER_ADDR=tcp://broker:5556
     volumes:
       - server_b_data:/app/data
     depends_on:
@@ -92,6 +101,7 @@ services:
       - SERVER_REP_PORT=7002
       - REF_ADDR=tcp://ref:6000
       - PROXY_PUB_ADDR=tcp://proxy:5557
+      - BROKER_DEALER_ADDR=tcp://broker:5556
     volumes:
       - server_c_data:/app/data
     depends_on:
@@ -99,7 +109,9 @@ services:
       - broker
       - proxy
 
+  # ==============================
   # CLIENT (Node)
+  # ==============================
   client:
     build: ./client
     image: client
@@ -109,11 +121,16 @@ services:
     environment:
       - BROKER_REQ=tcp://broker:5555
       - PROXY_SUB=tcp://proxy:5558
+    stdin_open: true       # NECESSÁRIO para funcionar o readline
+    tty: true              # NECESSÁRIO para teclado entrar no Node
+    command: ["node", "/app/client.js"]
     depends_on:
       - broker
       - proxy
 
-  # BOTS (Python)
+  # ==============================
+  # BOTS
+  # ==============================
   bot_1:
     build: ./bot
     container_name: bot_1
@@ -140,28 +157,13 @@ services:
       - broker
       - proxy
 
-  # ===============================
-  #  TUI CLIENT (Node + Blessed)
-  # ===============================
- # tui:
-  #  image: node:18
-   # container_name: tui
-    #working_dir: /app
-    #volumes:
-     # - ./tui_client:/app
-    #command: ["node", "tui_client.js"]
-    #networks:
-     # - chatnet
-    #depends_on:
-     # - broker
-      #- proxy
-
-# NETWORKS
+# ==============================
+# NETWORKS & VOLUMES
+# ==============================
 networks:
   chatnet:
     driver: bridge
 
-# VOLUMES
 volumes:
   server_a_data:
   server_b_data:

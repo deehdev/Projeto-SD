@@ -5,6 +5,7 @@ import (
     zmq "github.com/pebbe/zmq4"
 )
 
+// Loop SUB do servidor — recebe replicação e mensagens de coordenação
 func subLoop(sub *zmq.Socket) {
     for {
         parts, err := sub.RecvMessageBytes(0)
@@ -14,22 +15,31 @@ func subLoop(sub *zmq.Socket) {
         }
 
         if len(parts) < 2 {
+            log.Println("[SUB LOOP][WARN] Mensagem inválida recebida")
             continue
         }
 
         topic := string(parts[0])
-        env, err := decodeEnvelope(parts[1])
+        payload := parts[1]
+
+        env, err := decodeEnvelope(payload)
         if err != nil {
+            log.Println("[SUB LOOP][ERRO] decode:", err)
             continue
         }
 
         updateClock(env.Clock)
 
         switch topic {
+
         case "replicate":
             applyReplication(env)
+
         case "servers":
             applyCoordinatorUpdate(env)
+
+        default:
+            log.Println("[SUB LOOP][WARN] Tópico desconhecido:", topic)
         }
     }
 }

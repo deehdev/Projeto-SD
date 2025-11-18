@@ -1,26 +1,15 @@
-# --------------------------------------------------------
-# Base Node.js leve
-# --------------------------------------------------------
-FROM node:20-alpine
+FROM node:18-alpine
 
-# Diretório de trabalho
 WORKDIR /app
 
 # Instalar dependências do ZeroMQ
-RUN apk add --no-cache \
-    zeromq \
-    zeromq-dev \
-    python3 \
-    make \
-    g++ 
+RUN apk add --no-cache zeromq zeromq-dev python3 make g++ bash
 
-# Copiar apenas package.json para cache de dependências
+# Copiar package.json e instalar dependências
 COPY package*.json ./
-
-# Instalar dependências do Node (zeromq + msgpack)
 RUN npm install --production
 
-# Copiar restante dos arquivos do cliente
+# Copiar todo o diretório client
 COPY . .
 
 # Comando padrão
