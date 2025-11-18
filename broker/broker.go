@@ -1,82 +1,57 @@
 package main
 
 import (
-    "log"
-    "os"
-    "sync/atomic"
-
-    zmq "github.com/pebbe/zmq4"
+	log "log"
+	zmq "github.com/pebbe/zmq4"
 )
 
-var counter uint64
+// broker clássico ROUTER <-> DEALER
+// frontend: recebe REQ dos clientes/bots
+// backend : entrega REQ aos servidores e recebe REP
 
 func main() {
-    xsubPort := os.Getenv("XSUB_PORT")
-    xpubPort := os.Getenv("XPUB_PORT")
 
-    if xsubPort == "" {
-        xsubPort = "5557"
-    }
-    if xpubPort == "" {
-        xpubPort = "5558"
-    }
+	// ------------------------------------------
+	// Criar contexto
+	// ------------------------------------------
+	ctx, err := zmq.NewContext()
+	if err != nil {
+		log.Fatal("[BROKER] Erro criando contexto:", err)
+	}
 
-    ctx, err := zmq.NewContext()
-    if err != nil {
-        log.Fatal("[BROKER] Erro contexto:", err)
-    }
+	// ------------------------------------------
+	// FRONTEND = ROUTER (clientes/bots)
+	// ------------------------------------------
+	frontend, err := ctx.NewSocket(zmq.ROUTER)
+	if err != nil {
+		log.Fatal("[BROKER] Erro criando ROUTER:", err)
+	}
+	defer frontend.Close()
 
-    xsub, err := ctx.NewSocket(zmq.XSUB)
-    if err != nil {
-        log.Fatal("[BROKER] Erro XSUB:", err)
-    }
-    defer xsub.Close()
+	if err := frontend.Bind("tcp://*:5555"); err != nil {
+		log.Fatal("[BROKER] Erro bind ROUTER (porta 5555):", err)
+	}
 
-    xpub, err := ctx.NewSocket(zmq.XPUB)
-    if err != nil {
-        log.Fatal("[BROKER] Erro XPUB:", err)
-    }
-    defer xpub.Close()
+	// ------------------------------------------
+	// BACKEND = DEALER (servidores)
+	// ------------------------------------------
+	backend, err := ctx.NewSocket(zmq.DEALER)
+	if err != nil {
+		log.Fatal("[BROKER] Erro criando DEALER:", err)
+	}
+	defer backend.Close()
 
-    if err := xsub.Bind("tcp://*:" + xsubPort); err != nil {
-        log.Fatal("[BROKER] Erro bind XSUB:", err)
-    }
-    if err := xpub.Bind("tcp://*:" + xpubPort); err != nil {
-        log.Fatal("[BROKER] Erro bind XPUB:", err)
-    }
+	if err := backend.Bind("tcp://*:6000"); err != nil {
+		log.Fatal("[BROKER] Erro bind DEALER (porta 6000):", err)
+	}
 
-    log.Printf("Broker XPUB/XSUB ativo — roteando %s <-> %s\n", xsubPort, xpubPort)
+	log.Println("[BROKER] REQ-REP ativo — ROUTER 5555 <-> DEALER 6000")
 
-    // Subscrição global para não travar PUB antes do primeiro SUB
-    xsub.SendBytes([]byte{1}, 0)
-
-    poller := zmq.NewPoller()
-    poller.Add(xsub, zmq.POLLIN)
-    poller.Add(xpub, zmq.POLLIN)
-
-    for {
-        events, err := poller.Poll(-1)
-        if err != nil {
-            log.Println("[BROKER] Erro no poll:", err)
-            continue
-        }
-
-        for _, evt := range events {
-
-            sock := evt.Socket
-
-            // Mensagens vindo dos servidores → enviadas aos clientes
-            if sock == xsub {
-                msg, _ := sock.RecvBytes(0)
-                atomic.AddUint64(&counter, 1)
-                xpub.SendBytes(msg, 0)
-            }
-
-            // Mensagens de SUBSCRIÇÃO vindo dos clientes → enviadas aos servidores
-            if sock == xpub {
-                msg, _ := sock.RecvBytes(0)
-                xsub.SendBytes(msg, 0)
-            }
-        }
-    }
+	// ------------------------------------------
+	// PROXY ZMQ (faz round-robin sozinho)
+	// ------------------------------------------
+	err = zmq.Proxy(frontend, backend, nil)
+	if err != nil {
+		log.Fatal("[BROKER] Proxy terminou inesperadamente:", err)
+	}
 }

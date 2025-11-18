@@ -10,7 +10,7 @@ import sys
 sys.stdout.reconfigure(line_buffering=True)
 
 # ---------------------------------------------------
-# CONFIG (padrões com override por env)
+# CONFIG
 # ---------------------------------------------------
 REQ_ADDR = os.environ.get("REQ_ADDR", "tcp://broker:5555")
 SUB_ADDR = os.environ.get("SUB_ADDR", "tcp://proxy:5558")
@@ -41,7 +41,7 @@ def now_iso():
     return datetime.now(timezone.utc).isoformat()
 
 # ---------------------------------------------------
-# REQUEST (REQ → REP) com poller/timeout
+# REQUEST (REQ → REP)
 # ---------------------------------------------------
 def send_req(sock, service, data=None, timeout=5.0):
     if data is None:
@@ -56,12 +56,10 @@ def send_req(sock, service, data=None, timeout=5.0):
 
     encoded = msgpack.packb(env, use_bin_type=True)
     try:
-        # enviar
         sock.send(encoded)
     except Exception as e:
         return {"service":"error","data":{"status":str(e)}}
 
-    # esperar reply com poller
     try:
         poller = zmq.Poller()
         poller.register(sock, zmq.POLLIN)
@@ -77,7 +75,7 @@ def send_req(sock, service, data=None, timeout=5.0):
         return {"service":"error","data":{"status":str(e)}}
 
 # ---------------------------------------------------
-# SUB LISTENER (trata multipart [topic, payload])
+# SUB LISTENER
 # ---------------------------------------------------
 def sub_listener(sub):
     while True:
@@ -85,46 +83,55 @@ def sub_listener(sub):
             parts = sub.recv_multipart()
             if len(parts) < 2:
                 continue
+
             topic = parts[0].decode('utf-8', errors='ignore')
-            payload = parts[1]
-            env = msgpack.unpackb(payload, raw=False)
+            env = msgpack.unpackb(parts[1], raw=False)
             update_clock(env.get("clock", 0))
 
             svc = env.get("service", "")
             data = env.get("data", {})
+            ts = env.get("timestamp", "sem-timestamp")
+            clk = env.get("clock", "?")
 
-            # mensagens de publicação em canal
+            # mensagens de canal
             if svc == "publish":
-                # servidor pode usar keys "message" ou "msg" dependendo do código
                 user = data.get("user") or data.get("src") or "?"
                 message = data.get("message") or data.get("msg") or ""
-                print(f"[{topic}] {user}: {message}")
 
-            # mensagens privadas (tópico = username)
+                print(
+                    f"[{topic}] {user}: {message}  "
+                    f"(timestamp={ts}, clock={clk})"
+                )
+
+            # mensagens privadas
             elif svc == "message":
                 src = data.get("src") or data.get("user") or "?"
+                dst = topic
                 message = data.get("message") or data.get("msg") or ""
-                print(f"💌 PRIVADA de {src}: {message}")
 
-            # replicação / servidores / outros tópicos
+                print(
+                    f"📩 {dst} recebeu mensagem PRIVADA de {src}: {message}  "
+                    f"(timestamp={ts}, clock={clk})"
+                )
+
+            # outros tópicos (election, replicate…)
             else:
                 print(f"[{topic}][{svc}] {data}")
 
         except Exception as e:
-            # não mata a thread em caso de erro temporário
             print("Erro no SUB:", e)
             time.sleep(0.5)
 
 # ---------------------------------------------------
-# HEARTBEAT (opcional)
+# HEARTBEAT
 # ---------------------------------------------------
 def heartbeat(username):
     ctx = zmq.Context()
     hb = ctx.socket(zmq.REQ)
     hb.setsockopt(zmq.LINGER, 0)
     hb.connect(REQ_ADDR)
-    # espera curta para estabilizar
     time.sleep(0.05)
+
     while True:
         try:
             send_req(hb, "heartbeat", {"user": username}, timeout=2.0)
@@ -133,7 +140,7 @@ def heartbeat(username):
         time.sleep(5)
 
 # ---------------------------------------------------
-# Frases e nomes
+# FRASES / NOMES
 # ---------------------------------------------------
 def frase():
     frases = [
@@ -148,7 +155,11 @@ def frase():
     ]
     return random.choice(frases)
 
-NOMES = ["Ana","Pedro","Rafael","Deise","Camila","Victor","Paula","Juliana","Lucas","Marcos","Mateus","João","Carla","Bruno","Renata","Sofia"]
+NOMES = [
+    "Ana","Pedro","Rafael","Deise","Camila","Victor",
+    "Paula","Juliana","Lucas","Marcos","Mateus","João",
+    "Carla","Bruno","Renata","Sofia"
+]
 
 # ---------------------------------------------------
 # BOT
@@ -158,63 +169,75 @@ def main():
     print(f"\nBOT iniciado como {username}\n")
 
     ctx = zmq.Context()
-
-    # REQ socket (clientes -> servidor)
+   
     req = ctx.socket(zmq.REQ)
     req.setsockopt(zmq.LINGER, 0)
     req.connect(REQ_ADDR)
-    time.sleep(0.05)  # dar tempo para o connect estabilizar
+    time.sleep(0.05)
 
-    # SUB socket (recebe do proxy XPUB)
     sub = ctx.socket(zmq.SUB)
     sub.setsockopt(zmq.LINGER, 0)
     sub.connect(SUB_ADDR)
     time.sleep(0.05)
 
-    # login
+    # LOGIN
     r = send_req(req, "login", {"user": username})
-    status = r.get("data", {}).get("status", "erro")
-    print("LOGIN:", status)
+    print("LOGIN:", r.get("data", {}).get("status", "erro"))
 
-    # subscreve tópicos privados e canais
-    try:
-        sub.setsockopt_string(zmq.SUBSCRIBE, username)
-    except Exception as e:
-        print("Erro subscribe user:", e)
+    # PRIVATE TOPIC
+    sub.setsockopt_string(zmq.SUBSCRIBE, username)
 
-    # heartbeat (opcional)
     threading.Thread(target=heartbeat, args=(username,), daemon=True).start()
 
-    # lista canais
+    # CANAIS
     r = send_req(req, "channels")
     channels = r.get("data", {}).get("channels", [])
+
     if not channels:
-        # o servidor espera a key "channel" para criar canal
         send_req(req, "channel", {"channel": "geral"})
         channels = ["geral"]
 
-    # escolhe subscrições e solicita ao servidor subscribe
-    # usar pelo menos 1 canal
-    salas = random.sample(channels, k=max(1, min(len(channels), 1)))
+    salas = random.sample(channels, 1)
+
     for c in salas:
-        try:
-            sub.setsockopt_string(zmq.SUBSCRIBE, c)
-        except Exception as e:
-            print("Erro subscribe canal:", e)
+        sub.setsockopt_string(zmq.SUBSCRIBE, c)
         send_req(req, "subscribe", {"user": username, "topic": c})
 
     print("Canais inscritos:", salas)
 
-    # start sub listener
     threading.Thread(target=sub_listener, args=(sub,), daemon=True).start()
 
-    # loop publica
+    # LOOP PRINCIPAL
     while True:
-        canal = random.choice(salas)
-        text = frase()
-        send_req(req, "publish", {"user": username, "channel": canal, "message": text})
-        print(f"[{canal}] {username}: {text}")
+
+        # 40% chance → PRIVADA
+        if random.random() < 0.40:
+            dst = random.choice([n for n in NOMES if n != username])
+            text = frase()
+
+            send_req(req, "message", {
+                "src": username,
+                "dst": dst,
+                "message": text
+            })
+
+            print(f"💌 {username} enviou mensagem Privada para {dst}: {text}")
+
+        # 60% chance → PUBLICAÇÃO
+        else:
+            canal = random.choice(salas)
+            text = frase()
+
+            send_req(req, "publish", {
+                "user": username,
+                "channel": canal,
+                "message": text
+            })
+
+            print(f"[{canal}] {username}: {text}")
+
         time.sleep(random.uniform(3, 6))
+
 
 if __name__ == "__main__":
     main()

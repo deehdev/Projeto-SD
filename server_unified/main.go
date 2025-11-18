@@ -73,7 +73,7 @@ func main() {
     defer ctx.Term()
 
     // =====================================================
-    // Socket PUB (replicação / publish)
+    // Socket PUB
     // =====================================================
     pub, err := ctx.NewSocket(zmq.PUB)
     if err != nil {
@@ -88,13 +88,12 @@ func main() {
         log.Printf("[MAIN][INFO] PUB conectado ao proxy: %s", proxyPubAddr)
     }
 
-    // Salvar socket global para uso no handlePublish()
     pubSocketMu.Lock()
     pubSocket = pub
     pubSocketMu.Unlock()
 
     // =====================================================
-    // Socket REP (clientes → servidor)
+    // Socket REP
     // =====================================================
     rep, err := ctx.NewSocket(zmq.REP)
     if err != nil {
@@ -110,7 +109,7 @@ func main() {
     log.Printf("[MAIN][INFO] REP aguardando em %s", bind)
 
     // =====================================================
-    // Socket SUB (replicação + eleição)
+    // Socket SUB
     // =====================================================
     sub, err := ctx.NewSocket(zmq.SUB)
     if err != nil {
@@ -178,6 +177,58 @@ func main() {
     // =====================================================
     log.Printf("[MAIN][INFO] Solicitando sincronização inicial...")
     requestInitialSync()
+
+    // =====================================================
+    // 🚨 Monitor de servidores inativos
+    // =====================================================
+    go func() {
+        last := map[string]bool{}
+
+        for {
+            time.Sleep(3 * time.Second)
+
+            list, err := requestList()
+            if err != nil {
+                log.Println("[SERVERS][ERRO] Falha ao consultar lista:", err)
+                continue
+            }
+
+            current := map[string]bool{}
+            for _, s := range list {
+                name, _ := s["name"].(string)
+                current["server_"+name] = true
+            }
+
+            for srv := range last {
+                if !current[srv] {
+                    log.Printf("⚠️  Servidor %s ficou inativo", srv)
+
+                    currentCoordinatorMu.Lock()
+                    coord := currentCoordinator
+                    currentCoordinatorMu.Unlock()
+
+                    if coord == srv {
+                        log.Printf("⚠️  Coordenador %s caiu — iniciando eleição...", srv)
+
+                        newCoord, _ := determineCoordinator()
+
+                        currentCoordinatorMu.Lock()
+                        currentCoordinator = newCoord
+                        currentCoordinatorMu.Unlock()
+
+                        log.Printf("🏆 Novo coordenador eleito: %s", newCoord)
+
+                        go func() {
+                            time.Sleep(800 * time.Millisecond)
+                            requestInitialSync()
+                        }()
+                    }
+                }
+            }
+
+            last = current
+        }
+    }()
 
     // =====================================================
     // Loop infinito

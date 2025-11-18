@@ -87,25 +87,32 @@ func requestList() ([]map[string]interface{}, error) {
 func applyCoordinatorUpdate(env Envelope) {
     coord, ok := env.Data["coordinator"].(string)
     if !ok {
-        log.Println("[COORD] Erro: campo 'coordinator' inválido")
+        log.Println("[COORD][ERRO] Campo 'coordinator' inválido")
         return
     }
 
     currentCoordinatorMu.Lock()
+    old := currentCoordinator
     currentCoordinator = coord
     currentCoordinatorMu.Unlock()
 
-    log.Println("[COORD] Novo coordenador eleito:", coord)
+    // Se for o mesmo coordenador, não imprime nada
+    if old == coord && coord != "" {
+        return
+    }
 
-    // ----------------------------------------------------------
-    // 🔥 CHAVE DO PROJETO:
-    // Assim que trocar de coordenador, todos servidores
-    // devem sincronizar os logs automaticamente.
-    // ----------------------------------------------------------
+    if old != "" && old != coord {
+        log.Printf("[COORD][WARN] Coordenador caiu: %s", old)
+        log.Println("[COORD][INFO] Iniciando eleição...")
+        log.Printf("[COORD][INFO] Eleito novo coordenador: %s", coord)
+    } else {
+        log.Printf("[COORD][INFO] Coordenador inicial: %s", coord)
+    }
+
+    // Sincronização pós-eleição
     go func() {
-        // pequena espera para evitar corrida logo após eleição
         time.Sleep(800 * time.Millisecond)
-        log.Println("[SYNC] Coordenador mudou — iniciando sincronização automática...")
+        log.Println("[SYNC][INFO] Coordenador mudou — iniciando sincronização automática...")
         requestInitialSync()
     }()
 }
@@ -147,7 +154,9 @@ func determineCoordinator() (string, error) {
     }
 
     sort.Slice(nodes, func(i, j int) bool { return nodes[i].Rank < nodes[j].Rank })
-    return "server_" + nodes[0].Name, nil
+    newCoord := "server_" + nodes[0].Name
+	log.Printf("[COORD][ELEIÇÃO] Menor rank encontrado: %s", newCoord)
+	return newCoord, nil
 }
 
 // ----------------------------------------------

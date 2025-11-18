@@ -51,23 +51,32 @@ func updateClock(n int) {
     mu.Unlock()
 }
 
-// Remove servidores inativos após 15s
+// =========================================================
+// REMOVE SERVIDORES INATIVOS
+// =========================================================
 func pruneLoop() {
     for {
         time.Sleep(5 * time.Second)
+
         mu.Lock()
         now := time.Now().Unix()
+
         for k, s := range servers {
             if now-s.LastSeen > 15 {
-                log.Println("[REF] Removendo servidor inativo:", k)
-                delete(servers, k)
+
+                deadServer := k
+                log.Printf("[REF] Removendo servidor inativo: %s", deadServer)
+
+                delete(servers, deadServer)
             }
         }
+
         mu.Unlock()
     }
 }
 
 func main() {
+
     log.Println("[REF] Iniciado em tcp://*:6000 (ZMQ REP)")
 
     go pruneLoop()
@@ -88,7 +97,7 @@ func main() {
 
         var req Envelope
         if err := json.Unmarshal([]byte(raw), &req); err != nil {
-            log.Println("[REF] JSON inválido recebido:", err)
+            log.Println("[REF] JSON inválido:", err)
             continue
         }
 
@@ -103,10 +112,12 @@ func main() {
 
         switch req.Service {
 
+        // =====================================================
+        // RANK
+        // =====================================================
         case "rank":
             user, _ := req.Data["user"].(string)
-            portVal, _ := req.Data["port"].(float64)
-            port := int(portVal)
+            port := int(req.Data["port"].(float64))
 
             mu.Lock()
             if _, exists := servers[user]; !exists {
@@ -116,19 +127,22 @@ func main() {
                     Port:     port,
                     LastSeen: time.Now().Unix(),
                 }
-                log.Println("[REF] Novo servidor (rank):", user, "rank:", nextRank, "port:", port)
+                log.Printf("[REF] Novo servidor (rank): %s rank: %d port: %d", user, nextRank, port)
                 nextRank++
             } else {
                 servers[user].Port = port
                 servers[user].LastSeen = time.Now().Unix()
             }
+
             resp.Data["rank"] = servers[user].Rank
             mu.Unlock()
 
+        // =====================================================
+        // HEARTBEAT
+        // =====================================================
         case "heartbeat":
             user, _ := req.Data["user"].(string)
-            portVal, _ := req.Data["port"].(float64)
-            port := int(portVal)
+            port := int(req.Data["port"].(float64))
 
             mu.Lock()
             if _, exists := servers[user]; !exists {
@@ -138,7 +152,7 @@ func main() {
                     Port:     port,
                     LastSeen: time.Now().Unix(),
                 }
-                log.Println("[REF] Novo servidor via heartbeat:", user, "rank:", nextRank, "port:", port)
+                log.Printf("[REF] Novo servidor via heartbeat: %s rank: %d port: %d", user, nextRank, port)
                 nextRank++
             } else {
                 servers[user].Port = port
@@ -147,6 +161,9 @@ func main() {
             resp.Data["status"] = "ok"
             mu.Unlock()
 
+        // =====================================================
+        // LISTAR SERVIDORES
+        // =====================================================
         case "list":
             mu.Lock()
             l := []map[string]interface{}{}
