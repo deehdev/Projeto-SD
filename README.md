@@ -2,7 +2,7 @@
 
 # 💬 **Sistema Distribuído de Troca de Mensagens**
 ### **ZeroMQ • MessagePack • Lamport Clock • Eleição Bully • Berkeley Sync • Docker*
-<br><br>
+
 
 📡 Mensagens privadas — 📨 Canais públicos — 🤖 Bots automáticos — 🔁 Replicação — ⏱ Sincronização  
 **Projeto completo para a disciplina BCSL502 – Sistemas Distribuídos**
@@ -63,8 +63,9 @@ A arquitetura é composta por **9 containers**, todos conectados através do Doc
 
 Cada servidor salva seus dados em:
 
-/app/data/messages.json
+<img width="226" height="225" alt="image" src="https://github.com/user-attachments/assets/b9e066cd-9688-4d51-a1d3-2b6010b350af" />
 
+          
 
 Com:
 
@@ -136,16 +137,6 @@ O projeto adota replicação ativa via difusão usando PUB/SUB do ZeroMQ, esse m
 
 ---
 
-## ⏱ **Relógio Lógico (Lamport)**
-
-Cada mensagem carrega: "clock": <contador><br> 
-Antes de enviar → clock++<br>
-Ao receber → clock = max(local, recebido) + 1
-Garante ordenação causal em replicações e mensagens distribuídas.
-
---- 
-<div>
-
 ## 👑 Eleição (Bully) + Sincronização Berkeley
 ```bash
 - O maior rank vence a eleição.
@@ -153,16 +144,14 @@ Garante ordenação causal em replicações e mensagens distribuídas.
 - A cada 10 mensagens → sincronização de relógio físico</div>
 - docker stop server_c
 - Veja outro servidor ser eleito coordenador.<br>
+
 ---
+<h2>🚀 **Como Executar** (H2)</h2>
 
-<div>
-  <h1>▶️ Como Executar</h1>
-  <h3>ZeroMQ • MessagePack • Docker • Go</h3>
-</div>
-<h2> (H2)</h2>
-
-```bash
+# Construir o ambiente
 docker-compose build
+
+# Subir os contêineres
 docker-compose up
 
 
@@ -172,47 +161,69 @@ docker exec -it client bash ou
 docker compose run --rm client
 node client.js
 ---
-```bash
-<div>
+
 ## 💻 Comandos do Cliente
-```bash
+```
+| Comando                 | Função                                |
+|-------------------------|----------------------------------------|
+| `login <nome>`          | Faz login                              |
+| `users`                 | Lista usuários                         |
+| `channels`              | Lista canais                           |
+| `channel <nome>`        | Cria um novo canal                     |
+| `subscribe <topico>`    | Inscreve no canal                      |
+| `publish <canal> <msg>` | Publica uma mensagem em um canal       |
+| `message <user> <msg>`  | Envia uma mensagem privada a um usuário |
 
-| Comando                 | Função              |
-|-------------------------|---------------------|
-| `login <nome>`          | Faz login           |
-| `users`                 | Lista usuários      |
-| `channels`              | Lista canais        |
-| `channel <nome>`        | Cria canal          |
-| `subscribe <topico>`    | Inscreve no canal   |
-| `publish <canal> <msg>` | Publica mensagem    |
-| `message <user> <msg>`  | Envia mensagem privada |
+Se quiser, posso adicionar exemplos de uso ou melhorar o estilo!
 
-</div>
-
-
-
-<h2>Texto Médio (H2)</h2>
 ## 🔍 Ver Logs dos Servidores
 
-
-```bash
-docker logs -f server_a
-docker logs -f server_b
-docker logs -f server_c
+# Construir o ambiente
+docker-compose build
+# Subir os contêineres
+docker-compose up
 
 ## 🤖 Bots<br>
-```bash
-Bots começam a enviar mensagens automaticamente.
----
+**Bots automáticos:** :
+- Criam um usuário aleatório
+- Escolhem um canal
+- Enviam mensagens aleatórias
+- Recebem mensagens em segundo plano
 
+## 🧩 **6. Servidor de Referência (Go)**
+- Armazena:
+  - nomes
+  - Endereços
+  - ranks
+- Entrega rank ao servidor
+- Monitora heartbeat
+- Expira servidores inativos
+- Fornece lista de servidores
+- 
+# ⏱ Relógio Lógico (Lamport)
 
+Toda mensagem enviada possui campo:
+```json
+"clock": <contador lógico>
+**Regras:**
+Antes de enviar → clock++
+Ao receber → clock = max(local, recebido) + 1
+**Garantias:**
+✔ Ordenação causal
+✔ Replicações consistentes
+✔ Logs persistidos na mesma ordem em todos os servidores
 
+## 🕒 Sincronização do Relógio Físico (Algoritmo de Berkeley)
 
-</div>
-## 👤 Autor<br>
-</div>
+O coordenador consulta outros servidores
+Calcula média dos desvios
+Envia ajustes
+Sincroniza a cada 10 mensagens
+Se coordenador falhar → eleição ocorre.
+
+👤 Autor: Deise Adriana Silva Araújo.<br>
 Projeto desenvolvido para a disciplina
-BCSL502 — Sistemas Distribuídos (VTU 2022 Scheme)
+CC7261 — Sistemas Distribuídos
 Entregue como solução completa das Partes 1 a 5.<br>
 <br>
 
