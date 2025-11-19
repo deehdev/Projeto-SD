@@ -1,19 +1,7 @@
 [
   {
-    "timestamp": "2025-11-19T01:14:31Z",
-    "user": "Paula"
-  },
-  {
-    "timestamp": "2025-11-19T00:30:53Z",
-    "user": "Mateus"
-  },
-  {
     "timestamp": "2025-11-19T00:30:53Z",
     "user": "Lucas"
-  },
-  {
-    "timestamp": "2025-11-19T00:52:56Z",
-    "user": "Carla"
   },
   {
     "timestamp": "2025-11-19T00:33:43Z",
@@ -22,6 +10,22 @@
   {
     "timestamp": "2025-11-19T01:48:19Z",
     "user": "Ana"
+  },
+  {
+    "timestamp": "2025-11-19T01:48:19Z",
+    "user": "Juliana"
+  },
+  {
+    "timestamp": "2025-11-19T03:36:36Z",
+    "user": "Kenia"
+  },
+  {
+    "timestamp": "2025-11-19T01:14:31Z",
+    "user": "Paula"
+  },
+  {
+    "timestamp": "2025-11-19T00:52:56Z",
+    "user": "Carla"
   },
   {
     "timestamp": "2025-11-19T00:52:56Z",
@@ -36,7 +40,11 @@
     "user": "Deise"
   },
   {
-    "timestamp": "2025-11-19T01:48:19Z",
-    "user": "Juliana"
+    "timestamp": "2025-11-19T03:28:51Z",
+    "user": "Rafael"
+  },
+  {
+    "timestamp": "2025-11-19T00:30:53Z",
+    "user": "Mateus"
   }
 ]
