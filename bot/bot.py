@@ -11,9 +11,6 @@ import sys
 # Saída instantânea
 sys.stdout.reconfigure(line_buffering=True)
 
-# ---------------------------------------------------
-# CONFIG
-# ---------------------------------------------------
 REQ_ADDR = os.environ.get("REQ_ADDR", "tcp://broker:5555")
 SUB_ADDR = os.environ.get("SUB_ADDR", "tcp://proxy:5558")
 
@@ -44,7 +41,7 @@ def now_iso():
 
 
 # ---------------------------------------------------
-# SEND REQUEST (REQ → REP)
+# REQ → REP
 # ---------------------------------------------------
 def send_req(sock, service, data=None, timeout=5.0):
     if data is None:
@@ -58,30 +55,23 @@ def send_req(sock, service, data=None, timeout=5.0):
     }
 
     encoded = msgpack.packb(env, use_bin_type=True)
-
-    try:
-        sock.send(encoded)
-    except Exception as e:
-        return {"service": "error", "data": {"status": str(e)}}
+    sock.send(encoded)
 
     poller = zmq.Poller()
     poller.register(sock, zmq.POLLIN)
 
-    try:
-        socks = dict(poller.poll(int(timeout * 1000)))
-        if socks.get(sock) == zmq.POLLIN:
-            raw = sock.recv()
-            reply = msgpack.unpackb(raw, raw=False)
-            update_clock(reply.get("clock", 0))
-            return reply
-        else:
-            return {"service": "error", "data": {"status": "timeout"}}
-    except:
-        return {"service": "error", "data": {"status": "socket-fail"}}
+    socks = dict(poller.poll(int(timeout * 1000)))
+    if socks.get(sock) == zmq.POLLIN:
+        raw = sock.recv()
+        reply = msgpack.unpackb(raw, raw=False)
+        update_clock(reply.get("clock", 0))
+        return reply
+
+    return {"service": "error", "data": {"status": "timeout"}}
 
 
 # ---------------------------------------------------
-# SUB Listener — imprime mensagens recebidas
+# SUB Listener
 # ---------------------------------------------------
 def sub_listener(sub):
     while True:
@@ -90,7 +80,7 @@ def sub_listener(sub):
             if len(parts) < 2:
                 continue
 
-            topic = parts[0].decode().strip()
+            topic = parts[0].decode().strip().lower()
             env = msgpack.unpackb(parts[1], raw=False)
 
             clk = env.get("clock", 0)
@@ -109,6 +99,16 @@ def sub_listener(sub):
         except Exception as e:
             print("Erro SUB:", e)
             time.sleep(0.3)
+
+
+# ---------------------------------------------------
+# ASSINAR CANAL (SEGURO)
+# ---------------------------------------------------
+def subscribe_channel(sub, subscribed, canal):
+    canal = str(canal).strip().lower()
+    sub.setsockopt_string(zmq.SUBSCRIBE, canal)
+    subscribed.add(canal)
+    print("Assinado canal:", canal)
 
 
 # ---------------------------------------------------
@@ -137,45 +137,43 @@ def main():
 
     ctx = zmq.Context()
 
-    # REQ
     req = ctx.socket(zmq.REQ)
     req.connect(REQ_ADDR)
     time.sleep(0.1)
 
-    # SUB
     sub = ctx.socket(zmq.SUB)
     sub.connect(SUB_ADDR)
     time.sleep(0.1)
 
-    # Login
+    # LOGIN
     r = send_req(req, "login", {"user": username})
     print("LOGIN:", r.get("data", {}).get("status"))
 
-    # Sempre ouvir mensagens privadas
-    sub.setsockopt_string(zmq.SUBSCRIBE, username)
+    # LISTA DE INSCRIÇÕES
+    subscribed = set()
 
-    # LISTAR canais do servidor
+    # Sempre ouvir mensagens privadas
+    subscribe_channel(sub, subscribed, username)
+
+    # LISTAR canais
     r = send_req(req, "channels")
     canais = r.get("data", {}).get("channels", [])
 
-    # Se não houver canais, cria "geral"
     if not canais:
         send_req(req, "channel", {"name": "geral"})
         canais = ["geral"]
 
-    # Escolhe um canal para assinar
+    # ESCOLHE CANAL E ASSINA
     canal_escolhido = random.choice(canais)
-    sub.setsockopt_string(zmq.SUBSCRIBE, canal_escolhido)
+    subscribe_channel(sub, subscribed, canal_escolhido)
 
-    subscribed = set([username, canal_escolhido])
     print("Inscrito no canal:", canal_escolhido)
 
-    # Thread para receber mensagens
     threading.Thread(target=sub_listener, args=(sub,), daemon=True).start()
 
-    # LOOP principal
+    # LOOP PRINCIPAL
     while True:
-        # Mensagem privada (40%)
+        # 40% chance → privado
         if random.random() < 0.4:
             dest = random.choice([n for n in NOMES if n != username])
             txt = random.choice(FRASES)
@@ -183,10 +181,11 @@ def main():
             send_req(req, "message", {"src": username, "dst": dest, "message": txt})
             print(f"💌 {username} → {dest}: {txt}")
 
-        # Mensagem em canal (60%)
+        # 60% chance → publish
         else:
-            if canal_escolhido not in subscribed:
-                print(f"⚠ Voce não está inscrito no canal: {canal_escolhido}")
+            can = canal_escolhido.strip().lower()
+            if can not in subscribed:
+                print(f"⚠ NÃO inscrito no canal: {can}")
             else:
                 txt = random.choice(FRASES)
                 send_req(req, "publish", {

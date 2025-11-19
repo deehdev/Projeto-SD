@@ -449,110 +449,110 @@ func receberNotificacaoCoordenador(sub *zmq.Socket) {
 
 // ----------------------- election (Bully) -----------------------
 func startElection() {
-    // Garantir que apenas UMA eleição rode por vez
-    emElectionMu.Lock()
-    if emElection {
-        emElectionMu.Unlock()
-        logInfo("Eleição já em andamento — ignorando nova requisição")
-        return
-    }
-    emElection = true
-    emElectionMu.Unlock()
+	// Garantir que apenas UMA eleição rode por vez
+	emElectionMu.Lock()
+	if emElection {
+		emElectionMu.Unlock()
+		logInfo("Eleição já em andamento — ignorando nova requisição")
+		return
+	}
+	emElection = true
+	emElectionMu.Unlock()
 
-    logInfo("Iniciando eleição Bully — procurando servidores com rank maior...")
+	logInfo("Iniciando eleição Bully — procurando servidores com rank maior...")
 
-    // 1) Encontrar servidores com rank MAIOR que eu
-    serversMutex.Lock()
-    var higher []struct {
-        name string
-        addr string
-        rank int
-    }
-    for name, info := range serversList {
-        r := getInt(info["rank"])
-        if r > meuRank {
-            higher = append(higher, struct {
-                name string
-                addr string
-                rank int
-            }{
-                name, getString(info["addr"]), r,
-            })
-        }
-    }
-    serversMutex.Unlock()
+	// 1) Encontrar servidores com rank MAIOR que eu
+	serversMutex.Lock()
+	var higher []struct {
+		name string
+		addr string
+		rank int
+	}
+	for name, info := range serversList {
+		r := getInt(info["rank"])
+		if r > meuRank {
+			higher = append(higher, struct {
+				name string
+				addr string
+				rank int
+			}{
+				name, getString(info["addr"]), r,
+			})
+		}
+	}
+	serversMutex.Unlock()
 
-    // 2) Se sou o maior → ganho automaticamente
-    if len(higher) == 0 {
-        declareCoordinator(meuNome)
-        emElectionMu.Lock()
-        emElection = false
-        emElectionMu.Unlock()
-        return
-    }
+	// 2) Se sou o maior → ganho automaticamente
+	if len(higher) == 0 {
+		declareCoordinator(meuNome)
+		emElectionMu.Lock()
+		emElection = false
+		emElectionMu.Unlock()
+		return
+	}
 
-    // 3) Enviar "election" para todos maiores
-    gotOK := false
-    for _, h := range higher {
-        logInfo("Enviando election para %s (rank=%d)", h.name, h.rank)
+	// 3) Enviar "election" para todos maiores
+	gotOK := false
+	for _, h := range higher {
+		logInfo("Enviando election para %s (rank=%d)", h.name, h.rank)
 
-        _, err := sendSrvReq(h.addr, "election", map[string]interface{}{
-            "from": meuNome,
-        }, 1500)
+		_, err := sendSrvReq(h.addr, "election", map[string]interface{}{
+			"from": meuNome,
+		}, 1500)
 
-        if err == nil {
-            gotOK = true
-            logInfo("%s respondeu OK — cedendo eleição", h.name)
-            break
-        }
-    }
+		if err == nil {
+			gotOK = true
+			logInfo("%s respondeu OK — cedendo eleição", h.name)
+			break
+		}
+	}
 
-    // 4) Se ninguém respondeu → eu ganho
-    if !gotOK {
-        declareCoordinator(meuNome)
-        emElectionMu.Lock()
-        emElection = false
-        emElectionMu.Unlock()
-        return
-    }
+	// 4) Se ninguém respondeu → eu ganho
+	if !gotOK {
+		declareCoordinator(meuNome)
+		emElectionMu.Lock()
+		emElection = false
+		emElectionMu.Unlock()
+		return
+	}
 
-    // 5) Alguém maior respondeu → esperar anúncio oficial via SUB
-    logInfo("Aguardando anúncio do novo coordenador...")
+	// 5) Alguém maior respondeu → esperar anúncio oficial via SUB
+	logInfo("Aguardando anúncio do novo coordenador...")
 
-    timeout := time.After(4 * time.Second)
-    ticker := time.NewTicker(150 * time.Millisecond)
+	timeout := time.After(4 * time.Second)
+	ticker := time.NewTicker(150 * time.Millisecond)
 
 waitLoop:
-    for {
-        select {
-        case <-timeout:
-            // Timeout → reiniciar eleição
-            logWarn("Timeout aguardando anúncio — reiniciando eleição")
+	for {
+		select {
+		case <-timeout:
+			// Timeout → reiniciar eleição
+			logWarn("Timeout aguardando anúncio — reiniciando eleição")
 
-            emElectionMu.Lock()
-            emElection = false
-            emElectionMu.Unlock()
+			emElectionMu.Lock()
+			emElection = false
+			emElectionMu.Unlock()
 
-            go func() {
-                time.Sleep(300 * time.Millisecond)
-                startElection()
-            }()
-            break waitLoop
+			go func() {
+				time.Sleep(300 * time.Millisecond)
+				startElection()
+			}()
+			break waitLoop
 
-        case <-ticker.C:
-            coordMutex.Lock()
-            c := coordinator
-            coordMutex.Unlock()
+		case <-ticker.C:
+			coordMutex.Lock()
+			c := coordinator
+			coordMutex.Unlock()
 
-            if c != "" && c != meuNome {
-                // Recebi anúncio → eleição termina
-                emElectionMu.Lock()
-                emElection = false
-                emElectionMu.Unlock()
-                break waitLoop
-            }
-        }
-    }
+			if c != "" && c != meuNome {
+				// Recebi anúncio → eleição termina
+				emElectionMu.Lock()
+				emElection = false
+				emElectionMu.Unlock()
+				break waitLoop
+			}
+		}
+	}
 }
 
 // ----------------------- server-to-server handler (REP) -----------------------
@@ -595,39 +595,39 @@ func startRepSrvLoop() {
 
 // ----------------------- SUB listener (proxy) -----------------------
 func startSubListener(sub *zmq.Socket) {
-    for {
-        parts, err := sub.RecvMessageBytes(0)
-        if err != nil || len(parts) < 2 {
-            time.Sleep(50 * time.Millisecond)
-            continue
-        }
+	for {
+		parts, err := sub.RecvMessageBytes(0)
+		if err != nil || len(parts) < 2 {
+			time.Sleep(50 * time.Millisecond)
+			continue
+		}
 
-        topic := string(parts[0])
-        body := parts[1]
+		topic := string(parts[0])
+		body := parts[1]
 
-        switch topic {
-        case "servers":
-            var ann map[string]interface{}
-            _ = msgpack.Unmarshal(body, &ann)
+		switch topic {
+		case "servers":
+			var ann map[string]interface{}
+			_ = msgpack.Unmarshal(body, &ann)
 
-            if data, ok := ann["data"].(map[string]interface{}); ok {
-                if coord, ok := data["coordinator"].(string); ok {
+			if data, ok := ann["data"].(map[string]interface{}); ok {
+				if coord, ok := data["coordinator"].(string); ok {
 
-                    // Atualiza coordenador
-                    coordMutex.Lock()
-                    coordinator = coord
-                    coordMutex.Unlock()
+					// Atualiza coordenador
+					coordMutex.Lock()
+					coordinator = coord
+					coordMutex.Unlock()
 
-                    // ENCERRA ELEIÇÃO
-                    emElectionMu.Lock()
-                    emElection = false
-                    emElectionMu.Unlock()
+					// ENCERRA ELEIÇÃO
+					emElectionMu.Lock()
+					emElection = false
+					emElectionMu.Unlock()
 
-                    logInfo("📢 Novo coordenador recebido: %s", coord)
-                }
-            }
+					logInfo("📢 Novo coordenador recebido: %s", coord)
+				}
+			}
 
-  		case "replicate":
+		case "replicate":
 			var r map[string]interface{}
 			_ = msgpack.Unmarshal(body, &r)
 
@@ -801,33 +801,33 @@ func main() {
 			time.Sleep(5 * time.Second)
 		}
 	}()
-		// sincronizar lista de servidores com REF a cada 5s
-go func() {
-    for {
-        time.Sleep(5 * time.Second)
+	// sincronizar lista de servidores com REF a cada 5s
+	go func() {
+		for {
+			time.Sleep(5 * time.Second)
 
-        listResp, err := refRequest(map[string]interface{}{"service": "list"})
-        if err != nil {
-            continue
-        }
+			listResp, err := refRequest(map[string]interface{}{"service": "list"})
+			if err != nil {
+				continue
+			}
 
-        if l, ok := listResp["list"].([]interface{}); ok {
-            serversMutex.Lock()
-            updated := map[string]map[string]interface{}{}
-            for _, it := range l {
-                if m, ok2 := it.(map[string]interface{}); ok2 {
-                    name := getString(m["name"])
-                    updated[name] = map[string]interface{}{
-                        "rank": getInt(m["rank"]),
-                        "addr": getString(m["addr"]),
-                    }
-                }
-            }
-            serversList = updated
-            serversMutex.Unlock()
-        }
-    }
-}()
+			if l, ok := listResp["list"].([]interface{}); ok {
+				serversMutex.Lock()
+				updated := map[string]map[string]interface{}{}
+				for _, it := range l {
+					if m, ok2 := it.(map[string]interface{}); ok2 {
+						name := getString(m["name"])
+						updated[name] = map[string]interface{}{
+							"rank": getInt(m["rank"]),
+							"addr": getString(m["addr"]),
+						}
+					}
+				}
+				serversList = updated
+				serversMutex.Unlock()
+			}
+		}
+	}()
 
 	// monitor coordinator liveness
 	go func() {
@@ -1036,31 +1036,49 @@ go func() {
 			resp["status"] = "OK"
 
 		case "message":
-			dst := getString(req.Data["dst"])
+	src := getString(req.Data["src"])
+	dst := getString(req.Data["dst"])
+	msg := getString(req.Data["message"])
 
-			env := Envelope{
-				Service: "message",
-				Data: map[string]interface{}{
-					"src":       req.Data["src"],
-					"dst":       dst,
-					"message":   req.Data["message"],
-					"timestamp": resp["timestamp"],
-				},
-				Clock: incClock(),
-			}
+	if src == "" || dst == "" || msg == "" {
+		resp["status"] = "erro"
+		resp["description"] = "mensagem privada inválida"
+		break
+	}
 
-			packed, _ := msgpack.Marshal(env)
-			if pubSocket != nil {
-				if _, err := pubSocket.SendMessage(dst, packed); err != nil {
-					logWarn("Erro publicando mensagem privada no proxy: %v", err)
-				}
-			}
+    // 1. Incrementa o Relógio Lógico
+    currentClock := incClock()
 
-			messages = append(messages, env)
-			persistMessages()
+	// 2. Cria o Envelope padronizado (para registro e envio)
+	env := Envelope{
+		Service: "message",
+		Data: map[string]interface{}{
+			"src":       src,
+			"dst":       dst,
+			"message":   msg,
+			"timestamp": resp["timestamp"],
+		},
+		Clock: currentClock, // Usa o valor incrementado
+	}
 
-			resp["status"] = "OK"
+	packed, _ := msgpack.Marshal(env)
 
+	// 3. Publicação ZMQ Corrigida: Envia o tópico (DST) e o corpo (packed)
+	if pubSocket != nil {
+		// O SendMessage() envia o primeiro argumento como tópico (frame 1) e o segundo como dado (frame 2)
+		if _, err := pubSocket.SendMessage(dst, packed); err != nil {
+			logWarn("Erro publicando mensagem privada no proxy: %v", err)
+			resp["status"] = "erro"
+			resp["description"] = "Falha ao enviar mensagem ZMQ"
+			break
+		}
+	}
+
+	// 4. Persistência (Replicação local do histórico de mensagens)
+	messages = append(messages, env)
+	persistMessages()
+
+	resp["status"] = "OK"
 		case "election":
 			// Request from another server asking election (we reply OK)
 			data := req.Data
