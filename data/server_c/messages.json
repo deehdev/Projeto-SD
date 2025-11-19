@@ -9148,5 +9148,2865 @@
       "user": "Rafael"
     },
     "Clock": 2042
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:04:29Z",
+      "user": "Bruno"
+    },
+    "Clock": 30
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Pedro",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:04:33Z"
+    },
+    "Clock": 34
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Sofia",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:04:40Z"
+    },
+    "Clock": 62
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:04:47Z",
+      "user": "Bruno"
+    },
+    "Clock": 80
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Bruno",
+      "timestamp": "2025-11-19T04:04:54Z"
+    },
+    "Clock": 105
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:05:00Z",
+      "user": "Bruno"
+    },
+    "Clock": 118
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Rafael",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:05:07Z"
+    },
+    "Clock": 133
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:05:14Z",
+      "user": "Deise"
+    },
+    "Clock": 160
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:05:20Z",
+      "user": "Deise"
+    },
+    "Clock": 173
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Paula",
+      "message": "Preciso de uma recomendação urgente.",
+      "src": "Bruno",
+      "timestamp": "2025-11-19T04:05:30Z"
+    },
+    "Clock": 203
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:05:34Z",
+      "user": "Deise"
+    },
+    "Clock": 220
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Preciso de uma recomendação urgente.",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:05:49Z"
+    },
+    "Clock": 26
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:05:49Z",
+      "user": "Lucas"
+    },
+    "Clock": 30
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Pedro",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T04:05:53Z"
+    },
+    "Clock": 36
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:05:59Z",
+      "user": "Deise"
+    },
+    "Clock": 50
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:06:06Z",
+      "user": "Lucas"
+    },
+    "Clock": 62
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Sofia",
+      "message": "Interstellar é perfeito.",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:06:12Z"
+    },
+    "Clock": 73
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:06:18Z",
+      "user": "Lucas"
+    },
+    "Clock": 89
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:06:25Z",
+      "user": "Lucas"
+    },
+    "Clock": 110
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:06:31Z",
+      "user": "Deise"
+    },
+    "Clock": 121
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:06:38Z",
+      "user": "Lucas"
+    },
+    "Clock": 147
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:06:45Z",
+      "user": "Lucas"
+    },
+    "Clock": 165
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:06:52Z",
+      "user": "Deise"
+    },
+    "Clock": 176
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:06:58Z"
+    },
+    "Clock": 196
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Mateus",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T04:07:06Z"
+    },
+    "Clock": 213
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Bruno",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:07:13Z"
+    },
+    "Clock": 221
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Preciso de uma recomendação urgente.",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T04:07:21Z"
+    },
+    "Clock": 237
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:07:27Z",
+      "user": "Deise"
+    },
+    "Clock": 257
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Deise",
+      "message": "Quero algo leve!",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T04:07:35Z"
+    },
+    "Clock": 277
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Preciso de uma recomendação urgente.",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:07:40Z"
+    },
+    "Clock": 288
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:07:48Z",
+      "user": "Deise"
+    },
+    "Clock": 304
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T04:07:55Z"
+    },
+    "Clock": 325
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:08:00Z",
+      "user": "Deise"
+    },
+    "Clock": 342
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Camila",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T04:08:09Z"
+    },
+    "Clock": 363
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:08:14Z",
+      "user": "Deise"
+    },
+    "Clock": 383
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Victor",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T04:08:23Z"
+    },
+    "Clock": 403
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Camila",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:08:29Z"
+    },
+    "Clock": 420
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:08:36Z",
+      "user": "Lucas"
+    },
+    "Clock": 432
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:08:40Z",
+      "user": "Deise"
+    },
+    "Clock": 452
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:08:48Z",
+      "user": "Deise"
+    },
+    "Clock": 473
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:08:53Z",
+      "user": "Lucas"
+    },
+    "Clock": 493
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:09:00Z",
+      "user": "Deise"
+    },
+    "Clock": 509
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:09:08Z",
+      "user": "Lucas"
+    },
+    "Clock": 529
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:09:16Z",
+      "user": "Deise"
+    },
+    "Clock": 549
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:09:21Z",
+      "user": "Lucas"
+    },
+    "Clock": 569
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:09:29Z",
+      "user": "Deise"
+    },
+    "Clock": 587
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:09:34Z"
+    },
+    "Clock": 603
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:09:43Z",
+      "user": "Lucas"
+    },
+    "Clock": 623
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:09:49Z",
+      "user": "Deise"
+    },
+    "Clock": 643
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:09:56Z",
+      "user": "Lucas"
+    },
+    "Clock": 663
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:10:01Z",
+      "user": "Deise"
+    },
+    "Clock": 683
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T04:10:09Z"
+    },
+    "Clock": 700
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:10:16Z"
+    },
+    "Clock": 712
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:10:22Z",
+      "user": "Lucas"
+    },
+    "Clock": 720
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:10:29Z",
+      "user": "Deise"
+    },
+    "Clock": 741
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "João",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T04:10:35Z"
+    },
+    "Clock": 756
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Ana",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Deise",
+      "timestamp": "2025-11-19T04:10:42Z"
+    },
+    "Clock": 764
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Juliana",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:11:20Z"
+    },
+    "Clock": 48
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:11:25Z",
+      "user": "Paula"
+    },
+    "Clock": 64
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:11:34Z"
+    },
+    "Clock": 81
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Juliana",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:11:38Z"
+    },
+    "Clock": 89
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:11:46Z",
+      "user": "Paula"
+    },
+    "Clock": 110
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:11:51Z",
+      "user": "Paula"
+    },
+    "Clock": 127
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:11:59Z"
+    },
+    "Clock": 148
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Lucas",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:12:05Z"
+    },
+    "Clock": 156
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:12:15Z",
+      "user": "Paula"
+    },
+    "Clock": 177
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:12:22Z",
+      "user": "Paula"
+    },
+    "Clock": 194
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Camila",
+      "message": "Preciso de uma recomendação urgente.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:12:28Z"
+    },
+    "Clock": 214
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Rafael",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:12:36Z"
+    },
+    "Clock": 231
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:12:41Z",
+      "user": "Paula"
+    },
+    "Clock": 243
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Deise",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:12:48Z"
+    },
+    "Clock": 260
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "João",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:12:53Z"
+    },
+    "Clock": 276
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Preciso de uma recomendação urgente.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:13:02Z"
+    },
+    "Clock": 284
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:13:06Z",
+      "user": "Paula"
+    },
+    "Clock": 300
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:13:15Z",
+      "user": "Paula"
+    },
+    "Clock": 318
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Victor",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:13:21Z"
+    },
+    "Clock": 338
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:13:31Z",
+      "user": "Paula"
+    },
+    "Clock": 355
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:13:36Z",
+      "user": "Paula"
+    },
+    "Clock": 372
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:13:44Z"
+    },
+    "Clock": 389
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:13:48Z",
+      "user": "Paula"
+    },
+    "Clock": 401
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:13:55Z",
+      "user": "Paula"
+    },
+    "Clock": 418
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:14:02Z",
+      "user": "Paula"
+    },
+    "Clock": 438
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Juliana",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:14:06Z"
+    },
+    "Clock": 453
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:14:15Z",
+      "user": "Paula"
+    },
+    "Clock": 470
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:14:22Z",
+      "user": "Paula"
+    },
+    "Clock": 487
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:14:26Z",
+      "user": "Paula"
+    },
+    "Clock": 498
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:14:33Z",
+      "user": "Paula"
+    },
+    "Clock": 516
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Sofia",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:14:41Z"
+    },
+    "Clock": 536
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Pedro",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:14:48Z"
+    },
+    "Clock": 553
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:14:54Z",
+      "user": "Paula"
+    },
+    "Clock": 570
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:15:01Z",
+      "user": "Paula"
+    },
+    "Clock": 587
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:15:08Z"
+    },
+    "Clock": 607
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Sofia",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:15:17Z"
+    },
+    "Clock": 615
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Preciso de uma recomendação urgente.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:15:23Z"
+    },
+    "Clock": 635
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:15:31Z",
+      "user": "Paula"
+    },
+    "Clock": 652
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:15:37Z",
+      "user": "Paula"
+    },
+    "Clock": 669
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Sofia",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:15:46Z"
+    },
+    "Clock": 689
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:15:53Z",
+      "user": "Paula"
+    },
+    "Clock": 706
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:15:58Z",
+      "user": "Paula"
+    },
+    "Clock": 723
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:16:08Z",
+      "user": "Paula"
+    },
+    "Clock": 740
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:16:14Z"
+    },
+    "Clock": 757
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:16:20Z",
+      "user": "Paula"
+    },
+    "Clock": 768
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:16:25Z",
+      "user": "Paula"
+    },
+    "Clock": 788
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Bruno",
+      "message": "Quero algo leve!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:16:31Z"
+    },
+    "Clock": 805
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:16:39Z",
+      "user": "Paula"
+    },
+    "Clock": 824
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Bruno",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:16:45Z"
+    },
+    "Clock": 841
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Quero algo leve!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:16:53Z"
+    },
+    "Clock": 857
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:16:59Z"
+    },
+    "Clock": 865
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:17:07Z",
+      "user": "Paula"
+    },
+    "Clock": 877
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:17:12Z",
+      "user": "Paula"
+    },
+    "Clock": 893
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:17:21Z",
+      "user": "Paula"
+    },
+    "Clock": 913
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:17:27Z",
+      "user": "Paula"
+    },
+    "Clock": 924
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:17:34Z"
+    },
+    "Clock": 941
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:17:40Z",
+      "user": "Paula"
+    },
+    "Clock": 953
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Lucas",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:17:47Z"
+    },
+    "Clock": 968
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:17:52Z",
+      "user": "Paula"
+    },
+    "Clock": 984
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Sofia",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:18:01Z"
+    },
+    "Clock": 1004
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:18:07Z",
+      "user": "Paula"
+    },
+    "Clock": 1012
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:18:16Z"
+    },
+    "Clock": 1030
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:18:23Z",
+      "user": "Paula"
+    },
+    "Clock": 1041
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Bruno",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:18:28Z"
+    },
+    "Clock": 1061
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:18:34Z",
+      "user": "Paula"
+    },
+    "Clock": 1078
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Juliana",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:18:41Z"
+    },
+    "Clock": 1095
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Deise",
+      "message": "Quero algo leve!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:18:49Z"
+    },
+    "Clock": 1114
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Juliana",
+      "message": "Quero algo leve!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:18:55Z"
+    },
+    "Clock": 1126
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:19:01Z",
+      "user": "Paula"
+    },
+    "Clock": 1142
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:19:09Z",
+      "user": "Paula"
+    },
+    "Clock": 1163
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:19:16Z",
+      "user": "Paula"
+    },
+    "Clock": 1183
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:19:21Z",
+      "user": "Paula"
+    },
+    "Clock": 1200
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:19:28Z",
+      "user": "Paula"
+    },
+    "Clock": 1221
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Ana",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:19:36Z"
+    },
+    "Clock": 1241
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:19:41Z",
+      "user": "Paula"
+    },
+    "Clock": 1253
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Sofia",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:19:52Z"
+    },
+    "Clock": 1282
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Camila",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:19:56Z"
+    },
+    "Clock": 1296
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "João",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:20:04Z"
+    },
+    "Clock": 1313
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Bruno",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:20:11Z"
+    },
+    "Clock": 1321
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Mateus",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:20:19Z"
+    },
+    "Clock": 1337
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:20:26Z",
+      "user": "Paula"
+    },
+    "Clock": 1354
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:20:31Z",
+      "user": "Paula"
+    },
+    "Clock": 1371
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:20:38Z",
+      "user": "Paula"
+    },
+    "Clock": 1391
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:20:42Z",
+      "user": "Paula"
+    },
+    "Clock": 1406
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:20:50Z",
+      "user": "Paula"
+    },
+    "Clock": 1426
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:20:55Z",
+      "user": "Paula"
+    },
+    "Clock": 1446
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:21:00Z",
+      "user": "Paula"
+    },
+    "Clock": 1466
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:21:09Z",
+      "user": "Paula"
+    },
+    "Clock": 1486
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:21:14Z"
+    },
+    "Clock": 1503
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:21:22Z",
+      "user": "Paula"
+    },
+    "Clock": 1517
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:21:28Z"
+    },
+    "Clock": 1542
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:21:34Z",
+      "user": "Paula"
+    },
+    "Clock": 1550
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:21:41Z",
+      "user": "Paula"
+    },
+    "Clock": 1571
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:21:50Z",
+      "user": "Paula"
+    },
+    "Clock": 1591
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:21:56Z",
+      "user": "Paula"
+    },
+    "Clock": 1611
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:22:00Z",
+      "user": "Paula"
+    },
+    "Clock": 1628
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:22:08Z",
+      "user": "Paula"
+    },
+    "Clock": 1653
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:22:14Z",
+      "user": "Paula"
+    },
+    "Clock": 1673
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:22:22Z",
+      "user": "Paula"
+    },
+    "Clock": 1684
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:22:28Z",
+      "user": "Paula"
+    },
+    "Clock": 1705
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:22:37Z"
+    },
+    "Clock": 1725
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:22:41Z",
+      "user": "Paula"
+    },
+    "Clock": 1733
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:22:47Z",
+      "user": "Paula"
+    },
+    "Clock": 1749
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Ana",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:22:55Z"
+    },
+    "Clock": 1766
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:23:02Z",
+      "user": "Paula"
+    },
+    "Clock": 1779
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:23:07Z",
+      "user": "Paula"
+    },
+    "Clock": 1796
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:23:13Z",
+      "user": "Paula"
+    },
+    "Clock": 1804
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "João",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:23:18Z"
+    },
+    "Clock": 1821
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Bruno",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:23:25Z"
+    },
+    "Clock": 1838
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Bruno",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:23:32Z"
+    },
+    "Clock": 1850
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Juliana",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:23:38Z"
+    },
+    "Clock": 1869
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Ana",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:23:45Z"
+    },
+    "Clock": 1886
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:23:51Z",
+      "user": "Paula"
+    },
+    "Clock": 1894
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Juliana",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:23:59Z"
+    },
+    "Clock": 1911
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:24:05Z"
+    },
+    "Clock": 1919
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "João",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:24:13Z"
+    },
+    "Clock": 1938
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:24:20Z",
+      "user": "Paula"
+    },
+    "Clock": 1946
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:24:27Z",
+      "user": "Paula"
+    },
+    "Clock": 1962
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:24:32Z",
+      "user": "Paula"
+    },
+    "Clock": 1973
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:24:37Z",
+      "user": "Paula"
+    },
+    "Clock": 1993
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:24:46Z",
+      "user": "Paula"
+    },
+    "Clock": 2011
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:24:52Z"
+    },
+    "Clock": 2031
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:24:59Z",
+      "user": "Paula"
+    },
+    "Clock": 2048
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:25:07Z",
+      "user": "Paula"
+    },
+    "Clock": 2065
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Juliana",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:25:14Z"
+    },
+    "Clock": 2082
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:25:20Z",
+      "user": "Paula"
+    },
+    "Clock": 2094
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:25:29Z",
+      "user": "Paula"
+    },
+    "Clock": 2111
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:25:34Z",
+      "user": "Paula"
+    },
+    "Clock": 2131
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:25:43Z",
+      "user": "Paula"
+    },
+    "Clock": 2149
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Juliana",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:25:49Z"
+    },
+    "Clock": 2169
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:25:55Z",
+      "user": "Paula"
+    },
+    "Clock": 2181
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:26:04Z",
+      "user": "Paula"
+    },
+    "Clock": 2201
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Juliana",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:26:08Z"
+    },
+    "Clock": 2218
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:26:15Z",
+      "user": "Paula"
+    },
+    "Clock": 2235
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:26:21Z",
+      "user": "Paula"
+    },
+    "Clock": 2252
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:26:26Z"
+    },
+    "Clock": 2272
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:26:33Z",
+      "user": "Paula"
+    },
+    "Clock": 2290
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:26:39Z",
+      "user": "Paula"
+    },
+    "Clock": 2311
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:26:44Z",
+      "user": "Paula"
+    },
+    "Clock": 2331
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Ana",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:26:51Z"
+    },
+    "Clock": 2351
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Ana",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:26:59Z"
+    },
+    "Clock": 2368
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:27:06Z",
+      "user": "Paula"
+    },
+    "Clock": 2385
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Mateus",
+      "message": "Preciso de uma recomendação urgente.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:27:12Z"
+    },
+    "Clock": 2402
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Preciso de uma recomendação urgente.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:27:17Z"
+    },
+    "Clock": 2411
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:27:26Z",
+      "user": "Paula"
+    },
+    "Clock": 2432
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Sofia",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:27:33Z"
+    },
+    "Clock": 2452
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:27:41Z",
+      "user": "Paula"
+    },
+    "Clock": 2467
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:27:46Z",
+      "user": "Paula"
+    },
+    "Clock": 2477
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:27:54Z",
+      "user": "Paula"
+    },
+    "Clock": 2499
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "João",
+      "message": "Interstellar é perfeito.",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:28:01Z"
+    },
+    "Clock": 2519
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Ana",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:28:09Z"
+    },
+    "Clock": 2542
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:28:15Z",
+      "user": "Paula"
+    },
+    "Clock": 2553
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:28:22Z",
+      "user": "Paula"
+    },
+    "Clock": 2569
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:28:33Z",
+      "user": "Paula"
+    },
+    "Clock": 2604
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "João",
+      "message": "Quero algo leve!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:28:40Z"
+    },
+    "Clock": 2624
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:28:45Z",
+      "user": "Paula"
+    },
+    "Clock": 2636
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "João",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:28:53Z"
+    },
+    "Clock": 2651
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:29:01Z",
+      "user": "Paula"
+    },
+    "Clock": 2668
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Camila",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:29:08Z"
+    },
+    "Clock": 2679
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Quero algo leve!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:29:15Z"
+    },
+    "Clock": 2699
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:29:23Z",
+      "user": "Paula"
+    },
+    "Clock": 2718
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:29:29Z",
+      "user": "Paula"
+    },
+    "Clock": 2734
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:29:38Z",
+      "user": "Paula"
+    },
+    "Clock": 2754
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:29:43Z"
+    },
+    "Clock": 2766
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:29:49Z",
+      "user": "Paula"
+    },
+    "Clock": 2784
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Pedro",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Paula",
+      "timestamp": "2025-11-19T04:29:55Z"
+    },
+    "Clock": 2806
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:30:01Z",
+      "user": "Paula"
+    },
+    "Clock": 2818
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Victor",
+      "message": "Quero algo leve!",
+      "src": "Rafael",
+      "timestamp": "2025-11-19T04:30:19Z"
+    },
+    "Clock": 49
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:30:24Z",
+      "user": "Marcos"
+    },
+    "Clock": 57
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:30:33Z",
+      "user": "Rafael"
+    },
+    "Clock": 75
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Esse mês saiu muito filme bom!",
+      "src": "Marcos",
+      "timestamp": "2025-11-19T04:30:39Z"
+    },
+    "Clock": 83
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:30:47Z",
+      "user": "Marcos"
+    },
+    "Clock": 101
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:30:51Z",
+      "user": "Rafael"
+    },
+    "Clock": 109
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:30:59Z",
+      "user": "Marcos"
+    },
+    "Clock": 125
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Rafael",
+      "timestamp": "2025-11-19T04:31:06Z"
+    },
+    "Clock": 149
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:31:12Z",
+      "user": "Marcos"
+    },
+    "Clock": 157
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:31:22Z",
+      "user": "Rafael"
+    },
+    "Clock": 173
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:31:26Z",
+      "user": "Marcos"
+    },
+    "Clock": 189
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T04:31:34Z",
+      "user": "Rafael"
+    },
+    "Clock": 197
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:31:40Z",
+      "user": "Marcos"
+    },
+    "Clock": 208
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Sofia",
+      "message": "Quero algo leve!",
+      "src": "Rafael",
+      "timestamp": "2025-11-19T04:31:46Z"
+    },
+    "Clock": 224
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:31:56Z",
+      "user": "Marcos"
+    },
+    "Clock": 232
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:32:00Z",
+      "user": "Marcos"
+    },
+    "Clock": 240
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:32:07Z",
+      "user": "Rafael"
+    },
+    "Clock": 260
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:32:15Z",
+      "user": "Marcos"
+    },
+    "Clock": 268
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Interstellar é perfeito.",
+      "src": "Rafael",
+      "timestamp": "2025-11-19T04:32:21Z"
+    },
+    "Clock": 284
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:32:27Z",
+      "user": "Marcos"
+    },
+    "Clock": 301
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:32:35Z",
+      "user": "Marcos"
+    },
+    "Clock": 313
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:32:41Z",
+      "user": "Rafael"
+    },
+    "Clock": 329
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Mateus",
+      "message": "Preciso de uma recomendação urgente.",
+      "src": "Rafael",
+      "timestamp": "2025-11-19T04:32:48Z"
+    },
+    "Clock": 345
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:32:54Z",
+      "user": "Marcos"
+    },
+    "Clock": 353
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T04:33:04Z",
+      "user": "Marcos"
+    },
+    "Clock": 369
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T04:33:10Z",
+      "user": "Rafael"
+    },
+    "Clock": 377
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Ana",
+      "message": "Interstellar é perfeito.",
+      "src": "Marcos",
+      "timestamp": "2025-11-19T04:33:19Z"
+    },
+    "Clock": 393
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T04:33:24Z",
+      "user": "Marcos"
+    },
+    "Clock": 401
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:33:32Z",
+      "user": "Rafael"
+    },
+    "Clock": 417
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Marcos",
+      "timestamp": "2025-11-19T04:33:39Z"
+    },
+    "Clock": 433
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Rafael",
+      "timestamp": "2025-11-19T04:33:44Z"
+    },
+    "Clock": 441
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Deise",
+      "message": "Interstellar é perfeito.",
+      "src": "Rafael",
+      "timestamp": "2025-11-19T04:33:54Z"
+    },
+    "Clock": 459
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Vocês preferem dublado ou legendado?",
+      "src": "Marcos",
+      "timestamp": "2025-11-19T04:33:59Z"
+    },
+    "Clock": 467
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Quero algo leve!",
+      "timestamp": "2025-11-19T04:34:06Z",
+      "user": "Rafael"
+    },
+    "Clock": 477
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T04:34:13Z",
+      "user": "Rafael"
+    },
+    "Clock": 493
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Juliana",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Marcos",
+      "timestamp": "2025-11-19T04:34:18Z"
+    },
+    "Clock": 501
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Mateus",
+      "message": "Quero algo leve!",
+      "src": "Rafael",
+      "timestamp": "2025-11-19T04:34:27Z"
+    },
+    "Clock": 519
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T04:34:32Z",
+      "user": "Marcos"
+    },
+    "Clock": 535
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:34:37Z",
+      "user": "Rafael"
+    },
+    "Clock": 543
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Lucas",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Rafael",
+      "timestamp": "2025-11-19T04:34:45Z"
+    },
+    "Clock": 556
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "filmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T04:34:52Z",
+      "user": "Marcos"
+    },
+    "Clock": 573
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Ana",
+      "message": "Alguém viu algum filme bom?",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T06:33:54Z"
+    },
+    "Clock": 31
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Marcos",
+      "message": "Preciso de uma recomendação urgente.",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T06:33:59Z"
+    },
+    "Clock": 63
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "doramas",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T06:34:07Z",
+      "user": "Lucas"
+    },
+    "Clock": 83
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T06:34:14Z",
+      "user": "Lucas"
+    },
+    "Clock": 108
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Pedro",
+      "message": "Recomendações de terror psicológico?",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T06:34:23Z"
+    },
+    "Clock": 131
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Quero algo leve!",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T06:34:28Z"
+    },
+    "Clock": 143
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T06:34:35Z",
+      "user": "Lucas"
+    },
+    "Clock": 171
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Renata",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T06:34:41Z"
+    },
+    "Clock": 189
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T06:34:48Z",
+      "user": "Lucas"
+    },
+    "Clock": 212
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Preciso de uma recomendação urgente.",
+      "timestamp": "2025-11-19T06:34:54Z",
+      "user": "Lucas"
+    },
+    "Clock": 229
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Ana",
+      "message": "Alguém entendeu Tenet?",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T06:34:58Z"
+    },
+    "Clock": 236
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T06:35:04Z",
+      "user": "Lucas"
+    },
+    "Clock": 261
+  },
+  {
+    "Service": "message",
+    "Data": {
+      "dst": "Carla",
+      "message": "Interstellar é perfeito.",
+      "src": "Lucas",
+      "timestamp": "2025-11-19T06:35:08Z"
+    },
+    "Clock": 270
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Vocês preferem dublado ou legendado?",
+      "timestamp": "2025-11-19T06:35:13Z",
+      "user": "Lucas"
+    },
+    "Clock": 287
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Interstellar é perfeito.",
+      "timestamp": "2025-11-19T06:35:17Z",
+      "user": "Lucas"
+    },
+    "Clock": 304
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Recomendações de terror psicológico?",
+      "timestamp": "2025-11-19T06:35:20Z",
+      "user": "Lucas"
+    },
+    "Clock": 317
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T06:35:26Z",
+      "user": "Lucas"
+    },
+    "Clock": 337
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T06:35:30Z",
+      "user": "Lucas"
+    },
+    "Clock": 347
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém viu algum filme bom?",
+      "timestamp": "2025-11-19T06:35:35Z",
+      "user": "Lucas"
+    },
+    "Clock": 367
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Esse mês saiu muito filme bom!",
+      "timestamp": "2025-11-19T06:35:39Z",
+      "user": "Lucas"
+    },
+    "Clock": 375
+  },
+  {
+    "Service": "publish",
+    "Data": {
+      "channel": "ilmes",
+      "message": "Alguém entendeu Tenet?",
+      "timestamp": "2025-11-19T06:35:44Z",
+      "user": "Lucas"
+    },
+    "Clock": 393
   }
 ]

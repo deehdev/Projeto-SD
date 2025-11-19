@@ -1,4 +1,3 @@
-// ref.go
 package main
 
 import (
@@ -41,6 +40,33 @@ var (
 	clockMu      sync.Mutex
 )
 
+// ----------------------- Funções Auxiliares -----------------------
+
+func getString(v interface{}) string {
+	if s, ok := v.(string); ok {
+		return s
+	}
+	if b, ok := v.([]byte); ok {
+		return string(b)
+	}
+	return ""
+}
+
+func getInt(v interface{}) int {
+	if i, ok := v.(int); ok {
+		return i
+	}
+	if f, ok := v.(float64); ok {
+		return int(f) 
+	}
+	if i, ok := v.(int64); ok {
+		return int(i)
+	}
+	return 0
+}
+
+// ----------------------- Relógio e Utilidades -----------------------
+
 func nowISO() string {
 	return time.Now().Format(time.RFC3339)
 }
@@ -58,7 +84,6 @@ func updateClock(n int) {
 	if n > logicalClock {
 		logicalClock = n
 	}
-	// opcional incremento pós-recebimento
 	logicalClock++
 	clockMu.Unlock()
 }
@@ -69,6 +94,7 @@ func pruneLoop() {
 		now := time.Now().Unix()
 		mu.Lock()
 		for name, s := range servers {
+			// Remove se não for visto há mais de 15 segundos
 			if now-s.LastSeen > 15 {
 				log.Printf("[REF] Removendo servidor inativo: %s", name)
 				delete(servers, name)
@@ -87,13 +113,14 @@ func replyWithEnvelope(rep *zmq.Socket, service string, data map[string]interfac
 	}
 	out, err := msgpack.Marshal(env)
 	if err != nil {
-		// fallback: enviar algo simples (não deve acontecer)
 		log.Println("[REF] erro ao serializar resposta:", err)
 		rep.SendMessage([]byte("ERR"))
 		return
 	}
 	rep.SendBytes(out, 0)
 }
+
+// ----------------------- MAIN -----------------------
 
 func main() {
 	log.Println("[REF] Iniciado em tcp://*:5550 (ZMQ REP)")
@@ -111,7 +138,6 @@ func main() {
 		raw, err := rep.RecvBytes(0)
 		if err != nil {
 			log.Println("[REF] recv err:", err)
-			// não podemos continuar sem responder — enviar envelope de erro
 			replyWithEnvelope(rep, "ref", map[string]interface{}{"error": "recv error"})
 			continue
 		}
@@ -119,27 +145,17 @@ func main() {
 		var req ReqEnv
 		if err := msgpack.Unmarshal(raw, &req); err != nil {
 			log.Println("[REF] msgpack decode err:", err)
-			// responder sempre com envelope válido
 			replyWithEnvelope(rep, "ref", map[string]interface{}{"error": "msgpack decode error"})
 			continue
 		}
 
-		// atualiza relógio lógico do REF a partir do clock recebido (se houver)
+		// Atualiza relógio lógico do REF a partir do clock recebido
 		updateClock(req.Clock)
 
 		service := req.Service
-		name := ""
-		if v := req.Data["user"]; v != nil {
-			if s, ok := v.(string); ok {
-				name = s
-			}
-		}
-		addr := ""
-		if v := req.Data["addr"]; v != nil {
-			if s, ok := v.(string); ok {
-				addr = s
-			}
-		}
+		// **Usando funções auxiliares para extrair dados**
+		name := getString(req.Data["user"])
+		addr := getString(req.Data["addr"])
 
 		switch service {
 		case "rank":
@@ -158,7 +174,7 @@ func main() {
 				}
 				servers[name] = srv
 				log.Printf("[REF] Novo servidor registrado: %s rank=%d addr=%s", name, nextRank, addr)
-				nextRank++
+				nextRank++ // Incrementa SÓ se for novo
 			} else {
 				// atualiza lastseen e addr se mudou
 				srv.LastSeen = time.Now().Unix()
@@ -179,6 +195,7 @@ func main() {
 			mu.Lock()
 			srv, exists := servers[name]
 			if !exists {
+				// Servidor faz heartbeat mas nunca pediu rank (registra com um novo)
 				srv = &ServerInfo{
 					Name:     name,
 					Rank:     nextRank,
@@ -187,7 +204,7 @@ func main() {
 				}
 				servers[name] = srv
 				log.Printf("[REF] Novo servidor via heartbeat: %s rank=%d addr=%s", name, nextRank, addr)
-				nextRank++
+				nextRank++ // Incrementa SÓ se for novo
 			} else {
 				srv.LastSeen = time.Now().Unix()
 				if addr != "" && addr != srv.Addr {
