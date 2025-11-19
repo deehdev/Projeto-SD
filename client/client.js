@@ -63,46 +63,40 @@ async function send(service, data = {}) {
 // -------------------------------
 // SUB Listener (mensagens recebidas)
 // -------------------------------
+// -----------------------
+// SUB Listener (mensagens recebidas)
+// -----------------------
 async function startSubListener() {
   for await (const [topicBuf, msgBuf] of sub) {
     try {
-      // Limpa tópico
-      let rawTopic = topicBuf.toString();
+      const rawTopic = topicBuf.toString();
       const topic = rawTopic.trim().replace(/[^a-zA-Z0-9_-]/g, "");
 
-      // Decodifica
       const env = msgpack.decode(msgBuf);
       const service = env.service;
       const data = env.data || {};
 
       updateClock(data.clock);
 
-      // Salva linha atual
+      // SALVAR O QUE O USUÁRIO ESTÁ DIGITANDO
       const typed = rl.line;
+
+      // LIMPAR LINHA ATUAL
       readline.cursorTo(process.stdout, 0);
       readline.clearLine(process.stdout, 0);
 
-      // -----------------------
-      // FORMATAÇÃO DOS LOGS
-      // -----------------------
-
+      // ---------------------------
+      // FORMATAR MENSAGEM RECEBIDA
+      // ---------------------------
       if (service === "publish") {
-        console.log(
-          `💬  #${topic} | ${data.user} → ${data.message}`
-        );
-      }
-
-      else if (service === "message") {
-        console.log(
-          `📩  ${data.src} → você | ${data.message}`
-        );
-      }
-
-      else {
+        console.log(`💬  #${topic} | ${data.user} → ${data.message}`);
+      } else if (service === "message") {
+        console.log(`📩  ${data.src} → você | ${data.message}`);
+      } else {
         console.log(`🔧 [${topic}]`, env);
       }
 
-      // Restaura prompt sem apagar o que o usuário digitou
+      // REIMPRIMIR PROMPT E TEXTO DIGITADO
       rl.prompt(true);
       process.stdout.write(typed);
 
@@ -135,7 +129,7 @@ async function cmdChannel(args) {
   const name = args[0];
   if (!name) return console.log("Uso: channel <nome>");
 
-  const r = await send("channel", { channel: name });
+  const r = await send("channel", { name });
   console.log(r);
 }
 
