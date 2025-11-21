@@ -6,11 +6,10 @@ import (
 	"time"
 
 	zmq "github.com/pebbe/zmq4"
-	"github.com/vmihailenco/msgpack/v5"
 )
 
 func main() {
-	// Endereços do XSUB (onde os servidores publicam) e XPUB (onde clientes se inscrevem)
+
 	xsubAddr := os.Getenv("XSUB_ADDR")
 	if xsubAddr == "" {
 		xsubAddr = "tcp://*:5557"
@@ -21,63 +20,86 @@ func main() {
 		xpubAddr = "tcp://*:5558"
 	}
 
-	log.Println("--- INICIANDO PROXY PUB/SUB ---")
-	log.Printf("XSUB (Servidor publica em) %s", xsubAddr)
-	log.Printf("XPUB (Cliente se inscreve em) %s", xpubAddr)
+	log.Println("───────────────────────────────────────────────")
+	log.Println("     🚀 INICIANDO PROXY ZMQ XSUB ⇄ XPUB")
+	log.Println("───────────────────────────────────────────────")
+	log.Printf("XSUB: servidores publicam →   %s", xsubAddr)
+	log.Printf("XPUB: clientes se inscrevem → %s", xpubAddr)
+	log.Println("───────────────────────────────────────────────")
 
 	ctx, err := zmq.NewContext()
 	if err != nil {
-		log.Fatal("Erro criando contexto ZMQ:", err)
+		log.Fatal("Erro criando contexto:", err)
 	}
 	defer ctx.Term()
 
-	// Socket XSUB: servidores publicam aqui
+	// ---------------------------
+	// XSUB → onde os servidores publicam
+	// ---------------------------
 	xsub, err := ctx.NewSocket(zmq.XSUB)
 	if err != nil {
-		log.Fatal("Erro criando XSUB:", err)
+		log.Fatal("Erro criando socket XSUB:", err)
 	}
 	defer xsub.Close()
+
 	if err := xsub.Bind(xsubAddr); err != nil {
 		log.Fatal("Erro bind XSUB:", err)
 	}
 
-	// Socket XPUB: clientes/bots se inscrevem aqui
+	// ---------------------------
+	// XPUB → onde os clientes fazem SUBSCRIBE
+	// ---------------------------
 	xpub, err := ctx.NewSocket(zmq.XPUB)
 	if err != nil {
-		log.Fatal("Erro criando XPUB:", err)
+		log.Fatal("Erro criando socket XPUB:", err)
 	}
 	defer xpub.Close()
+
+	// 🔥 ESSENCIAL: libera eventos de inscrição
+	xpub.SetXpubVerbose(1)
+
 	if err := xpub.Bind(xpubAddr); err != nil {
 		log.Fatal("Erro bind XPUB:", err)
 	}
 
-	log.Println("✅ Proxy PUB/SUB iniciado")
+	log.Println("✅ Proxy XSUB/XPUB pronto")
 
-	// Proxy puro do ZeroMQ: roteia mensagens do XSUB para XPUB e vice-versa
-	// Aqui o ZeroMQ já faz todo o roteamento de tópicos automaticamente
-	if err := zmq.Proxy(xsub, xpub, nil); err != nil {
-		log.Println("⚠️ Proxy PUB/SUB encerrou com erro:", err)
-		time.Sleep(1 * time.Second)
+	// ---------------------------------------------------------
+	// THREAD PARA MONITORAR INSCRIÇÕES RECEBIDAS PELO XPUB
+	// ---------------------------------------------------------
+	go func() {
+		for {
+			msg, err := xpub.RecvMessageBytes(0)
+			if err != nil {
+				time.Sleep(10 * time.Millisecond)
+				continue
+			}
+			if len(msg) == 0 {
+				continue
+			}
+
+			event := msg[0][0]
+			topic := ""
+			if len(msg[0]) > 1 {
+				topic = string(msg[0][1:])
+			}
+
+			if event == 1 {
+				log.Printf("🔔 XPUB → cliente SE INSCREVE em tópico [%s]", topic)
+			} else if event == 0 {
+				log.Printf("🔕 XPUB → cliente CANCELA tópico [%s]", topic)
+			}
+		}
+	}()
+
+	// ---------------------------------------------------------
+	// LOOP DO PROXY
+	// ---------------------------------------------------------
+	for {
+		log.Println("🔄 Proxy ativo: roteando mensagens...")
+		err := zmq.Proxy(xsub, xpub, nil)
+
+		log.Println("⚠️ Proxy terminou com erro:", err)
+		time.Sleep(500 * time.Millisecond)
 	}
-}
-
-// Função auxiliar para enviar mensagens serializadas via MessagePack
-func sendMessage(socket *zmq.Socket, topic string, data any) error {
-	// Serializa com MessagePack
-	bytes, err := msgpack.Marshal(data)
-	if err != nil {
-		return err
-	}
-
-	// Envia multipart: primeiro o tópico, depois os dados
-	_, err = socket.SendMessage(topic, bytes)
-	return err
-}
-
-// Função auxiliar para receber mensagens serializadas via MessagePack
-func receiveMessage(msgParts [][]byte, v any) error {
-	if len(msgParts) < 2 {
-		return nil
-	}
-	return msgpack.Unmarshal(msgParts[1], v)
 }
